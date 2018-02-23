@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopReturnItemDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopReturnItem">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="ORDER_RETURN_ID" jdbcType="BIGINT" property="orderReturnId" />
+    <result column="SKU_ID" jdbcType="BIGINT" property="skuId" />
+    <result column="SKU_NUM" jdbcType="INTEGER" property="skuNum" />
+    <result column="RETURN_AMOUNT" jdbcType="DECIMAL" property="returnAmount" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, ORDER_RETURN_ID, SKU_ID, SKU_NUM, RETURN_AMOUNT
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{orderReturnId,jdbcType=BIGINT}, #{skuId,jdbcType=BIGINT}, 
+    #{skuNum,jdbcType=INTEGER}, #{returnAmount,jdbcType=DECIMAL}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="orderReturnId != null and orderReturnId != ''">
+      AND ORDER_RETURN_ID = #{orderReturnId,jdbcType=BIGINT}
+    </if>
+    <if test="skuId != null and skuId != ''">
+      AND SKU_ID = #{skuId,jdbcType=BIGINT}
+    </if>
+    <if test="skuNum != null and skuNum != ''">
+      AND SKU_NUM = #{skuNum,jdbcType=INTEGER}
+    </if>
+    <if test="returnAmount != null and returnAmount != ''">
+      AND RETURN_AMOUNT = #{returnAmount,jdbcType=DECIMAL}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_return_item
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_return_item
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopReturnItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_return_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="orderReturnId != null">
+        ORDER_RETURN_ID,
+      </if>
+      <if test="skuId != null">
+        SKU_ID,
+      </if>
+      <if test="skuNum != null">
+        SKU_NUM,
+      </if>
+      <if test="returnAmount != null">
+        RETURN_AMOUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="orderReturnId != null">
+        #{orderReturnId,jdbcType=BIGINT},
+      </if>
+      <if test="skuId != null">
+        #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="skuNum != null">
+        #{skuNum,jdbcType=INTEGER},
+      </if>
+      <if test="returnAmount != null">
+        #{returnAmount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_return_item
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_return_item where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopReturnItem">
+    update t_shop_return_item
+    <set>
+      <if test="orderReturnId != null">
+        ORDER_RETURN_ID = #{orderReturnId,jdbcType=BIGINT},
+      </if>
+      <if test="skuId != null">
+        SKU_ID = #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="skuNum != null">
+        SKU_NUM = #{skuNum,jdbcType=INTEGER},
+      </if>
+      <if test="returnAmount != null">
+        RETURN_AMOUNT = #{returnAmount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_return_item
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_return_item
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, ORDER_RETURN_ID, SKU_ID, SKU_NUM, RETURN_AMOUNT
+    from t_shop_return_item
+  </select>
+</mapper>

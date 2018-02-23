@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopReviewDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopReview">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="item_no" jdbcType="BIGINT" property="itemNo" />
+    <result column="member_id" jdbcType="BIGINT" property="memberId" />
+    <result column="mark" jdbcType="DOUBLE" property="mark" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="picture_url_one" jdbcType="VARCHAR" property="pictureUrlOne" />
+    <result column="picture_url_two" jdbcType="VARCHAR" property="pictureUrlTwo" />
+    <result column="picture_url_three" jdbcType="VARCHAR" property="pictureUrlThree" />
+    <result column="picture_url_four" jdbcType="VARCHAR" property="pictureUrlFour" />
+    <result column="picture_url_five" jdbcType="VARCHAR" property="pictureUrlFive" />
+    <result column="picture_url_six" jdbcType="VARCHAR" property="pictureUrlSix" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_DATE, item_no, member_id, mark, sort, picture_url_one, picture_url_two, 
+    picture_url_three, picture_url_four, picture_url_five, picture_url_six
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{itemNo,jdbcType=BIGINT}, 
+    #{memberId,jdbcType=BIGINT}, #{mark,jdbcType=DOUBLE}, #{sort,jdbcType=INTEGER}, #{pictureUrlOne,jdbcType=VARCHAR}, 
+    #{pictureUrlTwo,jdbcType=VARCHAR}, #{pictureUrlThree,jdbcType=VARCHAR}, #{pictureUrlFour,jdbcType=VARCHAR}, 
+    #{pictureUrlFive,jdbcType=VARCHAR}, #{pictureUrlSix,jdbcType=VARCHAR}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="itemNo != null and itemNo != ''">
+      AND item_no = #{itemNo,jdbcType=BIGINT}
+    </if>
+    <if test="memberId != null and memberId != ''">
+      AND member_id = #{memberId,jdbcType=BIGINT}
+    </if>
+    <if test="mark != null and mark != ''">
+      AND mark = #{mark,jdbcType=DOUBLE}
+    </if>
+    <if test="sort != null and sort != ''">
+      AND sort = #{sort,jdbcType=INTEGER}
+    </if>
+    <if test="pictureUrlOne != null and pictureUrlOne != ''">
+      AND picture_url_one = #{pictureUrlOne,jdbcType=VARCHAR}
+    </if>
+    <if test="pictureUrlTwo != null and pictureUrlTwo != ''">
+      AND picture_url_two = #{pictureUrlTwo,jdbcType=VARCHAR}
+    </if>
+    <if test="pictureUrlThree != null and pictureUrlThree != ''">
+      AND picture_url_three = #{pictureUrlThree,jdbcType=VARCHAR}
+    </if>
+    <if test="pictureUrlFour != null and pictureUrlFour != ''">
+      AND picture_url_four = #{pictureUrlFour,jdbcType=VARCHAR}
+    </if>
+    <if test="pictureUrlFive != null and pictureUrlFive != ''">
+      AND picture_url_five = #{pictureUrlFive,jdbcType=VARCHAR}
+    </if>
+    <if test="pictureUrlSix != null and pictureUrlSix != ''">
+      AND picture_url_six = #{pictureUrlSix,jdbcType=VARCHAR}
+    </if>
+    <if test="content != null and content != ''">
+      AND content = #{content,jdbcType=LONGVARCHAR}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_review
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_review
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopReview">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_review
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="itemNo != null">
+        item_no,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="mark != null">
+        mark,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="pictureUrlOne != null">
+        picture_url_one,
+      </if>
+      <if test="pictureUrlTwo != null">
+        picture_url_two,
+      </if>
+      <if test="pictureUrlThree != null">
+        picture_url_three,
+      </if>
+      <if test="pictureUrlFour != null">
+        picture_url_four,
+      </if>
+      <if test="pictureUrlFive != null">
+        picture_url_five,
+      </if>
+      <if test="pictureUrlSix != null">
+        picture_url_six,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itemNo != null">
+        #{itemNo,jdbcType=BIGINT},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="mark != null">
+        #{mark,jdbcType=DOUBLE},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="pictureUrlOne != null">
+        #{pictureUrlOne,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrlTwo != null">
+        #{pictureUrlTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrlThree != null">
+        #{pictureUrlThree,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrlFour != null">
+        #{pictureUrlFour,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrlFive != null">
+        #{pictureUrlFive,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrlSix != null">
+        #{pictureUrlSix,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_review
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_review where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopReview">
+    update t_shop_review
+    <set>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itemNo != null">
+        item_no = #{itemNo,jdbcType=BIGINT},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="mark != null">
+        mark = #{mark,jdbcType=DOUBLE},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="pictureUrlOne != null">
+        picture_url_one = #{pictureUrlOne,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrlTwo != null">
+        picture_url_two = #{pictureUrlTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrlThree != null">
+        picture_url_three = #{pictureUrlThree,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrlFour != null">
+        picture_url_four = #{pictureUrlFour,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrlFive != null">
+        picture_url_five = #{pictureUrlFive,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrlSix != null">
+        picture_url_six = #{pictureUrlSix,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_review
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_review
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_DATE, item_no, member_id, mark, sort, picture_url_one, picture_url_two, 
+    picture_url_three, picture_url_four, picture_url_five, picture_url_six, content
+    from t_shop_review
+  </select>
+</mapper>

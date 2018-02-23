@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopNoticeDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopNotice">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="create_Date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="is_cancel" jdbcType="INTEGER" property="isCancel" />
+    <result column="cancel_Date" jdbcType="TIMESTAMP" property="cancelDate" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="delete_date" jdbcType="TIMESTAMP" property="deleteDate" />
+    <result column="grade" jdbcType="INTEGER" property="grade" />
+    <result column="notice_type" jdbcType="INTEGER" property="noticeType" />
+    <result column="receiver_type" jdbcType="INTEGER" property="receiverType" />
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="readed_num" jdbcType="BIGINT" property="readedNum" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, create_Date, title, is_cancel, cancel_Date, is_delete, delete_date, grade, notice_type, 
+    receiver_type, role_id, readed_num
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
+    #{isCancel,jdbcType=INTEGER}, #{cancelDate,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, 
+    #{deleteDate,jdbcType=TIMESTAMP}, #{grade,jdbcType=INTEGER}, #{noticeType,jdbcType=INTEGER}, 
+    #{receiverType,jdbcType=INTEGER}, #{roleId,jdbcType=BIGINT}, #{readedNum,jdbcType=BIGINT}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND create_Date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="title != null and title != ''">
+      AND title = #{title,jdbcType=VARCHAR}
+    </if>
+    <if test="isCancel != null and isCancel != ''">
+      AND is_cancel = #{isCancel,jdbcType=INTEGER}
+    </if>
+    <if test="cancelDate != null and cancelDate != ''">
+      AND cancel_Date = #{cancelDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="isDelete != null and isDelete != ''">
+      AND is_delete = #{isDelete,jdbcType=INTEGER}
+    </if>
+    <if test="deleteDate != null and deleteDate != ''">
+      AND delete_date = #{deleteDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="grade != null and grade != ''">
+      AND grade = #{grade,jdbcType=INTEGER}
+    </if>
+    <if test="noticeType != null and noticeType != ''">
+      AND notice_type = #{noticeType,jdbcType=INTEGER}
+    </if>
+    <if test="receiverType != null and receiverType != ''">
+      AND receiver_type = #{receiverType,jdbcType=INTEGER}
+    </if>
+    <if test="roleId != null and roleId != ''">
+      AND role_id = #{roleId,jdbcType=BIGINT}
+    </if>
+    <if test="readedNum != null and readedNum != ''">
+      AND readed_num = #{readedNum,jdbcType=BIGINT}
+    </if>
+    <if test="content != null and content != ''">
+      AND content = #{content,jdbcType=LONGVARCHAR}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_notice
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_notice
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopNotice">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        create_Date,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="isCancel != null">
+        is_cancel,
+      </if>
+      <if test="cancelDate != null">
+        cancel_Date,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="deleteDate != null">
+        delete_date,
+      </if>
+      <if test="grade != null">
+        grade,
+      </if>
+      <if test="noticeType != null">
+        notice_type,
+      </if>
+      <if test="receiverType != null">
+        receiver_type,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="readedNum != null">
+        readed_num,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="isCancel != null">
+        #{isCancel,jdbcType=INTEGER},
+      </if>
+      <if test="cancelDate != null">
+        #{cancelDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="deleteDate != null">
+        #{deleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="grade != null">
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="noticeType != null">
+        #{noticeType,jdbcType=INTEGER},
+      </if>
+      <if test="receiverType != null">
+        #{receiverType,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="readedNum != null">
+        #{readedNum,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_notice
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_notice where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopNotice">
+    update t_shop_notice
+    <set>
+      <if test="createDate != null">
+        create_Date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="isCancel != null">
+        is_cancel = #{isCancel,jdbcType=INTEGER},
+      </if>
+      <if test="cancelDate != null">
+        cancel_Date = #{cancelDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="deleteDate != null">
+        delete_date = #{deleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="grade != null">
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="noticeType != null">
+        notice_type = #{noticeType,jdbcType=INTEGER},
+      </if>
+      <if test="receiverType != null">
+        receiver_type = #{receiverType,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="readedNum != null">
+        readed_num = #{readedNum,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_notice
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_notice
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, create_Date, title, is_cancel, cancel_Date, is_delete, delete_date, grade, 
+    notice_type, receiver_type, role_id, readed_num, content
+    from t_shop_notice
+  </select>
+</mapper>

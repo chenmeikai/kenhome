@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopCategoryDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopCategory">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName" />
+    <result column="CATEGORY_CODE" jdbcType="BIGINT" property="categoryCode" />
+    <result column="IMAGE_URL" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="HITS" jdbcType="BIGINT" property="hits" />
+    <result column="PATH" jdbcType="VARCHAR" property="path" />
+    <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+    <result column="CATEGORY_SORT" jdbcType="INTEGER" property="categorySort" />
+    <result column="META" jdbcType="VARCHAR" property="meta" />
+    <result column="CONTEXT" jdbcType="VARCHAR" property="context" />
+  </resultMap>
+  
+  <resultMap id="BaseWithChildrenResultMap" type="com.meikai.shop.entity.TShopCategory">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName" />
+    <result column="CATEGORY_CODE" jdbcType="BIGINT" property="categoryCode" />
+    <result column="IMAGE_URL" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="HITS" jdbcType="BIGINT" property="hits" />
+    <result column="PATH" jdbcType="VARCHAR" property="path" />
+    <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+    <result column="CATEGORY_SORT" jdbcType="INTEGER" property="categorySort" />
+    <result column="META" jdbcType="VARCHAR" property="meta" />
+    <result column="CONTEXT" jdbcType="LONGVARCHAR" property="context" />
+    <collection column="ID" property="childrenCategorys" ofType="com.meikai.shop.entity.TShopCategory" javaType="java.util.ArrayList"
+     select="getChildrenCategorys">
+    </collection>
+  </resultMap>
+   <!-- 分类，包含关联的属性集合 -->
+   <resultMap id="BaseWithAttributesResultMap" type="com.meikai.shop.entity.TShopCategory">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName" />
+    <result column="CATEGORY_CODE" jdbcType="BIGINT" property="categoryCode" />
+    <result column="IMAGE_URL" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="HITS" jdbcType="BIGINT" property="hits" />
+    <result column="PATH" jdbcType="VARCHAR" property="path" />
+    <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+    <result column="CATEGORY_SORT" jdbcType="INTEGER" property="categorySort" />
+    <result column="META" jdbcType="VARCHAR" property="meta" />
+    <result column="CONTEXT" jdbcType="LONGVARCHAR" property="context" />
+    <collection column="ID" property="attributes" ofType="com.meikai.shop.entity.TShopAttribute" javaType="java.util.ArrayList"
+     select="getAttributes">
+    </collection>
+  </resultMap>
+  
+  <!-- 属性，包含关联的属性值集合 -->
+  <resultMap type="com.meikai.shop.entity.TShopAttribute" id="AttributeWithOptionsResultMap">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="ATTRIBUTE_NAME" jdbcType="VARCHAR" property="attributeName" />   
+    <result column="ATTRIBUTE_CODE" jdbcType="VARCHAR" property="attributeCode" />
+    <result column="ATTRIBUTE_SORT" jdbcType="INTEGER" property="attributeSort" />
+    <result column="ATTRIBUTE_STATU" jdbcType="INTEGER" property="attributeStatu" />
+    <result column="BASE_TYPE" jdbcType="INTEGER" property="baseType" />
+    <result column="PRICE_TYPE" jdbcType="INTEGER" property="priceType" />
+    <result column="GUIDE_TYPE" jdbcType="INTEGER" property="guideType" />
+    <collection column="ID" property="options" ofType="com.meikai.shop.entity.TShopAttributeOption" javaType="java.util.ArrayList"
+     select="getOptions">
+    </collection>
+  </resultMap>
+  
+  <!-- 属性 值-->
+  <resultMap id="optionResultMap" type="com.meikai.shop.entity.TShopAttributeOption">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="OPTION_NAME" jdbcType="VARCHAR" property="optionName" />
+    <result column="OPTION_STATU" jdbcType="INTEGER" property="optionStatu" />
+    <result column="OPTION_SORT" jdbcType="INTEGER" property="optionSort" />
+    <result column="ATTRIBUTE_ID" jdbcType="BIGINT" property="attributeId" />
+  </resultMap>
+  
+  <!-- 分类及其父分类Id、名字 -->
+  <resultMap type="com.meikai.shop.entity.TShopCategory" id="baseWithParentResultMap">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName" />
+    <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+    <association  column="PARENT_ID"  property="parentCategory" select="getByParentId"></association>
+  </resultMap>
+  
+ 
+  
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_DATE, CREATER, UPDATE_DATE, UPDATER, CATEGORY_NAME, CATEGORY_CODE, IMAGE_URL, 
+    HITS, PATH, PARENT_ID, CATEGORY_SORT, META,CONTEXT
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
+    #{updateDate,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, 
+    #{categoryCode,jdbcType=BIGINT}, #{imageUrl,jdbcType=VARCHAR}, #{hits,jdbcType=BIGINT}, 
+    #{path,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, #{categorySort,jdbcType=INTEGER}, 
+    #{meta,jdbcType=VARCHAR},#{context,jdbcType=LONGVARCHAR}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="creater != null and creater != ''">
+      AND CREATER = #{creater,jdbcType=VARCHAR}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updater != null and updater != ''">
+      AND UPDATER = #{updater,jdbcType=VARCHAR}
+    </if>
+    <if test="categoryName != null and categoryName != ''">
+      AND CATEGORY_NAME = #{categoryName,jdbcType=VARCHAR}
+    </if>
+    <if test="categoryCode != null and categoryCode != ''">
+      AND CATEGORY_CODE = #{categoryCode,jdbcType=BIGINT}
+    </if>
+    <if test="imageUrl != null and imageUrl != ''">
+      AND IMAGE_URL = #{imageUrl,jdbcType=VARCHAR}
+    </if>
+    <if test="hits != null and hits != ''">
+      AND HITS = #{hits,jdbcType=BIGINT}
+    </if>
+    <if test="path != null and path != ''">
+      AND PATH = #{path,jdbcType=VARCHAR}
+    </if>
+    <if test="parentId != null">
+      AND PARENT_ID = #{parentId,jdbcType=BIGINT}
+    </if>
+    <if test="categorySort != null and categorySort != ''">
+      AND CATEGORY_SORT = #{categorySort,jdbcType=INTEGER}
+    </if>
+    <if test="meta != null and meta != ''">
+      AND META = #{meta,jdbcType=VARCHAR}
+    </if>
+    <if test="context != null and context != ''">
+      AND CONTEXT = #{context,jdbcType=LONGVARCHAR}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_category
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_category
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopCategory">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="creater != null">
+        CREATER,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="updater != null">
+        UPDATER,
+      </if>
+      <if test="categoryName != null">
+        CATEGORY_NAME,
+      </if>
+      <if test="categoryCode != null">
+        CATEGORY_CODE,
+      </if>
+      <if test="imageUrl != null">
+        IMAGE_URL,
+      </if>
+      <if test="hits != null">
+        HITS,
+      </if>
+      <if test="path != null">
+        PATH,
+      </if>
+      <if test="parentId != null">
+        PARENT_ID,
+      </if>
+      <if test="categorySort != null">
+        CATEGORY_SORT,
+      </if>
+      <if test="meta != null">
+        META,
+      </if>
+      <if test="context != null">
+        CONTEXT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null">
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null">
+        #{categoryCode,jdbcType=BIGINT},
+      </if>
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hits != null">
+        #{hits,jdbcType=BIGINT},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="categorySort != null">
+        #{categorySort,jdbcType=INTEGER},
+      </if>
+      <if test="meta != null">
+        #{meta,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null">
+        #{context,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_category
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_category where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopCategory">
+    update t_shop_category
+    <set>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        UPDATER = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null">
+        CATEGORY_NAME = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null">
+        CATEGORY_CODE = #{categoryCode,jdbcType=BIGINT},
+      </if>
+      <if test="imageUrl != null">
+        IMAGE_URL = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hits != null">
+        HITS = #{hits,jdbcType=BIGINT},
+      </if>
+      <if test="path != null">
+        PATH = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        PARENT_ID = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="categorySort != null">
+        CATEGORY_SORT = #{categorySort,jdbcType=INTEGER},
+      </if>
+      <if test="meta != null">
+        META = #{meta,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null">
+        CONTEXT = #{context,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_category
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_category
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_DATE, CREATER, UPDATE_DATE, UPDATER, CATEGORY_NAME, CATEGORY_CODE, 
+    IMAGE_URL, HITS, PATH, PARENT_ID, CATEGORY_SORT, META, CONTEXT
+    from t_shop_category
+  </select>
+  
+  <!-- 获得根分类及其子分类 -->
+    <select id="getRootWithChildrenCategorys" resultMap="BaseWithChildrenResultMap">
+      select 
+      <include refid="Base_Column_List"></include>
+      from t_shop_category
+      where parent_id = 0 ;
+    </select>
+  
+  <!-- 获得子分类及其子分类 -->  
+    <select id="getChildrenCategorys" resultMap="BaseWithChildrenResultMap">
+      select 
+      <include refid="Base_Column_List"></include>
+      from t_shop_category
+      where  PARENT_ID = #{id,jdbcType=BIGINT} ;
+    </select>
+    
+  <!-- 获得分类及其子分类 -->  
+    <select id="getBaseWithChildrenCategorys" resultMap="BaseWithChildrenResultMap">
+      select 
+      <include refid="Base_Column_List"></include>
+      from t_shop_category
+      where  id = #{id,jdbcType=BIGINT} ;
+    </select>
+    
+   <!-- 根据分类Id获得分类，包含属性集合，属性又包含属性值集合 -->
+    <select id="getBaseWithAttrsWithOptions" resultMap="BaseWithAttributesResultMap">
+      select 
+    <include refid="Base_Column_List" />
+    from t_shop_category
+    where ID = #{id,jdbcType=BIGINT}
+    </select>
+    <!-- 获得属性集合 ,包含属性值集合-->
+    <select id="getAttributes" resultMap="AttributeWithOptionsResultMap">
+      select a.ID,a.ATTRIBUTE_NAME,a.ATTRIBUTE_CODE,a.ATTRIBUTE_SORT,a.ATTRIBUTE_STATU,ca.BASE_TYPE,ca.PRICE_TYPE,ca.GUIDE_TYPE
+      from t_shop_attribute a,t_shop_category_attribute ca
+      where a.id = ca.attribute_id and ca.category_id = #{id,jdbcType=BIGINT};
+    </select> 
+    <!-- 获得属性值集合 --> 
+    <select id="getOptions" resultMap="optionResultMap">
+      select o.id,o.option_name,o.option_statu,o.option_sort,o.attribute_id
+      from t_shop_attribute_option o where o.attribute_id = #{id,jdbcType=BIGINT};
+    </select>
+    
+    
+     <!--获取分类Id，父分类Id，名字及父分类 -->
+  <select id="getWithParentById" resultMap="baseWithParentResultMap">
+      select c.id,c.category_name,c.parent_id 
+      from t_shop_category c
+      where c.id=#{categoryId,jdbcType=BIGINT}
+  </select>
+   <!-- 根据父分类Id获取分类 -->
+  <select id="getByParentId" resultMap="baseWithParentResultMap">
+      select cp.id,cp.category_name,cp.parent_id 
+      from t_shop_category cp
+      where cp.id=#{parentId,jdbcType=BIGINT}
+  </select>
+  
+</mapper>

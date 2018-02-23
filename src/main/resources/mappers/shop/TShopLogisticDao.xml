@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopLogisticDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopLogistic">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="SETTLE_DATE" jdbcType="TIMESTAMP" property="settleDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="EXPRESS_NO" jdbcType="VARCHAR" property="expressNo" />
+    <result column="LOGISTIC_COMPANY" jdbcType="VARCHAR" property="logisticCompany" />
+    <result column="LOGISTIC_FEE" jdbcType="DECIMAL" property="logisticFee" />
+    <result column="DELIVERY_AMOUNT" jdbcType="DECIMAL" property="deliveryAmount" />
+    <result column="LOGISTIC_TYPE" jdbcType="INTEGER" property="logisticType" />
+    <result column="LOGISTIC_STATU" jdbcType="INTEGER" property="logisticStatu" />
+    <result column="SETTLEMENT_STATU" jdbcType="INTEGER" property="settlementStatu" />
+    <result column="AGENCY_FEE_RATE" jdbcType="DOUBLE" property="agencyFeeRate" />
+    <result column="LOGISTIC_LAST_MEMO" jdbcType="VARCHAR" property="logisticLastMemo" />
+    <result column="LOGISTIC_ALL_MEMO" jdbcType="VARCHAR" property="logisticAllMemo" />
+    <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+    <result column="CONSIGNEE_NAME" jdbcType="VARCHAR" property="consigneeName" />
+    <result column="CONSIGNEE_TELPHONE" jdbcType="VARCHAR" property="consigneeTelphone" />
+    <result column="CONSIGNEE_PROVINCE" jdbcType="VARCHAR" property="consigneeProvince" />
+    <result column="CONSIGNEE_CITY" jdbcType="VARCHAR" property="consigneeCity" />
+    <result column="CONSIGNEE_COUNTY" jdbcType="VARCHAR" property="consigneeCounty" />
+    <result column="CONSIGNEE_ADRESS" jdbcType="VARCHAR" property="consigneeAdress" />
+    <result column="CONSIGNEE_ZIP" jdbcType="VARCHAR" property="consigneeZip" />
+    <result column="PAY_LOGISTIC_method" jdbcType="INTEGER" property="payLogisticMethod" />
+    <result column="PAY_LOGISTIC_NO" jdbcType="VARCHAR" property="payLogisticNo" />
+    <result column="reconciliation_statu" jdbcType="INTEGER" property="reconciliationStatu" />
+    <result column="reconciliation_date" jdbcType="TIMESTAMP" property="reconciliationDate" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_DATE, UPDATE_DATE, SETTLE_DATE, UPDATER, EXPRESS_NO, LOGISTIC_COMPANY, 
+    LOGISTIC_FEE, DELIVERY_AMOUNT, LOGISTIC_TYPE, LOGISTIC_STATU, SETTLEMENT_STATU, AGENCY_FEE_RATE, 
+    LOGISTIC_LAST_MEMO, LOGISTIC_ALL_MEMO, ORDER_NO, CONSIGNEE_NAME, CONSIGNEE_TELPHONE, 
+    CONSIGNEE_PROVINCE, CONSIGNEE_CITY, CONSIGNEE_COUNTY, CONSIGNEE_ADRESS, CONSIGNEE_ZIP, 
+    PAY_LOGISTIC_method, PAY_LOGISTIC_NO, reconciliation_statu, reconciliation_date
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+    #{settleDate,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR}, #{expressNo,jdbcType=VARCHAR}, 
+    #{logisticCompany,jdbcType=VARCHAR}, #{logisticFee,jdbcType=DECIMAL}, #{deliveryAmount,jdbcType=DECIMAL}, 
+    #{logisticType,jdbcType=INTEGER}, #{logisticStatu,jdbcType=INTEGER}, #{settlementStatu,jdbcType=INTEGER}, 
+    #{agencyFeeRate,jdbcType=DOUBLE}, #{logisticLastMemo,jdbcType=VARCHAR}, #{logisticAllMemo,jdbcType=VARCHAR}, 
+    #{orderNo,jdbcType=VARCHAR}, #{consigneeName,jdbcType=VARCHAR}, #{consigneeTelphone,jdbcType=VARCHAR}, 
+    #{consigneeProvince,jdbcType=VARCHAR}, #{consigneeCity,jdbcType=VARCHAR}, #{consigneeCounty,jdbcType=VARCHAR}, 
+    #{consigneeAdress,jdbcType=VARCHAR}, #{consigneeZip,jdbcType=VARCHAR}, #{payLogisticMethod,jdbcType=INTEGER}, 
+    #{payLogisticNo,jdbcType=VARCHAR}, #{reconciliationStatu,jdbcType=INTEGER}, #{reconciliationDate,jdbcType=TIMESTAMP}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="settleDate != null and settleDate != ''">
+      AND SETTLE_DATE = #{settleDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updater != null and updater != ''">
+      AND UPDATER = #{updater,jdbcType=VARCHAR}
+    </if>
+    <if test="expressNo != null and expressNo != ''">
+      AND EXPRESS_NO = #{expressNo,jdbcType=VARCHAR}
+    </if>
+    <if test="logisticCompany != null and logisticCompany != ''">
+      AND LOGISTIC_COMPANY = #{logisticCompany,jdbcType=VARCHAR}
+    </if>
+    <if test="logisticFee != null and logisticFee != ''">
+      AND LOGISTIC_FEE = #{logisticFee,jdbcType=DECIMAL}
+    </if>
+    <if test="deliveryAmount != null and deliveryAmount != ''">
+      AND DELIVERY_AMOUNT = #{deliveryAmount,jdbcType=DECIMAL}
+    </if>
+    <if test="logisticType != null and logisticType != ''">
+      AND LOGISTIC_TYPE = #{logisticType,jdbcType=INTEGER}
+    </if>
+    <if test="logisticStatu != null and logisticStatu != ''">
+      AND LOGISTIC_STATU = #{logisticStatu,jdbcType=INTEGER}
+    </if>
+    <if test="settlementStatu != null and settlementStatu != ''">
+      AND SETTLEMENT_STATU = #{settlementStatu,jdbcType=INTEGER}
+    </if>
+    <if test="agencyFeeRate != null and agencyFeeRate != ''">
+      AND AGENCY_FEE_RATE = #{agencyFeeRate,jdbcType=DOUBLE}
+    </if>
+    <if test="logisticLastMemo != null and logisticLastMemo != ''">
+      AND LOGISTIC_LAST_MEMO = #{logisticLastMemo,jdbcType=VARCHAR}
+    </if>
+    <if test="logisticAllMemo != null and logisticAllMemo != ''">
+      AND LOGISTIC_ALL_MEMO = #{logisticAllMemo,jdbcType=VARCHAR}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+      AND ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+    </if>
+    <if test="consigneeName != null and consigneeName != ''">
+      AND CONSIGNEE_NAME = #{consigneeName,jdbcType=VARCHAR}
+    </if>
+    <if test="consigneeTelphone != null and consigneeTelphone != ''">
+      AND CONSIGNEE_TELPHONE = #{consigneeTelphone,jdbcType=VARCHAR}
+    </if>
+    <if test="consigneeProvince != null and consigneeProvince != ''">
+      AND CONSIGNEE_PROVINCE = #{consigneeProvince,jdbcType=VARCHAR}
+    </if>
+    <if test="consigneeCity != null and consigneeCity != ''">
+      AND CONSIGNEE_CITY = #{consigneeCity,jdbcType=VARCHAR}
+    </if>
+    <if test="consigneeCounty != null and consigneeCounty != ''">
+      AND CONSIGNEE_COUNTY = #{consigneeCounty,jdbcType=VARCHAR}
+    </if>
+    <if test="consigneeAdress != null and consigneeAdress != ''">
+      AND CONSIGNEE_ADRESS = #{consigneeAdress,jdbcType=VARCHAR}
+    </if>
+    <if test="consigneeZip != null and consigneeZip != ''">
+      AND CONSIGNEE_ZIP = #{consigneeZip,jdbcType=VARCHAR}
+    </if>
+    <if test="payLogisticMethod != null and payLogisticMethod != ''">
+      AND PAY_LOGISTIC_method = #{payLogisticMethod,jdbcType=INTEGER}
+    </if>
+    <if test="payLogisticNo != null and payLogisticNo != ''">
+      AND PAY_LOGISTIC_NO = #{payLogisticNo,jdbcType=VARCHAR}
+    </if>
+    <if test="reconciliationStatu != null and reconciliationStatu != ''">
+      AND reconciliation_statu = #{reconciliationStatu,jdbcType=INTEGER}
+    </if>
+    <if test="reconciliationDate != null and reconciliationDate != ''">
+      AND reconciliation_date = #{reconciliationDate,jdbcType=TIMESTAMP}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_logistic
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_logistic
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopLogistic">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_logistic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="settleDate != null">
+        SETTLE_DATE,
+      </if>
+      <if test="updater != null">
+        UPDATER,
+      </if>
+      <if test="expressNo != null">
+        EXPRESS_NO,
+      </if>
+      <if test="logisticCompany != null">
+        LOGISTIC_COMPANY,
+      </if>
+      <if test="logisticFee != null">
+        LOGISTIC_FEE,
+      </if>
+      <if test="deliveryAmount != null">
+        DELIVERY_AMOUNT,
+      </if>
+      <if test="logisticType != null">
+        LOGISTIC_TYPE,
+      </if>
+      <if test="logisticStatu != null">
+        LOGISTIC_STATU,
+      </if>
+      <if test="settlementStatu != null">
+        SETTLEMENT_STATU,
+      </if>
+      <if test="agencyFeeRate != null">
+        AGENCY_FEE_RATE,
+      </if>
+      <if test="logisticLastMemo != null">
+        LOGISTIC_LAST_MEMO,
+      </if>
+      <if test="logisticAllMemo != null">
+        LOGISTIC_ALL_MEMO,
+      </if>
+      <if test="orderNo != null">
+        ORDER_NO,
+      </if>
+      <if test="consigneeName != null">
+        CONSIGNEE_NAME,
+      </if>
+      <if test="consigneeTelphone != null">
+        CONSIGNEE_TELPHONE,
+      </if>
+      <if test="consigneeProvince != null">
+        CONSIGNEE_PROVINCE,
+      </if>
+      <if test="consigneeCity != null">
+        CONSIGNEE_CITY,
+      </if>
+      <if test="consigneeCounty != null">
+        CONSIGNEE_COUNTY,
+      </if>
+      <if test="consigneeAdress != null">
+        CONSIGNEE_ADRESS,
+      </if>
+      <if test="consigneeZip != null">
+        CONSIGNEE_ZIP,
+      </if>
+      <if test="payLogisticMethod != null">
+        PAY_LOGISTIC_method,
+      </if>
+      <if test="payLogisticNo != null">
+        PAY_LOGISTIC_NO,
+      </if>
+      <if test="reconciliationStatu != null">
+        reconciliation_statu,
+      </if>
+      <if test="reconciliationDate != null">
+        reconciliation_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleDate != null">
+        #{settleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="expressNo != null">
+        #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticCompany != null">
+        #{logisticCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticFee != null">
+        #{logisticFee,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryAmount != null">
+        #{deliveryAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="logisticType != null">
+        #{logisticType,jdbcType=INTEGER},
+      </if>
+      <if test="logisticStatu != null">
+        #{logisticStatu,jdbcType=INTEGER},
+      </if>
+      <if test="settlementStatu != null">
+        #{settlementStatu,jdbcType=INTEGER},
+      </if>
+      <if test="agencyFeeRate != null">
+        #{agencyFeeRate,jdbcType=DOUBLE},
+      </if>
+      <if test="logisticLastMemo != null">
+        #{logisticLastMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticAllMemo != null">
+        #{logisticAllMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeName != null">
+        #{consigneeName,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeTelphone != null">
+        #{consigneeTelphone,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeProvince != null">
+        #{consigneeProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeCity != null">
+        #{consigneeCity,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeCounty != null">
+        #{consigneeCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeAdress != null">
+        #{consigneeAdress,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeZip != null">
+        #{consigneeZip,jdbcType=VARCHAR},
+      </if>
+      <if test="payLogisticMethod != null">
+        #{payLogisticMethod,jdbcType=INTEGER},
+      </if>
+      <if test="payLogisticNo != null">
+        #{payLogisticNo,jdbcType=VARCHAR},
+      </if>
+      <if test="reconciliationStatu != null">
+        #{reconciliationStatu,jdbcType=INTEGER},
+      </if>
+      <if test="reconciliationDate != null">
+        #{reconciliationDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_logistic
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_logistic where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopLogistic">
+    update t_shop_logistic
+    <set>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleDate != null">
+        SETTLE_DATE = #{settleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        UPDATER = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="expressNo != null">
+        EXPRESS_NO = #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticCompany != null">
+        LOGISTIC_COMPANY = #{logisticCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticFee != null">
+        LOGISTIC_FEE = #{logisticFee,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryAmount != null">
+        DELIVERY_AMOUNT = #{deliveryAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="logisticType != null">
+        LOGISTIC_TYPE = #{logisticType,jdbcType=INTEGER},
+      </if>
+      <if test="logisticStatu != null">
+        LOGISTIC_STATU = #{logisticStatu,jdbcType=INTEGER},
+      </if>
+      <if test="settlementStatu != null">
+        SETTLEMENT_STATU = #{settlementStatu,jdbcType=INTEGER},
+      </if>
+      <if test="agencyFeeRate != null">
+        AGENCY_FEE_RATE = #{agencyFeeRate,jdbcType=DOUBLE},
+      </if>
+      <if test="logisticLastMemo != null">
+        LOGISTIC_LAST_MEMO = #{logisticLastMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticAllMemo != null">
+        LOGISTIC_ALL_MEMO = #{logisticAllMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null">
+        ORDER_NO = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeName != null">
+        CONSIGNEE_NAME = #{consigneeName,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeTelphone != null">
+        CONSIGNEE_TELPHONE = #{consigneeTelphone,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeProvince != null">
+        CONSIGNEE_PROVINCE = #{consigneeProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeCity != null">
+        CONSIGNEE_CITY = #{consigneeCity,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeCounty != null">
+        CONSIGNEE_COUNTY = #{consigneeCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeAdress != null">
+        CONSIGNEE_ADRESS = #{consigneeAdress,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneeZip != null">
+        CONSIGNEE_ZIP = #{consigneeZip,jdbcType=VARCHAR},
+      </if>
+      <if test="payLogisticMethod != null">
+        PAY_LOGISTIC_method = #{payLogisticMethod,jdbcType=INTEGER},
+      </if>
+      <if test="payLogisticNo != null">
+        PAY_LOGISTIC_NO = #{payLogisticNo,jdbcType=VARCHAR},
+      </if>
+      <if test="reconciliationStatu != null">
+        reconciliation_statu = #{reconciliationStatu,jdbcType=INTEGER},
+      </if>
+      <if test="reconciliationDate != null">
+        reconciliation_date = #{reconciliationDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_logistic
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_logistic
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_DATE, UPDATE_DATE, SETTLE_DATE, UPDATER, EXPRESS_NO, LOGISTIC_COMPANY, 
+    LOGISTIC_FEE, DELIVERY_AMOUNT, LOGISTIC_TYPE, LOGISTIC_STATU, SETTLEMENT_STATU, AGENCY_FEE_RATE, 
+    LOGISTIC_LAST_MEMO, LOGISTIC_ALL_MEMO, ORDER_NO, CONSIGNEE_NAME, CONSIGNEE_TELPHONE, 
+    CONSIGNEE_PROVINCE, CONSIGNEE_CITY, CONSIGNEE_COUNTY, CONSIGNEE_ADRESS, CONSIGNEE_ZIP, 
+    PAY_LOGISTIC_method, PAY_LOGISTIC_NO, reconciliation_statu, reconciliation_date
+    from t_shop_logistic
+  </select>
+</mapper>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TSystemAclDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TSystemAcl">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="acl_name" jdbcType="VARCHAR" property="aclName" />
+    <result column="acl_url" jdbcType="VARCHAR" property="aclUrl" />
+    <result column="acl_grade" jdbcType="INTEGER" property="aclGrade" />
+    <result column="acl_type" jdbcType="INTEGER" property="aclType" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  
+  
+  <resultMap id="BaseAndChildrenResultMap" type="com.meikai.shop.entity.TSystemAcl">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="acl_name" jdbcType="VARCHAR" property="aclName" />
+    <result column="acl_url" jdbcType="VARCHAR" property="aclUrl" />
+    <result column="acl_grade" jdbcType="INTEGER" property="aclGrade" />
+    <result column="acl_type" jdbcType="INTEGER" property="aclType" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <collection property="childrenAcls" column="ID" ofType="com.meikai.shop.entity.TSystemAcl" javaType="java.util.ArrayList"
+       select="getChildrenAcls">
+    </collection>
+  </resultMap>
+  
+  
+  
+  <sql id="Base_Column_List">
+    ID, create_date, update_date, creater, updater, acl_name, acl_url, acl_grade, acl_type, 
+    permission, icon, parent_id, sort
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+    #{creater,jdbcType=VARCHAR}, #{updater,jdbcType=VARCHAR}, #{aclName,jdbcType=VARCHAR}, 
+    #{aclUrl,jdbcType=VARCHAR}, #{aclGrade,jdbcType=INTEGER}, #{aclType,jdbcType=INTEGER}, 
+    #{permission,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, 
+    #{sort,jdbcType=INTEGER}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null">
+      AND create_date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null">
+      AND update_date = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="creater != null">
+      AND creater = #{creater,jdbcType=VARCHAR}
+    </if>
+    <if test="updater != null">
+      AND updater = #{updater,jdbcType=VARCHAR}
+    </if>
+    <if test="aclName != null">
+      AND acl_name = #{aclName,jdbcType=VARCHAR}
+    </if>
+    <if test="aclUrl != null">
+      AND acl_url = #{aclUrl,jdbcType=VARCHAR}
+    </if>
+    <if test="aclGrade != null">
+      AND acl_grade = #{aclGrade,jdbcType=INTEGER}
+    </if>
+    <if test="aclType != null">
+      AND acl_type = #{aclType,jdbcType=INTEGER}
+    </if>
+    <if test="permission != null">
+      AND permission = #{permission,jdbcType=VARCHAR}
+    </if>
+    <if test="icon != null">
+      AND icon = #{icon,jdbcType=VARCHAR}
+    </if>
+    <if test="parentId != null">
+      AND parent_id = #{parentId,jdbcType=BIGINT}
+    </if>
+    <if test="sort != null">
+      AND sort = #{sort,jdbcType=INTEGER}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_system_acl
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_system_acl
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TSystemAcl">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_system_acl
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="aclName != null">
+        acl_name,
+      </if>
+      <if test="aclUrl != null">
+        acl_url,
+      </if>
+      <if test="aclGrade != null">
+        acl_grade,
+      </if>
+      <if test="aclType != null">
+        acl_type,
+      </if>
+      <if test="permission != null">
+        permission,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="aclName != null">
+        #{aclName,jdbcType=VARCHAR},
+      </if>
+      <if test="aclUrl != null">
+        #{aclUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="aclGrade != null">
+        #{aclGrade,jdbcType=INTEGER},
+      </if>
+      <if test="aclType != null">
+        #{aclType,jdbcType=INTEGER},
+      </if>
+      <if test="permission != null">
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_system_acl
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_system_acl where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TSystemAcl">
+    update t_system_acl
+    <set>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="aclName != null">
+        acl_name = #{aclName,jdbcType=VARCHAR},
+      </if>
+      <if test="aclUrl != null">
+        acl_url = #{aclUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="aclGrade != null">
+        acl_grade = #{aclGrade,jdbcType=INTEGER},
+      </if>
+      <if test="aclType != null">
+        acl_type = #{aclType,jdbcType=INTEGER},
+      </if>
+      <if test="permission != null">
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_system_acl
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_system_acl
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, create_date, update_date, creater, updater, acl_name, acl_url, acl_grade, 
+    acl_type, permission, icon, parent_id, sort
+    from t_system_acl
+  </select>
+  
+  
+  <!-- 获得根资源至末级资源 -->
+  <select id="getRootandChildrenAcls" resultMap="BaseAndChildrenResultMap" >
+  
+    select
+    <include refid="Base_Column_List"></include>
+    from t_system_acl
+    where parent_id =0 order by sort ;
+  </select>
+  
+  
+  <!-- 获得子资源及其子资源 -->
+  <select id="getChildrenAcls" resultMap="BaseAndChildrenResultMap">
+    select 
+    <include refid="Base_Column_List"></include>
+    from t_system_acl where parent_id=#{id,jdbcType=BIGINT} order by sort
+  </select>
+  
+  
+  
+  <!-- 获得某级菜单资源 -->
+  <select id="getGradeAcls" resultMap="BaseResultMap">
+    select * from t_system_acl where ACL_GRADE=#{acl_grade,jdbcType=INTEGER} order by sort
+  </select>
+  
+  
+</mapper>

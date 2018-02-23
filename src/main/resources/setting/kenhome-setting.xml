@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<framework>
+    <!-- 基础配置 -->
+    <setting name="siteName" value="凯之家"/>
+    <setting name="siteUrl" value="https://www.chenmeikai.com/kenhome/shop/index"/>
+    <setting name="logo" value="https://www.chenmeikai.com/kenhome/resources/image/logo/kenhome.png"/>
+    <setting name="contact" value="meikai.chen"/>
+    <setting name="phone" value="13570282684"/>
+    <setting name="address" value="广州市白云区"/>
+    <setting name="email" value="562899487@qq.com"/>
+    <setting name="certtext" value="粤ICP备17122200号-1"/>
+    <setting name="accountLockCount" value="5"/>
+    <setting name="accountLockTime" value="10"/>
+    <setting name="uploadMaxSize" value="10"/>
+    <setting name="uploadImageExtension" value="jpg,jpeg,bmp,gif,png"/>
+    <setting name="uploadFlashExtension" value="swf,flv"/>
+    <setting name="uploadMediaExtension" value="swf,flv,mp3,wav,avi,rm,rmvb,mp4"/>
+    <setting name="uploadFileExtension" value="zip,rar,7z,doc,docx,xls,xlsx,ppt,pptx"/>
+    <setting name="imageUploadPath" value="/upload/image/${.now?string('yyyyMM')}/"/>
+    <setting name="flashUploadPath" value="/upload/flash/${.now?string('yyyyMM')}/"/>
+    <setting name="mediaUploadPath" value="/upload/media/${.now?string('yyyyMM')}/"/>
+    <setting name="fileUploadPath" value="/upload/file/${.now?string('yyyyMM')}/"/>
+    <setting name="priceScale" value="2"/>
+    <setting name="priceRoundType" value="roundHalfUp"/>
+    <setting name="currencySign" value="￥"/>
+    <setting name="currencyUnit" value="元"/>
+    <setting name="smtpFromMail" value="562899487@qq.com"/>
+    <setting name="smtpHost" value="smtp.qq.com"/>
+    <setting name="smtpPort" value="25"/>
+    <setting name="smtpUsername" value="待定"/>
+    <setting name="smtpPassword" value="待定"/>
+    <setting name="cookiePath" value="/"/>
+    <setting name="cookieDomain" value=""/>
+    <setting name="accountLockTypes" value="admin"/>
+    <setting name="captchaTypes" value="adminLogin,other"/>
+    <setting name="isDevelopmentEnabled" value="true"/>
+    <setting name="largeProductImageWidth" value="800"/>
+    <setting name="largeProductImageHeight" value="800"/>
+    <setting name="mediumProductImageWidth" value="480"/>
+    <setting name="mediumProductImageHeight" value="480"/>
+    <setting name="thumbnailProductImageWidth" value="170"/>
+    <setting name="thumbnailProductImageHeight" value="170"/>
+    <setting name="defaultLargeProductImage" value="待定"/>
+    <setting name="defaultMediumProductImage" value="待定"/>
+    <setting name="defaultThumbnailProductImage" value="待定"/>
+    <setting name="watermarkAlpha" value="50"/>
+    <setting name="watermarkImage" value="/resources/img/iconfont-logo.png"/>
+    <setting name="watermarkPosition" value="no"/>
+    <setting name="distance" value="5"/>
+    <setting name="exchange" value="100"/>
+    <setting name="review" value="true"/>
+    <setting name="customer" value=""/>
+    <setting name="bank" value=""/>
+    <setting name="subbranch" value=""/>
+    <setting name="name" value="凯之家"/>
+    <setting name="account" value=""/>
+
+    <!-- 日志配置 -->		
+	<logConfig operation="新增SPU" urlPattern="/admin/spu/spu/saveAdd"/>	
+	<logConfig operation="修改SPU基本信息" urlPattern="/admin/spu/spu/saveUpdateSpu"/>
+	<logConfig operation="修改SPU属性" urlPattern="/admin/spu/spu/saveUpdateSpuOption"/>
+	<logConfig operation="修改SPU介绍" urlPattern="/admin/spu/spu/saveUpdateSpuContent"/>	
+	<logConfig operation="新增关联商品" urlPattern="/admin/spu/spu/saveAddSku"/>
+	<logConfig operation="删除SPU" urlPattern="/admin/spu/spu/delete"/>
+	<logConfig operation="导出SPU数据" urlPattern="/admin/spu/spu/export"/>
+	<logConfig operation="新增子分类" urlPattern="/admin/spu/category/saveAdd"/>
+	<logConfig operation="修改分类" urlPattern="/admin/spu/category/saveUpdate"/>
+	<logConfig operation="删除分类" urlPattern="/admin/spu/category/delete"/>
+	<logConfig operation="排序子分类" urlPattern="/admin/spu/category/sort"/>
+	<logConfig operation="添加属性" urlPattern="/admin/spu/category/saveAddcategoryAttr"/>
+	<logConfig operation="修改属性" urlPattern="/admin/spu/category/saveUpdatecategoryAttr"/>
+	<logConfig operation="去除属性" urlPattern="/admin/spu/category/deletecategoryAttr"/>
+	<logConfig operation="添加品牌" urlPattern="/admin/spu/category/saveAddcategoryBrand"/>
+	<logConfig operation="排序品牌" urlPattern="/admin/spu/category/saveUpdateCategoryBrand"/>
+	<logConfig operation="去除品牌" urlPattern="/admin/spu/category/deletecategoryBrand"/>
+	<logConfig operation="属性新增" urlPattern="/admin/spu/attribute/saveAdd"/>
+	<logConfig operation="属性删除" urlPattern="/admin/spu/attribute/deleteAttribute"/>
+	<logConfig operation="属性编辑" urlPattern="/admin/spu/attribute/saveUpdate"/>
+	<logConfig operation="属性值新增" urlPattern="/admin/spu/attribute/saveAddOption"/>
+	<logConfig operation="属性值修改" urlPattern="/admin/spu/attribute/saveUpdateOption"/>
+	<logConfig operation="属性值删除" urlPattern="/admin/spu/attribute/deleteOption"/>		
+	<logConfig operation="新增品牌" urlPattern="/admin/spu/brand/saveAdd"/>
+	<logConfig operation="修改品牌" urlPattern="/admin/spu/brand/saveEdit"/>
+	<logConfig operation="删除品牌" urlPattern="/admin/spu/brand/delete"/>	
+	<logConfig operation="更新商品" urlPattern="/admin/sku/sku/saveEditSku"/>
+	<logConfig operation="更新商品属性" urlPattern="/admin/sku/sku/saveEditSkuOption"/>
+	<logConfig operation="导出商品" urlPattern="/admin/sku/sku/export"/>	
+	<logConfig operation="删除商品" urlPattern="/admin/sku/sku/delete"/>
+	<logConfig operation="更新订单" urlPattern="/admin/order/order/saveEditOrder"/>
+	<logConfig operation="导出订单" urlPattern="/admin/order/order/export"/>
+	<logConfig operation="删除订单" urlPattern="/admin/order/delete/delete"/>	
+	<logConfig operation="成员新增" urlPattern="/admin/authority/manager/saveAdd"/>
+	<logConfig operation="成员删除" urlPattern="/admin/authority/manager/delete"/>
+	<logConfig operation="成员编辑" urlPattern="/admin/authority/manager/saveEdit"/>
+	<logConfig operation="成员导出" urlPattern="/admin/authority/manager/export"/>
+	<logConfig operation="角色新增" urlPattern="/admin/authority/role/saveAdd"/>
+	<logConfig operation="角色删除" urlPattern="/admin/authority/role/delete"/>
+	<logConfig operation="角色编辑" urlPattern="/admin/authority/role/saveEdit"/>
+	<logConfig operation="角色导出" urlPattern="/admin/authority/role/export"/>	
+	<logConfig operation="角色新增" urlPattern="/admin/authority/managerRole/saveAdd"/>
+	<logConfig operation="角色删除" urlPattern="/admin/authority/managerRole/delete"/>
+	<logConfig operation="角色导出" urlPattern="/admin/authority/managerRole/export"/>
+	<logConfig operation="资源授权" urlPattern="/admin/authority/roleAcl/saveAuthorize"/>
+	<logConfig operation="取消授权" urlPattern="/admin/authority/roleAcl/delete"/>
+	<logConfig operation="替换图片" urlPattern="/admin/spu/spu/replacePicture"/>
+	<logConfig operation="文本图片上传" urlPattern="/admin/common/file/contentFileUpload"/>
+	<logConfig operation="新增图片" urlPattern="/admin/spu/spu/addPicture"/>
+	<logConfig operation="替换图片" urlPattern="/admin/sku/sku/replacePicture"/>
+	<logConfig operation="新增图片" urlPattern="/admin/sku/sku/addPicture"/>
+
+
+    <!-- 资源静态化 -->
+    <template id="adminCommonJs" type="page" name="admin_common_js" templatePath="/admin/js/common.ftl"
+              staticPath="/resources/js/admin/common.js"/>
+
+    <!-- 邮件测试 -->
+    <template id="testMail" type="mail" name="邮件测试" templatePath="/admin/setting/mail.ftl"/>
+
+    <!-- 接口 -->
+    <api id="main" logo="fa fa-gears" name="接口文档" version="1.0" author="meikai.chen"
+         description="凯之家个人网站" baseUrl="待定"/>
+
+</framework>

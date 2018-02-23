@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopAdDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopAd">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="ad_title" jdbcType="VARCHAR" property="adTitle" />
+    <result column="ad_content" jdbcType="VARCHAR" property="adContent" />
+    <result column="show_picture" jdbcType="VARCHAR" property="showPicture" />
+    <result column="ad_possion" jdbcType="INTEGER" property="adPossion" />
+    <result column="ad_type" jdbcType="INTEGER" property="adType" />
+    <result column="ad_url" jdbcType="VARCHAR" property="adUrl" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, create_date, creater, update_date, updater, ad_title, ad_content, show_picture, 
+    ad_possion, ad_type, ad_url, sort
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
+    #{updateDate,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR}, #{adTitle,jdbcType=VARCHAR}, 
+    #{adContent,jdbcType=VARCHAR}, #{showPicture,jdbcType=VARCHAR}, #{adPossion,jdbcType=INTEGER}, 
+    #{adType,jdbcType=INTEGER}, #{adUrl,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND create_date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="creater != null and creater != ''">
+      AND creater = #{creater,jdbcType=VARCHAR}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND update_date = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updater != null and updater != ''">
+      AND updater = #{updater,jdbcType=VARCHAR}
+    </if>
+    <if test="adTitle != null and adTitle != ''">
+      AND ad_title = #{adTitle,jdbcType=VARCHAR}
+    </if>
+    <if test="adContent != null and adContent != ''">
+      AND ad_content = #{adContent,jdbcType=VARCHAR}
+    </if>
+    <if test="showPicture != null and showPicture != ''">
+      AND show_picture = #{showPicture,jdbcType=VARCHAR}
+    </if>
+    <if test="adPossion != null and adPossion != ''">
+      AND ad_possion = #{adPossion,jdbcType=INTEGER}
+    </if>
+    <if test="adType != null and adType != ''">
+      AND ad_type = #{adType,jdbcType=INTEGER}
+    </if>
+    <if test="adUrl != null and adUrl != ''">
+      AND ad_url = #{adUrl,jdbcType=VARCHAR}
+    </if>
+    <if test="sort != null and sort != ''">
+      AND sort = #{sort,jdbcType=INTEGER}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_ad
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_ad
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopAd">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_ad
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="adTitle != null">
+        ad_title,
+      </if>
+      <if test="adContent != null">
+        ad_content,
+      </if>
+      <if test="showPicture != null">
+        show_picture,
+      </if>
+      <if test="adPossion != null">
+        ad_possion,
+      </if>
+      <if test="adType != null">
+        ad_type,
+      </if>
+      <if test="adUrl != null">
+        ad_url,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="adTitle != null">
+        #{adTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="adContent != null">
+        #{adContent,jdbcType=VARCHAR},
+      </if>
+      <if test="showPicture != null">
+        #{showPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="adPossion != null">
+        #{adPossion,jdbcType=INTEGER},
+      </if>
+      <if test="adType != null">
+        #{adType,jdbcType=INTEGER},
+      </if>
+      <if test="adUrl != null">
+        #{adUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_ad
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_ad where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopAd">
+    update t_shop_ad
+    <set>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="adTitle != null">
+        ad_title = #{adTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="adContent != null">
+        ad_content = #{adContent,jdbcType=VARCHAR},
+      </if>
+      <if test="showPicture != null">
+        show_picture = #{showPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="adPossion != null">
+        ad_possion = #{adPossion,jdbcType=INTEGER},
+      </if>
+      <if test="adType != null">
+        ad_type = #{adType,jdbcType=INTEGER},
+      </if>
+      <if test="adUrl != null">
+        ad_url = #{adUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_ad
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_ad
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, create_date, creater, update_date, updater, ad_title, ad_content, show_picture, 
+    ad_possion, ad_type, ad_url, sort
+    from t_shop_ad
+  </select>
+</mapper>

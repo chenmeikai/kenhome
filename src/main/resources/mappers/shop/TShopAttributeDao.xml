@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopAttributeDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopAttribute">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="ATTRIBUTE_NAME" jdbcType="VARCHAR" property="attributeName" />
+    <result column="ATTRIBUTE_TITLE" jdbcType="VARCHAR" property="attributeTitle" />
+    <result column="ATTRIBUTE_CODE" jdbcType="VARCHAR" property="attributeCode" />
+    <result column="ATTRIBUTE_DESCRIPTION" jdbcType="VARCHAR" property="attributeDescription" />
+    <result column="ATTRIBUTE_SORT" jdbcType="INTEGER" property="attributeSort" />
+    <result column="ATTRIBUTE_STATU" jdbcType="INTEGER" property="attributeStatu" />
+  </resultMap>
+    
+  <resultMap id="BaseWithOptionsResultMap" type="com.meikai.shop.entity.TShopAttribute">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="ATTRIBUTE_NAME" jdbcType="VARCHAR" property="attributeName" />
+    <result column="ATTRIBUTE_TITLE" jdbcType="VARCHAR" property="attributeTitle" />
+    <result column="ATTRIBUTE_CODE" jdbcType="VARCHAR" property="attributeCode" />
+    <result column="ATTRIBUTE_DESCRIPTION" jdbcType="VARCHAR" property="attributeDescription" />
+    <result column="ATTRIBUTE_SORT" jdbcType="INTEGER" property="attributeSort" />
+    <result column="ATTRIBUTE_STATU" jdbcType="INTEGER" property="attributeStatu" />    
+    <collection column="ID" property="options" ofType="com.meikai.shop.entity.TShopAttributeOption" javaType="java.util.ArrayList"
+     select="getOptions">
+    </collection>
+  </resultMap>
+  
+  <resultMap id="optionResultMap" type="com.meikai.shop.entity.TShopAttributeOption">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="OPTION_NAME" jdbcType="VARCHAR" property="optionName" />
+    <result column="OPTION_STATU" jdbcType="INTEGER" property="optionStatu" />
+    <result column="OPTION_SORT" jdbcType="INTEGER" property="optionSort" />
+    <result column="ATTRIBUTE_ID" jdbcType="BIGINT" property="attributeId" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_DATE, CREATER, UPDATE_DATE, UPDATER, ATTRIBUTE_NAME, ATTRIBUTE_TITLE, 
+    ATTRIBUTE_CODE, ATTRIBUTE_DESCRIPTION, ATTRIBUTE_SORT, ATTRIBUTE_STATU
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
+    #{updateDate,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR}, #{attributeName,jdbcType=VARCHAR}, 
+    #{attributeTitle,jdbcType=VARCHAR}, #{attributeCode,jdbcType=VARCHAR}, #{attributeDescription,jdbcType=VARCHAR}, 
+    #{attributeSort,jdbcType=INTEGER}, #{attributeStatu,jdbcType=INTEGER}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="creater != null and creater != ''">
+      AND CREATER = #{creater,jdbcType=VARCHAR}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updater != null and updater != ''">
+      AND UPDATER = #{updater,jdbcType=VARCHAR}
+    </if>
+    <if test="attributeName != null and attributeName != ''">
+      AND ATTRIBUTE_NAME Like CONCAT('%',#{attributeName,jdbcType=VARCHAR},'%') 
+    </if>
+    <if test="attributeTitle != null and attributeTitle != ''">
+      AND ATTRIBUTE_TITLE = #{attributeTitle,jdbcType=VARCHAR}
+    </if>
+    <if test="attributeCode != null and attributeCode != ''">
+      AND ATTRIBUTE_CODE = #{attributeCode,jdbcType=VARCHAR}
+    </if>
+    <if test="attributeDescription != null and attributeDescription != ''">
+      AND ATTRIBUTE_DESCRIPTION = #{attributeDescription,jdbcType=VARCHAR}
+    </if>
+    <if test="attributeSort != null and attributeSort != ''">
+      AND ATTRIBUTE_SORT = #{attributeSort,jdbcType=INTEGER}
+    </if>
+    <if test="attributeStatu != null and attributeStatu != ''">
+      AND ATTRIBUTE_STATU = #{attributeStatu,jdbcType=INTEGER}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_attribute
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_attribute
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopAttribute">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_attribute
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="creater != null">
+        CREATER,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="updater != null">
+        UPDATER,
+      </if>
+      <if test="attributeName != null">
+        ATTRIBUTE_NAME,
+      </if>
+      <if test="attributeTitle != null">
+        ATTRIBUTE_TITLE,
+      </if>
+      <if test="attributeCode != null">
+        ATTRIBUTE_CODE,
+      </if>
+      <if test="attributeDescription != null">
+        ATTRIBUTE_DESCRIPTION,
+      </if>
+      <if test="attributeSort != null">
+        ATTRIBUTE_SORT,
+      </if>
+      <if test="attributeStatu != null">
+        ATTRIBUTE_STATU,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeName != null">
+        #{attributeName,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeTitle != null">
+        #{attributeTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeCode != null">
+        #{attributeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeDescription != null">
+        #{attributeDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeSort != null">
+        #{attributeSort,jdbcType=INTEGER},
+      </if>
+      <if test="attributeStatu != null">
+        #{attributeStatu,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_attribute
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_attribute where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopAttribute">
+    update t_shop_attribute
+    <set>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        UPDATER = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeName != null">
+        ATTRIBUTE_NAME = #{attributeName,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeTitle != null">
+        ATTRIBUTE_TITLE = #{attributeTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeCode != null">
+        ATTRIBUTE_CODE = #{attributeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeDescription != null">
+        ATTRIBUTE_DESCRIPTION = #{attributeDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeSort != null">
+        ATTRIBUTE_SORT = #{attributeSort,jdbcType=INTEGER},
+      </if>
+      <if test="attributeStatu != null">
+        ATTRIBUTE_STATU = #{attributeStatu,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_attribute
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseWithOptionsResultMap">
+    select * from t_shop_attribute
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+    order by create_date DESC
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_DATE, CREATER, UPDATE_DATE, UPDATER, ATTRIBUTE_NAME, ATTRIBUTE_TITLE, 
+    ATTRIBUTE_CODE, ATTRIBUTE_DESCRIPTION, ATTRIBUTE_SORT, ATTRIBUTE_STATU
+    from t_shop_attribute
+  </select>
+  
+  
+  <!-- 获得属性选项 -->
+  <select id="getOptions" resultMap="optionResultMap">
+    select * from t_shop_attribute_option where attribute_id = #{id,jdbcType=BIGINT};
+  </select>
+  
+  <!-- 根据属性名获得属性 -->
+  <select id="getByUniqueName" resultMap="BaseResultMap">
+    select ID, ATTRIBUTE_NAME from t_shop_attribute
+    where ATTRIBUTE_NAME = #{attributeName,jdbcType=VARCHAR} 
+  </select>
+  
+  <!-- 根据Id获得属性及其选项 -->
+  <select id="getWithOptionsById"  resultMap="BaseWithOptionsResultMap" >
+    select
+    <include refid="Base_Column_List"></include>
+    from t_shop_attribute
+    where id = #{id,jdbcType=BIGINT}; 
+  </select>
+   
+  
+</mapper>

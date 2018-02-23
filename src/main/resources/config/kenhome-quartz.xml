@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd   
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context-4.1.xsd  
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-4.1.xsd"
+ 
+     default-lazy-init="false">
+     
+     <!-- 调度器 -->
+	 <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	    <!-- 触发器集合 -->
+		<property name="triggers">
+		<list>
+		<!-- 任务一 
+		<ref bean="taskOneTrigger" />-->
+		<!-- 任务二
+		<ref bean="taskTwoTrigger" /> -->
+		</list>
+		</property>
+	 </bean>
+     
+     <!-- 任务一 -->
+     <!-- 作业类 -->
+     <bean id="taskOne"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 目标类 -->
+		<property name="targetObject">
+		<bean class="com.meikai.quartz.QuartzTaskOne" />
+		</property>
+		<!-- 目标类中的目标方法 -->
+		<property name="targetMethod" value="test" />
+		<!-- 作业不并发调度 -->
+		<property name="concurrent" value="false" />
+     </bean>
+     <!-- 触发器 -->
+     <bean id="taskOneTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!-- 目标作业 -->
+		<property name="jobDetail" ref="taskOne" />
+        <!-- 每隔5秒执行执行 -->
+		<property name="cronExpression" value="0/10 * * * * ?" />
+	 </bean>
+	 
+	 
+	 <!-- 任务二 -->
+     <!-- 作业类 -->
+     <bean id="taskTwo"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 目标类 -->
+		<property name="targetObject">
+		<bean class="com.meikai.quartz.QuartzTaskTwo" />
+		</property>
+		<!-- 目标类中的目标方法 -->
+		<property name="targetMethod" value="test2" />
+		<!-- 作业不并发调度 -->
+		<property name="concurrent" value="false" />
+     </bean>
+     <!-- 触发器 -->
+     <bean id="taskTwoTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!-- 目标作业 -->
+		<property name="jobDetail" ref="taskTwo" />
+		
+        <!-- 每隔5秒执行执行 -->
+		<property name="cronExpression" value="0/10 * * * * ?" />
+	 </bean>
+	 
+	 
+	 
+	
+</beans>

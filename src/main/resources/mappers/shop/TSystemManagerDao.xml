@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TSystemManagerDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TSystemManager">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="manager_name" jdbcType="VARCHAR" property="managerName" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="is_enable" jdbcType="INTEGER" property="isEnable" />
+    <result column="is_locked" jdbcType="INTEGER" property="isLocked" />
+    <result column="try_num" jdbcType="INTEGER" property="tryNum" />
+    <result column="locked_date" jdbcType="TIMESTAMP" property="lockedDate" />
+    <result column="is_forver" jdbcType="INTEGER" property="isForver" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="active_code" jdbcType="VARCHAR" property="activeCode" />
+  </resultMap>
+  
+  
+  <resultMap id="ManagerRolesAcls" type="com.meikai.shop.entity.TSystemManager">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="manager_name" jdbcType="VARCHAR" property="managerName" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="is_enable" jdbcType="INTEGER" property="isEnable" />
+    <result column="is_locked" jdbcType="INTEGER" property="isLocked" />
+    <result column="try_num" jdbcType="INTEGER" property="tryNum" />
+    <result column="locked_date" jdbcType="TIMESTAMP" property="lockedDate" />
+    <result column="is_forver" jdbcType="INTEGER" property="isForver" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="active_code" jdbcType="VARCHAR" property="activeCode" />
+    <!-- 拥有角色集合 -->
+       <collection property="roles" ofType="com.meikai.shop.entity.TSystemRole"  javaType="java.util.ArrayList">     
+		    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+		    <!-- 拥有资源集合 -->
+		    <collection property="acls" ofType="com.meikai.shop.entity.TSystemAcl" javaType="java.util.ArrayList">		       
+			    <result column="permission" jdbcType="VARCHAR" property="permission" />
+		    </collection>
+       </collection> 
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List">
+    ID, create_date, update_date, manager_name, nickname, password, avatar, is_enable, 
+    is_locked, try_num, locked_date, is_forver, login_time, login_ip, email, active_code
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+    #{managerName,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    #{avatar,jdbcType=VARCHAR}, #{isEnable,jdbcType=INTEGER}, #{isLocked,jdbcType=INTEGER}, 
+    #{tryNum,jdbcType=INTEGER}, #{lockedDate,jdbcType=TIMESTAMP}, #{isForver,jdbcType=INTEGER}, 
+    #{loginTime,jdbcType=TIMESTAMP}, #{loginIp,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+    #{activeCode,jdbcType=VARCHAR}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null">
+      AND create_date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null">
+      AND update_date = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="managerName != null">
+      AND manager_name = #{managerName,jdbcType=VARCHAR}
+    </if>
+    <if test="nickname != null">
+      AND nickname = #{nickname,jdbcType=VARCHAR}
+    </if>
+    <if test="password != null">
+      AND password = #{password,jdbcType=VARCHAR}
+    </if>
+    <if test="avatar != null">
+      AND avatar = #{avatar,jdbcType=VARCHAR}
+    </if>
+    <if test="isEnable != null">
+      AND is_enable = #{isEnable,jdbcType=INTEGER}
+    </if>
+    <if test="isLocked != null">
+      AND is_locked = #{isLocked,jdbcType=INTEGER}
+    </if>
+    <if test="tryNum != null">
+      AND try_num = #{tryNum,jdbcType=INTEGER}
+    </if>
+    <if test="lockedDate != null">
+      AND locked_date = #{lockedDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="isForver != null">
+      AND is_forver = #{isForver,jdbcType=INTEGER}
+    </if>
+    <if test="loginTime != null">
+      AND login_time = #{loginTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="loginIp != null">
+      AND login_ip = #{loginIp,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null">
+      AND email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="activeCode != null">
+      AND active_code = #{activeCode,jdbcType=VARCHAR}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_system_manager
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_system_manager
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TSystemManager">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_system_manager
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="managerName != null">
+        manager_name,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="isEnable != null">
+        is_enable,
+      </if>
+      <if test="isLocked != null">
+        is_locked,
+      </if>
+      <if test="tryNum != null">
+        try_num,
+      </if>
+      <if test="lockedDate != null">
+        locked_date,
+      </if>
+      <if test="isForver != null">
+        is_forver,
+      </if>
+      <if test="loginTime != null">
+        login_time,
+      </if>
+      <if test="loginIp != null">
+        login_ip,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="activeCode != null">
+        active_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="managerName != null">
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnable != null">
+        #{isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="isLocked != null">
+        #{isLocked,jdbcType=INTEGER},
+      </if>
+      <if test="tryNum != null">
+        #{tryNum,jdbcType=INTEGER},
+      </if>
+      <if test="lockedDate != null">
+        #{lockedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isForver != null">
+        #{isForver,jdbcType=INTEGER},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null">
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="activeCode != null">
+        #{activeCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_system_manager
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_system_manager where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TSystemManager">
+    update t_system_manager
+    <set>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="managerName != null">
+        manager_name = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnable != null">
+        is_enable = #{isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="isLocked != null">
+        is_locked = #{isLocked,jdbcType=INTEGER},
+      </if>
+      <if test="tryNum != null">
+        try_num = #{tryNum,jdbcType=INTEGER},
+      </if>
+      <if test="lockedDate != null">
+        locked_date = #{lockedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isForver != null">
+        is_forver = #{isForver,jdbcType=INTEGER},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null">
+        login_ip = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="activeCode != null">
+        active_code = #{activeCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_system_manager
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_system_manager m
+    <where>
+        <if test="managerName != null and managerName !=''">
+          AND m.manager_name Like CONCAT('%',#{managerName,jdbcType=VARCHAR},'%') 
+	    </if>    
+	    <if test="isEnable != null and isEnable != ''">
+	      AND m.is_enable = #{isEnable,jdbcType=INTEGER}
+	    </if>
+	    <if test="isLocked != null and isLocked != ''">
+	      AND m.is_locked = #{isLocked,jdbcType=INTEGER}
+	    </if>
+	    <if test="isForver != null and isForver != ''">
+	      AND m.is_forver = #{isForver,jdbcType=INTEGER}
+	    </if>
+	    <if test="startLoginTime != null and startLoginTime != ''">
+	      AND m.login_time <![CDATA[>=]]> #{startLoginTime,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="endLoginTime != null and endLoginTime != ''">
+	      AND m.login_time <![CDATA[<=]]> #{endLoginTime,jdbcType=TIMESTAMP}
+	    </if> 
+    </where> 
+    order by create_date DESC
+      
+    
+  </select>
+  
+  
+  <select id="getByUniqueName" parameterType="String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from t_system_manager
+    <where>
+      manager_name = #{managerName,jdbcType=VARCHAR}
+    </where>
+  
+  
+  </select>
+  
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, create_date, update_date, manager_name, nickname, password, avatar, is_enable, 
+    is_locked, try_num, locked_date, is_forver, login_time, login_ip, email, active_code
+    from t_system_manager
+  </select>
+  
+  
+  
+  <!-- 根据用户名获得用户的角色和资源 -->
+  <select id="getRolesAndAclsByName" parameterType="String" resultMap="ManagerRolesAcls">
+    SELECT m.*,r.ID,r.role_name,a.ID,a.permission
+    FROM t_system_manager  m 
+    LEFT JOIN 
+    t_system_manager_role mr ON m.ID=mr.manager_id 
+    LEFT JOIN t_system_role  r ON  mr.`role_id`=r.`ID` 
+    LEFT JOIN t_system_role_acl ra  ON  r.`ID`=ra.`role_id` 
+    LEFT JOIN t_system_acl a ON a.`ID`=ra.`acl_id` 
+    WHERE m.manager_name=#{managerName,jdbcType=VARCHAR}; 
+  </select>
+  
+  <!-- 根据用户名模糊查询管理员 -->
+  <select id="getSomeManagersByName" resultMap="BaseResultMap">
+    
+    select ID,manager_name from t_system_manager 
+    where manager_name Like CONCAT('%',#{managerName,jdbcType=VARCHAR},'%');
+  
+  </select>
+  
+  
+  <!-- 根据用户名获得用户的角色和资源 -->
+  <select id="getRolesAndAclsByID" parameterType="Long" resultMap="ManagerRolesAcls">
+    SELECT m.*,r.ID,r.role_name,a.ID,a.permission
+    FROM t_system_manager  m 
+    LEFT JOIN 
+    t_system_manager_role mr ON m.ID=mr.manager_id 
+    LEFT JOIN t_system_role  r ON  mr.`role_id`=r.`ID` 
+    LEFT JOIN t_system_role_acl ra  ON  r.`ID`=ra.`role_id` 
+    LEFT JOIN t_system_acl a ON a.`ID`=ra.`acl_id` 
+    WHERE m.ID=#{id,jdbcType=BIGINT}; 
+  </select>
+    
+</mapper>

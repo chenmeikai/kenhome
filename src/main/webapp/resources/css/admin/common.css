@@ -1,0 +1,36 @@
+﻿
+/* 阴影效果
+box-shadow: #666 0px 0px 10px;
+*/
+
+body{min-height:800px;font: 12px/1 Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;}
+.margin-top-15px{margin-top:15px;}
+
+.common-head{padding-bottom:5px;border-bottom:1px solid rgba(88, 75, 75, 0.45);margin-top:10px;}
+.common-name{font-size:15px;font-weight:600;color:rgb(101, 80, 80);}
+
+#entityNums{font-size:10px;}
+
+.btn-outline-info{background-color:transparent;color:#1c84c6;}
+.btn-outline-danger{background-color:transparent;color:#ed5565;}
+.btn-outline-warning{background-color:transparent;color:#886107;}
+
+/*列表 */
+.common-search{padding-left:10px;padding-right:10px;margin-top:20px;}
+.form-select{border-radius:5px;height:32px;margin-top:1px;width:auto;}
+.form-search{margin-top:20px;}
+#formSearch{background-color:#3d758a;color:white;}
+#searchReset{background-color:rgb(42, 104, 142);color:white;}
+.dimension{margin-top:30px;text-align:center;}
+.cut-line{margin-top:20px;}
+
+
+.imformation-thead{background-color:#3d758a;color:white;}
+.school-selected{width:15px;height:15px;}
+.tr{height:40px;}
+.common-page{margin-top:-20px;}
+.common-page-jump{margin-left:-25px;}
+
+.image-head{width:100px;height:auto;}
+
+

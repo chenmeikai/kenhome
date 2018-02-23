@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopBrandDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopBrand">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
+    <result column="EN_NAME" jdbcType="VARCHAR" property="enName" />
+    <result column="ALIAS_NAME" jdbcType="VARCHAR" property="aliasName" />
+    <result column="TOKEN" jdbcType="VARCHAR" property="token" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="LOGO" jdbcType="VARCHAR" property="logo" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+    <result column="STATU" jdbcType="INTEGER" property="statu" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, BRAND_NAME, EN_NAME, ALIAS_NAME, TOKEN, DESCRIPTION, LOGO, SORT, STATU, CREATE_DATE, 
+    UPDATE_DATE
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{brandName,jdbcType=VARCHAR}, #{enName,jdbcType=VARCHAR}, 
+    #{aliasName,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+    #{logo,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{statu,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+    #{updateDate,jdbcType=TIMESTAMP}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="brandName != null and brandName != ''">
+      AND BRAND_NAME Like CONCAT('%',#{brandName,jdbcType=VARCHAR},'%') 
+    </if>
+    <if test="enName != null and enName != ''">
+      AND EN_NAME = #{enName,jdbcType=VARCHAR}
+    </if>
+    <if test="aliasName != null and aliasName != ''">
+      AND ALIAS_NAME = #{aliasName,jdbcType=VARCHAR}
+    </if>
+    <if test="token != null and token != ''">
+      AND TOKEN = #{token,jdbcType=VARCHAR}
+    </if>
+    <if test="description != null and description != ''">
+      AND DESCRIPTION = #{description,jdbcType=VARCHAR}
+    </if>
+    <if test="logo != null and logo != ''">
+      AND LOGO = #{logo,jdbcType=VARCHAR}
+    </if>
+    <if test="sort != null and sort != ''">
+      AND SORT = #{sort,jdbcType=INTEGER}
+    </if>
+    <if test="statu != null and statu != ''">
+      AND STATU = #{statu,jdbcType=INTEGER}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_brand
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_brand
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopBrand">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_brand
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="brandName != null">
+        BRAND_NAME,
+      </if>
+      <if test="enName != null">
+        EN_NAME,
+      </if>
+      <if test="aliasName != null">
+        ALIAS_NAME,
+      </if>
+      <if test="token != null">
+        TOKEN,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="logo != null">
+        LOGO,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+      <if test="statu != null">
+        STATU,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="brandName != null">
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="enName != null">
+        #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="aliasName != null">
+        #{aliasName,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null">
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="statu != null">
+        #{statu,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_brand
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_brand where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopBrand">
+    update t_shop_brand
+    <set>
+      <if test="brandName != null">
+        BRAND_NAME = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="enName != null">
+        EN_NAME = #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="aliasName != null">
+        ALIAS_NAME = #{aliasName,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        TOKEN = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null">
+        LOGO = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="statu != null">
+        STATU = #{statu,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_brand
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_brand
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, BRAND_NAME, EN_NAME, ALIAS_NAME, TOKEN, DESCRIPTION, LOGO, SORT, STATU, 
+    CREATE_DATE, UPDATE_DATE
+    from t_shop_brand
+  </select>
+  
+  <!-- 根据品牌名获得记录 -->
+  <select id="getByUniqueName" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_brand
+    where BRAND_NAME = #{brandName,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据品牌名模糊查询记录 -->
+  <select id="getByFuzzybrandName" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_brand
+    where BRAND_NAME  like CONCAT('%',#{brandName,jdbcType=VARCHAR},'%') 
+  </select>
+  
+  <!-- 随机获取num条数据 -->
+  <select id="selectByRandom" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+    from t_shop_brand
+    ORDER BY  RAND() LIMIT #{num,jdbcType=BIGINT}
+  </select>
+  
+</mapper>

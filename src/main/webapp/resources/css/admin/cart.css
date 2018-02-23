@@ -1,0 +1,106 @@
+﻿
+
+
+header{
+	
+	
+	background-color:#f2f2f2;
+}
+
+a:hover{text-decoration:none;}
+
+
+.index-welcome{
+	padding-left:20px;
+	margin-top:10px;
+}
+
+.text-strong{font-weight:600;}
+.text-margintop-40{margin-top:40px;}
+.text-margintop-30{margin-top:30px;}
+.text-margintop-25{margin-top:25px;}
+.text-margintop-20{margin-top:20px;}
+.text-margintop-10{margin-top:10px;}
+.text-margintop--8{margin-top:-8px;}
+.text-margintop--20{margin-top:-20px;}
+
+
+
+
+.order-bar{
+	height:80px;background-color:#b00303;margin-top:0px;
+}
+
+.order-bar ul a{
+	color:white;font-size:16px; padding-top:18px;margin-right:30px;
+}
+
+.order-bar ul a:hover{color:black;}
+
+.alert-red{
+	background-color:rgba(169, 66, 66, 0.08);border:1px solid rgba(255, 0, 0, 0.15);
+}
+.alert-blue{
+	background-color:rgba(51, 122, 183, 0.08);border:1px solid #d9edf7;
+}
+
+
+.order-leftbar{margin-top:40px;}
+.order-leftbar>li>a{width:100px;}
+.order-account{color:white;font-size:15px;font-weight:600;}
+.order-account:hover{color:#bdbdbd;}
+
+.dropdown-menu>li>a{color:#126d9a;font-size:15px;}
+
+
+.cart{min-height:800px;}
+.cart-car{font-size:22px;color:white;}
+.cart-car:hover{color:#337ab7;}
+
+
+.cart-head{border-bottom:1px solid rgba(0, 0, 0, 0.13);padding-bottom:5px;margin-top:50px;font-size:17px;font-weight:600;color:#b00303;}
+.cart-head-left{border-bottom:1px solid #b00303;padding-bottom:3px;}
+
+.cart-goods{text-align:center;font-size:14px;color:black;min-height:120px;}
+
+.cart-product{width:100px;height:auto;}
+
+.cart-image-message{padding:0px;text-align:left;}
+.cart-image-message span{font-size:12px;}
+
+
+
+.autu-add input{float:left;width:30px;height:32px;padding:5px;text-align:center;margin-left:12px;}
+
+.autu-add span{float:left;display:block;width:15px;text-align:center;border-radius:5px;color: #3c763d;font-size:5px;
+               background-color: #ffffff;
+               border-color: #3c763d;			   
+}
+
+
+.cart-calculate{background-color:#e5e5e5;padding-top:15px;font-size:16px;}
+
+.cart-calculate>.btn>a{font-size:16px;color:white;}
+
+.order-commend-line{font-size:16px;color:#b00303;font-weight:600;padding-bottom:5px;border-bottom:1px solid rgba(0, 0, 0, 0.13);}
+.order-commend-line-left{padding-bottom:7px;border-bottom:1px solid #b00303;}
+
+
+
+
+
+.main-about{
+	margin-top:50px;
+}
+
+.main-about a{margin-left:50px;text-align:center;color:black;
+	
+}
+
+.main-end{
+	margin-top:20px;text-align:center;
+}
+
+.main-end>h5{
+	font-size:12px;
+}

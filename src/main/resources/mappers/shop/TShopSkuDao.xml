@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopSkuDao">
+<!-- 开启redis缓存 -->
+<cache eviction="LRU" type="com.meikai.redisCache.MybatisRedisCache"/>
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopSku">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="SKU_NO" jdbcType="VARCHAR" property="skuNo" />
+    <result column="SPU_ID" jdbcType="BIGINT" property="spuId" />
+    <result column="CATEGORY_ID" jdbcType="BIGINT" property="categoryId" />
+    <result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+    <result column="SKU_NAME" jdbcType="VARCHAR" property="skuName" />
+    <result column="HITS" jdbcType="BIGINT" property="hits" />
+    <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+    <result column="PICTURE" jdbcType="VARCHAR" property="picture" />
+    <result column="ORIGINAL_price" jdbcType="DECIMAL" property="originalPrice" />
+    <result column="SALE_PRICE" jdbcType="DECIMAL" property="salePrice" />
+    <result column="DISCOUNT_RATE" jdbcType="DOUBLE" property="discountRate" />
+    <result column="discount_amount" jdbcType="DECIMAL" property="discountAmount" />
+    <result column="STOCKS" jdbcType="BIGINT" property="stocks" />
+    <result column="SALE_AMOUNT" jdbcType="BIGINT" property="saleAmount" />
+    <result column="KEYWORD" jdbcType="VARCHAR" property="keyword" />
+    <result column="SKU_STATU" jdbcType="INTEGER" property="skuStatu" />
+    <result column="INTEGRATION" jdbcType="INTEGER" property="integration" />
+  </resultMap>
+  
+  <!-- 包含关键属性，及关键属性值集合,包括父分类根分类的ID和名字-->
+  <resultMap id="BasePlusResultMap" type="com.meikai.shop.entity.TShopSku">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="SKU_NO" jdbcType="VARCHAR" property="skuNo" />
+    <result column="SPU_ID" jdbcType="BIGINT" property="spuId" />
+    <result column="SPU_NO" jdbcType="VARCHAR" property="spuNo" />
+    <result column="CATEGORY_ID" jdbcType="BIGINT" property="categoryId" />
+    <result column="CATEGORY_Name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
+    <result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+    <result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
+    <result column="SKU_NAME" jdbcType="VARCHAR" property="skuName" />
+    <result column="HITS" jdbcType="BIGINT" property="hits" />
+    <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+    <result column="PICTURE" jdbcType="VARCHAR" property="picture" />
+    <result column="ORIGINAL_price" jdbcType="DECIMAL" property="originalPrice" />
+    <result column="SALE_PRICE" jdbcType="DECIMAL" property="salePrice" />
+    <result column="DISCOUNT_RATE" jdbcType="DOUBLE" property="discountRate" />
+    <result column="discount_amount" jdbcType="DECIMAL" property="discountAmount" />
+    <result column="STOCKS" jdbcType="BIGINT" property="stocks" />
+    <result column="SALE_AMOUNT" jdbcType="BIGINT" property="saleAmount" />
+    <result column="KEYWORD" jdbcType="VARCHAR" property="keyword" />
+    <result column="SKU_STATU" jdbcType="INTEGER" property="skuStatu" />
+    <result column="INTEGRATION" jdbcType="INTEGER" property="integration" />
+    <association column="CATEGORY_ID" property="category"  select="getCategory"></association>  
+    <collection column="{categoryId=CATEGORY_ID,id=ID}"  property="attributes" ofType="com.meikai.shop.entity.TShopAttribute"
+     select="getAttrBycategoryId" >    
+    </collection> 
+    
+  </resultMap>
+  
+  <!-- 分类结果集 ，包含父分类-->
+   <resultMap type="com.meikai.shop.entity.TShopCategory" id="categoryWithParentResultMap">
+     <id column="ID" jdbcType="BIGINT" property="id" />
+     <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+     <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+     <association column="parent_id" property="parentCategory"  select="getParentCategory"></association>
+   </resultMap>
+  
+  <!-- sku关键属性结果 -->
+  <resultMap type="com.meikai.shop.entity.TShopAttribute" id="attributeResultMap">
+    <result column="ID" jdbcType="BIGINT" property="id"/>
+    <result column="SKUID" jdbcType="BIGINT"  />
+    <result column="ATTRIBUTE_NAME" jdbcType="VARCHAR" property="attributeName" />
+    <collection property="options" column="{id=ID,skuId=SKUID}"
+      select="getOptionBySkuIdAndAttrId" ofType="com.meikai.shop.entity.TShopAttributeOption" >
+    </collection>
+  </resultMap>
+  
+  <!-- sku关键属性-属性值结果 -->
+  <resultMap type="com.meikai.shop.entity.TShopAttributeOption" id="optionResultMap">
+     <id column="ID" jdbcType="BIGINT" property="id" />
+     <result column="OPTION_NAME" jdbcType="VARCHAR" property="optionName" />
+  </resultMap>
+  
+  
+  <!-- 根据分类Id获得sku的关键属性，包含该sku的ID -->
+  <select id="getAttrBycategoryId"  resultMap="attributeResultMap">
+    select a.ID,a.ATTRIBUTE_NAME,s.ID as SKUID
+    from t_shop_sku s,t_shop_attribute a 
+    inner join t_shop_category_attribute ca on a.ID = ca.Attribute_ID  and ca.price_type =2
+    where s.ID = #{id,jdbcType =BIGINT} and ca.category_id = #{categoryId,jdbcType =BIGINT};
+  </select>
+  
+  <!-- 根据skuid、属性Id获得该属性的Sku属性值 -->
+  <select id="getOptionBySkuIdAndAttrId"   resultMap="optionResultMap">
+    select o.ID,o.OPTION_NAME from t_shop_attribute_option o
+    inner join t_shop_sku_attribute_option so on o.id = so.option_id
+    where o.attribute_id = #{id,jdbcType=BIGINT} and so.sku_id =#{skuId,jdbcType=BIGINT}   
+  </select>
+  
+  
+  <sql id="Base_Column_List">
+    ID, CREATER, CREATE_DATE, UPDATER, UPDATE_DATE, SKU_NO, SPU_ID, CATEGORY_ID, BRAND_ID, 
+    SKU_NAME, HITS, MEMO, PICTURE, ORIGINAL_price, SALE_PRICE, DISCOUNT_RATE, discount_amount, 
+    STOCKS, SALE_AMOUNT, KEYWORD, SKU_STATU, INTEGRATION
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{creater,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+    #{updater,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{skuNo,jdbcType=VARCHAR}, 
+    #{spuId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, #{brandId,jdbcType=BIGINT}, 
+    #{skuName,jdbcType=VARCHAR}, #{hits,jdbcType=BIGINT}, #{memo,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, 
+    #{originalPrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, #{discountRate,jdbcType=DOUBLE}, 
+    #{discountAmount,jdbcType=DECIMAL}, #{stocks,jdbcType=BIGINT}, #{saleAmount,jdbcType=BIGINT}, 
+    #{keyword,jdbcType=VARCHAR}, #{skuStatu,jdbcType=INTEGER}, #{integration,jdbcType=INTEGER}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND s.ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="creater != null and creater != ''">
+      AND s.CREATER = #{creater,jdbcType=VARCHAR}
+    </if>
+    <if test="startCreateDate != null and startCreateDate != ''">
+      AND s.CREATE_DATE <![CDATA[>=]]> #{startCreateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endCreateDate != null and endCreateDate != ''">
+      AND s.CREATE_DATE <![CDATA[<=]]> #{endCreateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updater != null and updater != ''">
+      AND s.UPDATER = #{updater,jdbcType=VARCHAR}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND s.UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="skuNo != null and skuNo != ''">
+      AND s.SKU_NO = #{skuNo,jdbcType=VARCHAR}
+    </if>
+    <if test="spuNo != null and spuNo != ''">
+      AND SPU.SPU_NO = #{spuNo,jdbcType=VARCHAR}
+    </if>
+    <if test="spuId != null and spuId != ''">
+      AND SPU_ID = #{spuId,jdbcType=BIGINT}
+    </if>
+    <if test="categoryId != null and categoryId != ''">
+      AND s.CATEGORY_ID = #{categoryId,jdbcType=BIGINT}
+    </if>
+    <if test="brandId != null and brandId != ''">
+      AND s.BRAND_ID = #{brandId,jdbcType=BIGINT}
+    </if>
+    <if test="skuName != null and skuName != ''">
+      AND s.SKU_NAME = #{skuName,jdbcType=VARCHAR}
+    </if>
+    <if test="hits != null and hits != ''">
+      AND s.HITS = #{hits,jdbcType=BIGINT}
+    </if>
+    <if test="memo != null and memo != ''">
+      AND s.MEMO = #{memo,jdbcType=VARCHAR}
+    </if>
+    <if test="picture != null and picture != ''">
+      AND s.PICTURE = #{picture,jdbcType=VARCHAR}
+    </if>
+    <if test="startOriginalPrice != null and startOriginalPrice != ''">
+      AND ORIGINAL_price <![CDATA[>=]]> #{startOriginalPrice,jdbcType=DECIMAL}
+    </if>
+    <if test="endOriginalPrice != null and endOriginalPrice != ''">
+      AND ORIGINAL_price <![CDATA[<=]]> #{endOriginalPrice,jdbcType=DECIMAL}
+    </if>
+    <if test="startSalePrice != null and startSalePrice != ''">
+      AND SALE_PRICE <![CDATA[>=]]> #{startSalePrice,jdbcType=DECIMAL}
+    </if>
+    <if test="endSalePrice != null and endSalePrice != ''">
+      AND SALE_PRICE <![CDATA[<=]]> #{endSalePrice,jdbcType=DECIMAL}
+    </if>
+    <if test="discountRate != null and discountRate != ''">
+      AND DISCOUNT_RATE = #{discountRate,jdbcType=DOUBLE}
+    </if>
+    <if test="discountAmount != null and discountAmount != ''">
+      AND discount_amount = #{discountAmount,jdbcType=DECIMAL}
+    </if>
+    <if test="startStocks != null and startStocks != ''">
+      AND STOCKS <![CDATA[>=]]> #{startStocks,jdbcType=BIGINT}
+    </if>
+    <if test="endStocks != null and endStocks != ''">
+      AND STOCKS <![CDATA[<=]]> #{endStocks,jdbcType=BIGINT}
+    </if>
+    <if test="startSaleAmount != null and startSaleAmount != ''">
+      AND SALE_AMOUNT <![CDATA[>=]]> #{startSaleAmount,jdbcType=BIGINT}
+    </if>
+    <if test="endSaleAmount != null and endSaleAmount != ''">
+      AND SALE_AMOUNT <![CDATA[<=]]> #{endSaleAmount,jdbcType=BIGINT}
+    </if>
+    <if test="keyword != null and keyword != ''">
+      AND KEYWORD = #{keyword,jdbcType=VARCHAR}
+    </if>
+    <if test="skuStatu != null and skuStatu != ''">
+      AND SKU_STATU = #{skuStatu,jdbcType=INTEGER}
+    </if>
+    <if test="integration != null and integration != ''">
+      AND INTEGRATION = #{integration,jdbcType=INTEGER}
+    </if>
+    <if test="shortIntroduce != null and shortIntroduce != ''">
+      AND SHORT_INTRODUCE = #{shortIntroduce,jdbcType=LONGVARCHAR}
+    </if>
+    <if test="context != null and context != ''">
+      AND CONTEXT = #{context,jdbcType=LONGVARCHAR}
+    </if>
+  </sql>
+  
+  
+  
+  <!--三级分类及多参数查询 -->
+  <sql id="Where_Column_Third_Value">
+    <!-- 上架状态 -->
+    SKU_STATU in(2,3)
+    <!-- 分类 ID-->   
+    <if test="categoryId != null and categoryId != ''">
+      AND s.CATEGORY_ID = #{categoryId,jdbcType=BIGINT}
+    </if>
+    <!-- 品牌 ID--> 
+    <if test="brandId != null and brandId != ''">
+      AND s.BRAND_ID = #{brandId,jdbcType=BIGINT}
+    </if>
+    <!-- 最低价 -->   
+    <if test="startSalePrice != null and startSalePrice != ''">
+      AND SALE_PRICE <![CDATA[>=]]> #{startSalePrice,jdbcType=DECIMAL}
+    </if>
+     <!-- 最高价 -->
+    <if test="endSalePrice != null and endSalePrice != ''">
+      AND SALE_PRICE <![CDATA[<=]]> #{endSalePrice,jdbcType=DECIMAL}
+    </if>    
+  </sql>
+   
+  <sql id="which_sort">
+    <choose>
+      <when test="sort !=null and sort ==1">
+        order by s.SALE_AMOUNT DESC
+      </when>
+      <when test="sort !=null and sort ==2">
+        order by s.HITS DESC
+      </when>
+      <when test="sort !=null and sort ==3">
+        order by s.SALE_AMOUNT DESC
+      </when>
+      <when test="sort !=null and sort ==4">
+        order by s.CREATE_DATE DESC
+      </when>
+      <when test="sort !=null and sort ==5">
+        order by s.SALE_PRICE DESC
+      </when>
+      <when test="sort !=null and sort ==6">
+        order by s.SALE_PRICE ASC
+      </when>
+    </choose>
+  </sql>
+  
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_sku
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_sku
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopSku">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_sku
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="creater != null">
+        CREATER,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="updater != null">
+        UPDATER,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="skuNo != null">
+        SKU_NO,
+      </if>
+      <if test="spuId != null">
+        SPU_ID,
+      </if>
+      <if test="categoryId != null">
+        CATEGORY_ID,
+      </if>
+      <if test="brandId != null">
+        BRAND_ID,
+      </if>
+      <if test="skuName != null">
+        SKU_NAME,
+      </if>
+      <if test="hits != null">
+        HITS,
+      </if>
+      <if test="memo != null">
+        MEMO,
+      </if>
+      <if test="picture != null">
+        PICTURE,
+      </if>
+      <if test="originalPrice != null">
+        ORIGINAL_price,
+      </if>
+      <if test="salePrice != null">
+        SALE_PRICE,
+      </if>
+      <if test="discountRate != null">
+        DISCOUNT_RATE,
+      </if>
+      <if test="discountAmount != null">
+        discount_amount,
+      </if>
+      <if test="stocks != null">
+        STOCKS,
+      </if>
+      <if test="saleAmount != null">
+        SALE_AMOUNT,
+      </if>
+      <if test="keyword != null">
+        KEYWORD,
+      </if>
+      <if test="skuStatu != null">
+        SKU_STATU,
+      </if>
+      <if test="integration != null">
+        INTEGRATION,
+      </if>
+      <if test="shortIntroduce != null">
+        SHORT_INTRODUCE,
+      </if>
+      <if test="context != null">
+        CONTEXT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="skuNo != null">
+        #{skuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="spuId != null">
+        #{spuId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="brandId != null">
+        #{brandId,jdbcType=BIGINT},
+      </if>
+      <if test="skuName != null">
+        #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="hits != null">
+        #{hits,jdbcType=BIGINT},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="originalPrice != null">
+        #{originalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null">
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRate != null">
+        #{discountRate,jdbcType=DOUBLE},
+      </if>
+      <if test="discountAmount != null">
+        #{discountAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="stocks != null">
+        #{stocks,jdbcType=BIGINT},
+      </if>
+      <if test="saleAmount != null">
+        #{saleAmount,jdbcType=BIGINT},
+      </if>
+      <if test="keyword != null">
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="skuStatu != null">
+        #{skuStatu,jdbcType=INTEGER},
+      </if>
+      <if test="integration != null">
+        #{integration,jdbcType=INTEGER},
+      </if>
+      <if test="shortIntroduce != null">
+        #{shortIntroduce,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="context != null">
+        #{context,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_sku
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_sku where ID in
+    <foreach close=")" collection="skuIds" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopSku">
+    update t_shop_sku
+    <set>
+      <if test="creater != null">
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        UPDATER = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="skuNo != null">
+        SKU_NO = #{skuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="spuId != null">
+        SPU_ID = #{spuId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        CATEGORY_ID = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="brandId != null">
+        BRAND_ID = #{brandId,jdbcType=BIGINT},
+      </if>
+      <if test="skuName != null">
+        SKU_NAME = #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="hits != null">
+        HITS = #{hits,jdbcType=BIGINT},
+      </if>
+      <if test="memo != null">
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        PICTURE = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="originalPrice != null">
+        ORIGINAL_price = #{originalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null">
+        SALE_PRICE = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRate != null">
+        DISCOUNT_RATE = #{discountRate,jdbcType=DOUBLE},
+      </if>
+      <if test="discountAmount != null">
+        discount_amount = #{discountAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="stocks != null">
+        STOCKS = #{stocks,jdbcType=BIGINT},
+      </if>
+      <if test="saleAmount != null">
+        SALE_AMOUNT = #{saleAmount,jdbcType=BIGINT},
+      </if>
+      <if test="keyword != null">
+        KEYWORD = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="skuStatu != null">
+        SKU_STATU = #{skuStatu,jdbcType=INTEGER},
+      </if>
+      <if test="integration != null">
+        INTEGRATION = #{integration,jdbcType=INTEGER},
+      </if>
+      <if test="shortIntroduce != null">
+        SHORT_INTRODUCE = #{shortIntroduce,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="context != null">
+        CONTEXT = #{context,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_sku
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BasePlusResultMap">
+    select s.*,c.category_name,b.brand_name,SPU.SPU_NO
+    from t_shop_sku s
+    left join t_shop_category c on s.category_id = c.id
+    left join t_shop_brand b on s.brand_id = b.id
+    left join t_shop_spu SPU on s.spu_id = SPU.id
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+    <if test="skuSort != null and skuSort != ''">
+      order by ${skuSort}
+    </if>
+    <if test="direction != null and direction != '' ">
+      ${direction}
+    </if>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATER, CREATE_DATE, UPDATER, UPDATE_DATE, SKU_NO, SPU_ID, CATEGORY_ID, 
+    BRAND_ID, SKU_NAME, HITS, MEMO, PICTURE, ORIGINAL_price, SALE_PRICE, DISCOUNT_RATE, 
+    discount_amount, STOCKS, SALE_AMOUNT, KEYWORD, SKU_STATU, INTEGRATION, SHORT_INTRODUCE, 
+    CONTEXT
+    from t_shop_sku
+  </select>
+  
+  
+  <!-- 根据Id，获得包含属性集合，属性值集合的商品 -->
+  <select id="getPlusById" resultMap="BasePlusResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_shop_sku
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 根据唯一的单品编号获得单品 -->
+  <select id="getByUniqueCode" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_sku
+    where SKU_NO = #{skuNo,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据Spu的ID查询系列商品 -->
+  <select id="getBySpuId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_sku
+    where SPU_ID = #{spiId,jdbcType=VARCHAR}
+  </select>
+  
+   <!-- 根据SPuId，获得包含属性集合，属性值集合的系列商品-->
+  <select id="getplusBySpuId" resultMap="BasePlusResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_sku
+    where SPU_ID = #{spiId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据SPUid和关键属性值获得sku -->
+  <select id="getByspuIdAndoptions" resultMap="BaseResultMap">
+    select s.id,s.sku_name,s.original_price,s.sale_price,s.integration,s.stocks
+    from t_shop_sku s  
+    <foreach collection="optionIds" item="optionId" index="index" open="" close="and">
+    inner join t_shop_sku_attribute_option so${index} on s.id=so${index}.sku_id and so${index}.option_id =#{optionId}
+    </foreach>
+    s.spu_id =#{spuId,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 根据根分类Id随机获取num条数据 -->
+   <select id="getByrootcategoryIdRandom" resultMap="BaseResultMap">
+     select s.ID,s.SKU_NAME,s.SALE_PRICE,s.PICTURE
+     FROM T_SHOP_SKU s 
+     inner join T_SHOP_CATEGORY c
+     on s.category_id = c.id
+     WHERE c.parent_id in(select c2.id from  t_shop_category c2 where c2.parent_id =#{rootCategoryId,jdbcType=BIGINT})
+     and s.SKU_STATU !=1
+     ORDER BY  RAND() LIMIT #{num,jdbcType=BIGINT}
+   </select>
+   
+   <!-- 随机获取num条数据 -->
+   <select id="selectByRandom" resultMap="BaseResultMap">
+     select s.ID,s.SKU_NAME,s.SALE_PRICE,s.PICTURE
+     FROM T_SHOP_SKU s
+     where  s.SKU_STATU !=1 
+     ORDER BY  RAND() LIMIT #{num,jdbcType=BIGINT}
+   </select>
+     
+   <!-- 根据分类Id获得分类及父分类 -->
+    <select id="getCategory" resultMap="categoryWithParentResultMap" >
+      select c.id,c.category_name,c.parent_id 
+      from t_shop_category c
+      where c.id=#{categoryId,jdbcType=BIGINT}
+    </select>
+   <!-- 根据父分类ID获得父分类 --> 
+   <select id="getParentCategory" resultMap="categoryWithParentResultMap" >
+      select cp.id,cp.category_name,cp.parent_id 
+      from t_shop_category cp
+      where cp.id=#{parentId,jdbcType=BIGINT}
+    </select>
+    
+    <!-- 根据三级分类及多参数获得商品集合 -->
+    <select id="getByThird"  resultMap="BaseResultMap">
+     select s.ID,s.SKU_NAME,s.SALE_PRICE,s.PICTURE
+     FROM T_SHOP_SKU s
+     <!-- 属性ID -->
+    <if test="optionIds != null  and optionIds.size()>0 ">     
+      <foreach close="" collection="optionIds" index="index" item="optionId" open="" separator=" ">
+       inner join t_shop_spu_attribute_option so${index} on
+       s.spu_id =so${index}.spu_id  AND so${index}.attribute_option_id
+       =#{optionId,jdbcType=BIGINT}
+      </foreach>
+    </if>   
+    <if test="option2Ids != null  and option2Ids.size()>0 ">
+      <foreach close="" collection="option2Ids" index="index" item="option2Id" open="" separator=" ">
+       inner join t_shop_sku_attribute_option sko${index} on
+       s.id =sko${index}.sku_id  AND sko${index}.option_id           
+       =#{option2Id,jdbcType=BIGINT}
+      </foreach>
+    </if> 
+     <where>
+      <include refid="Where_Column_Third_Value" />
+     </where>     
+    </select>
+    
+    <!-- 根据二级分类获得商品集合 -->
+    <select id="getBySecond"  resultMap="BaseResultMap">
+     select s.ID,s.SKU_NAME,s.SALE_PRICE,s.PICTURE
+     FROM T_SHOP_SKU s,t_shop_category c
+     where s.category_id =c.id and c.parent_id = #{categoryId,jdbcType=BIGINT} 
+     and s.SKU_STATU !=1 
+     <!-- 最低价 -->   
+    <if test="startSalePrice != null and startSalePrice != ''">
+      AND SALE_PRICE <![CDATA[>=]]> #{startSalePrice,jdbcType=DECIMAL}
+    </if>
+     <!-- 最高价 -->
+    <if test="endSalePrice != null and endSalePrice != ''">
+      AND SALE_PRICE <![CDATA[<=]]> #{endSalePrice,jdbcType=DECIMAL}
+    </if>
+     <include refid="which_sort"></include>          
+    </select>
+    
+    <!-- 根据一级分类获得商品集合 -->
+    <select id="getByFirst"  resultMap="BaseResultMap">
+     select s.ID,s.SKU_NAME,s.SALE_PRICE,s.PICTURE
+     FROM T_SHOP_SKU s
+     inner join t_shop_category c on
+     s.category_id =c.id
+     where c.parent_id in(select c2.id from t_shop_category c2 where c2.parent_id =#{categoryId,jdbcType=BIGINT}) 
+     and s.SKU_STATU !=1
+     <!-- 最低价 -->   
+    <if test="startSalePrice != null and startSalePrice != ''">
+      AND SALE_PRICE <![CDATA[>=]]> #{startSalePrice,jdbcType=DECIMAL}
+    </if>
+     <!-- 最高价 -->
+    <if test="endSalePrice != null and endSalePrice != ''">
+      AND SALE_PRICE <![CDATA[<=]]> #{endSalePrice,jdbcType=DECIMAL}
+    </if>
+     <include refid="which_sort"></include>           
+    </select>
+ 
+</mapper>

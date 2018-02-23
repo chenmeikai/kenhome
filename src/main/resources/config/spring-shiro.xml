@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
+	default-lazy-init="true">
+	
+		
+	
+	<!-- 缓存管理 -->  
+    <bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManager" ref="ehCacheManager" />
+	</bean>
+	
+	<!-- Shiro安全管理器 -->  
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
+        <property name="realm" ref="managerRealm"></property>  
+        <property name="cacheManager" ref="shiroCacheManager"></property>  
+    </bean> 
+	
+	
+	<!--   
+       Shiro主过滤器本身功能十分强大，其强大之处就在于它支持任何基于URL路径表达式的、自定义的过滤器的执行  
+       Web应用中，Shiro可控制的Web请求必须经过Shiro主过滤器的拦截，Shiro对基于Spring的Web应用提供了完美的支持   
+    -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">  
+        <!-- Shiro的核心安全接口，这个属性是必须的 -->  
+        <property name="securityManager" ref="securityManager"></property>  
+        <!-- 要求登录时的链接(登录页面地址)，非必须的属性，默认会自动寻找Web工程根目录下的"/login.jsp"页面 -->  
+        <property name="loginUrl" value="/admin/common/loginPage"></property>  
+        <!-- 登录成功后要跳转的连接(本例中此属性用不到，因为登录成功后的处理逻辑在LoginController里硬编码) -->  
+        <!-- <property name="successUrl" value="/" ></property> -->  
+        <!-- 用户访问未对其授权的资源时，所显示的连接 -->  
+        <property name="unauthorizedUrl" value="/admin/common/unauthorized"></property>  
+        <property name="filterChainDefinitions">               
+            <value> 
+                /admin/common/login=anon                         
+                /admin/manager/identifyingCode=anon
+                /admin/manager/login=anon                      
+                /resources/**=anon                
+				/admin/member/member/main=authc,perms[admin:member:member:main]
+				/admin/member/delete/main=authc,perms[admin:member:delete:main]
+				/admin/member/integrate/main=authc,perms[admin:member:integrate:main]
+				/admin/member/integrateRule/main=authc,perms[admin:member:integrateRule:main]
+				/admin/spu/spu/main=authc,perms[admin:spu:spu:main]
+				/admin/spu/spu/viewAddSpu=authc,perms[admin:spu:spu:viewAddSpu]
+				/admin/spu/spu/saveAdd=authc,perms[admin:spu:spu:saveAdd]
+				/admin/spu/spu/view=authc,perms[admin:spu:spu:view]
+				/admin/spu/spu/viewedit=authc,perms[admin:spu:spu:viewedit]
+				/admin/spu/spu/saveUpdateSpu=authc,perms[admin:spu:spu:saveUpdateSpu]
+				/admin/spu/spu/saveUpdateSpuOption=authc,perms[admin:spu:spu:saveUpdateSpuOption]
+				/admin/spu/spu/saveUpdateSpuContent=authc,perms[admin:spu:spu:saveUpdateSpuContent]
+				/admin/spu/spu/replacePicture=authc,perms[admin:spu:spu:replacePicture]
+				/admin/common/file/contentFileUpload=authc,perms[admin:common:file:contentFileUpload]
+				/admin/spu/spu/addPicture=authc,perms[admin:spu:spu:addPicture]
+				/admin/spu/spu/linkSku=authc,perms[admin:spu:spu:linkSku]
+				/admin/spu/spu/saveAddSku=authc,perms[admin:spu:spu:saveAddSku]
+				/admin/spu/spu/delete=authc,perms[admin:spu:spu:delete]
+				/admin/spu/spu/export=authc,perms[admin:spu:spu:export]
+				/admin/spu/category/main=authc,perms[admin:spu:category:main]
+				/admin/spu/category/viewEditCatagory=authc,perms[admin:spu:category:viewEditCatagory]
+				/admin/spu/category/saveAdd=authc,perms[admin:spu:category:saveAdd]
+				/admin/spu/category/saveUpdate=authc,perms[admin:spu:category:saveUpdate]
+				/admin/spu/category/delete=authc,perms[admin:spu:category:delete]
+				/admin/spu/category/sort=authc,perms[admin:spu:category:sort]
+				/admin/spu/category/saveAddcategoryAttr=authc,perms[admin:spu:category:saveAddcategoryAttr]
+				/admin/spu/category/saveUpdatecategoryAttr=authc,perms[admin:spu:category:saveUpdatecategoryAttr]
+				/admin/spu/category/deletecategoryAttr=authc,perms[admin:spu:category:deletecategoryAttr]
+				/admin/spu/category/saveAddcategoryBrand=authc,perms[admin:spu:category:saveAddcategoryBrand]
+				/admin/spu/category/saveUpdateCategoryBrand=authc,perms[admin:spu:category:saveUpdateCategoryBrand]
+				/admin/spu/category/deletecategoryBrand=authc,perms[admin:spu:category:deletecategoryBrand]
+				/admin/spu/attribute/main=authc,perms[admin:spu:attribute:main]
+				/admin/spu/attribute/saveAdd=authc,perms[admin:spu:attribute:saveAdd]
+				/admin/spu/attribute/deleteAttribute=authc,perms[admin:spu:attribute:deleteAttribute]
+				/admin/spu/attribute/saveUpdate=authc,perms[admin:spu:attribute:saveUpdate]
+				/admin/spu/attribute/editAttribute=authc,perms[admin:spu:attribute:editAttribute]
+				/admin/spu/attribute/saveAddOption=authc,perms[admin:spu:attribute:saveAddOption]
+				/admin/spu/attribute/saveUpdateOption=authc,perms[admin:spu:attribute:saveUpdateOption]
+				/admin/spu/attribute/deleteOption=authc,perms[admin:spu:attribute:deleteOption]
+				/admin/spu/brand/main=authc,perms[admin:spu:brand:main]
+				/admin/spu/brand/view=authc,perms[admin:spu:brand:view]
+				/admin/spu/brand/viewEditBrand=authc,perms[admin:spu:brand:viewEditBrand]
+				/admin/spu/brand/saveAdd=authc,perms[admin:spu:brand:saveAdd]
+				/admin/spu/brand/saveEdit=authc,perms[admin:spu:brand:saveEdit]
+				/admin/spu/brand/delete=authc,perms[admin:spu:brand:delete]
+				/admin/sku/sku/main=authc,perms[admin:sku:sku:main]
+				/admin/sku/sku/view=authc,perms[admin:sku:sku:view]
+				/admin/sku/sku/edit=authc,perms[admin:sku:sku:edit]
+				/admin/sku/sku/saveEditSku=authc,perms[admin:sku:sku:saveEditSku]
+				/admin/sku/sku/saveEditSkuOption=authc,perms[admin:sku:sku:saveEditSkuOption]
+				/admin/sku/sku/replacePicture=authc,perms[admin:sku:sku:replacePicture]
+				/admin/sku/sku/addPicture=authc,perms[admin:sku:sku:addPicture]
+				/admin/sku/sku/export=authc,perms[admin:sku:sku:export]
+				/admin/sku/sku/deleteList=authc,perms[admin:sku:sku:deleteList]
+				/admin/sku/sku/delete=authc,perms[admin:sku:sku:delete]
+				/admin/order/order/main=authc,perms[admin:order:order:main]
+				/admin/order/order/view=authc,perms[admin:order:order:view]
+				/admin/order/order/edit=authc,perms[admin:order:order:edit]
+				/admin/order/order/saveEditOrder=authc,perms[admin:order:order:saveEditOrder]
+				/admin/order/order/export=authc,perms[admin:order:order:export]
+				/admin/order/delete/main=authc,perms[admin:order:delete:main]
+				/admin/order/delete/delete=authc,perms[admin:order:delete:delete]
+				/admin/order/good/main=authc,perms[admin:order:good:main]
+				/admin/order/return/main=authc,perms[admin:order:return:main]
+				/admin/order/review/main=authc,perms[admin:order:review:main]
+				/admin/finance/order/main=authc,perms[admin:finance:order:main]
+				/admin/finance/good/main=authc,perms[admin:finance:good:main]
+				/admin/content/ad/main=authc,perms[admin:content:ad:main]
+				/admin/content/notice/main=authc,perms[admin:content:notice:main]
+				/admin/content/feekback/main=authc,perms[admin:content:feekback:main]
+				/admin/authority/manager/main=authc,perms[admin:authority:manager:main]
+				/admin/authority/manager/saveAdd=authc,perms[admin:authority:manager:saveAdd]
+				/admin/authority/manager/delete=authc,perms[admin:authority:manager:delete]
+				/admin/authority/manager/saveEdit=authc,perms[admin:authority:manager:saveEdit]
+				/admin/authority/manager/view=authc,perms[admin:authority:manager:view]
+				/admin/authority/manager/export=authc,perms[admin:authority:manager:export]
+				/admin/authority/resource/main=authc,perms[admin:authority:resource:main]
+				/admin/authority/role/main=authc,perms[admin:authority:role:main]
+				/admin/authority/role/saveAdd=authc,perms[admin:authority:role:saveAdd]
+				/admin/authority/role/delete=authc,perms[admin:authority:role:delete]
+				/admin/authority/role/saveEdit=authc,perms[admin:authority:role:saveEdit]
+				/admin/authority/role/export=authc,perms[admin:authority:role:export]
+				/admin/authority/managerRole/main=authc,perms[admin:authority:managerRole:main]
+				/admin/authority/managerRole/saveAdd=authc,perms[admin:authority:managerRole:saveAdd]
+				/admin/authority/managerRole/getManagerByName=authc,perms[admin:authority:managerRole:getManagerByName]
+				/admin/authority/managerRole/delete=authc,perms[admin:authority:managerRole:delete]
+				/admin/authority/managerRole/export=authc,perms[admin:authority:managerRole:export]
+				/admin/authority/roleAcl/main=authc,perms[admin:authority:roleAcl:main]
+				/admin/authority/roleAcl/loadMore=authc,perms[admin:authority:roleAcl:loadMore]
+				/admin/authority/roleAcl/viewAcl=authc,perms[admin:authority:roleAcl:viewAcl]
+				/admin/authority/roleAcl/viewEditAcl=authc,perms[admin:authority:roleAcl:viewEditAcl]
+				/admin/authority/roleAcl/saveAuthorize=authc,perms[admin:authority:roleAcl:saveAuthorize]
+				/admin/authority/roleAcl/delete=authc,perms[admin:authority:roleAcl:delete]
+				/admin/system/baseSetting/main=authc,perms[admin:system:baseSetting:main]
+				/admin/system/emailSetting/main=authc,perms[admin:system:emailSetting:main]
+				/admin/system/ortherSetting/main=authc,perms[admin:system:ortherSetting:main]
+				/admin/system/log/main=authc,perms[admin:system:log:main]
+				/admin/plugin/smsPlugin/main=authc,perms[admin:plugin:smsPlugin:main]
+				/admin/plugin/loginPlugin/main=authc,perms[admin:plugin:loginPlugin:main]
+				/admin/plugin/payPlugin/main=authc,perms[admin:plugin:payPlugin:main] 
+				<!-- druid的权限访问 -->
+				/druid/** =authc,perms[admin:system:log:main]
+				/admin/**=authc                                                            
+            </value>  
+        </property>  
+    </bean> 
+    
+    
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->  
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>  
+	
+		
+	
+	
+	
+	<!-- realm -->
+	<bean id="managerRealm" class="com.meikai.shop.realm.ManagerRealm">
+	  
+	</bean>
+	
+	
+	
+	
+</beans>	

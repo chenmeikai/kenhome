@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopOrderReturnDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopOrderReturn">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="RETURN_NO" jdbcType="INTEGER" property="returnNo" />
+    <result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+    <result column="LOGISTIC_ID" jdbcType="BIGINT" property="logisticId" />
+    <result column="RETURN_TYPE" jdbcType="INTEGER" property="returnType" />
+    <result column="HANDING_WAY" jdbcType="INTEGER" property="handingWay" />
+    <result column="RETURN_AMOUNT" jdbcType="DECIMAL" property="returnAmount" />
+    <result column="RETURN_SUBMIT_DATE" jdbcType="TIMESTAMP" property="returnSubmitDate" />
+    <result column="RETURN_HANDING_DATE" jdbcType="TIMESTAMP" property="returnHandingDate" />
+    <result column="RETURN_END_DATE" jdbcType="TIMESTAMP" property="returnEndDate" />
+    <result column="RETURN_REASON" jdbcType="VARCHAR" property="returnReason" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, RETURN_NO, ORDER_ID, LOGISTIC_ID, RETURN_TYPE, HANDING_WAY, RETURN_AMOUNT, RETURN_SUBMIT_DATE, 
+    RETURN_HANDING_DATE, RETURN_END_DATE, RETURN_REASON
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{returnNo,jdbcType=INTEGER}, #{orderId,jdbcType=BIGINT}, 
+    #{logisticId,jdbcType=BIGINT}, #{returnType,jdbcType=INTEGER}, #{handingWay,jdbcType=INTEGER}, 
+    #{returnAmount,jdbcType=DECIMAL}, #{returnSubmitDate,jdbcType=TIMESTAMP}, #{returnHandingDate,jdbcType=TIMESTAMP}, 
+    #{returnEndDate,jdbcType=TIMESTAMP}, #{returnReason,jdbcType=VARCHAR}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="returnNo != null and returnNo != ''">
+      AND RETURN_NO = #{returnNo,jdbcType=INTEGER}
+    </if>
+    <if test="orderId != null and orderId != ''">
+      AND ORDER_ID = #{orderId,jdbcType=BIGINT}
+    </if>
+    <if test="logisticId != null and logisticId != ''">
+      AND LOGISTIC_ID = #{logisticId,jdbcType=BIGINT}
+    </if>
+    <if test="returnType != null and returnType != ''">
+      AND RETURN_TYPE = #{returnType,jdbcType=INTEGER}
+    </if>
+    <if test="handingWay != null and handingWay != ''">
+      AND HANDING_WAY = #{handingWay,jdbcType=INTEGER}
+    </if>
+    <if test="returnAmount != null and returnAmount != ''">
+      AND RETURN_AMOUNT = #{returnAmount,jdbcType=DECIMAL}
+    </if>
+    <if test="returnSubmitDate != null and returnSubmitDate != ''">
+      AND RETURN_SUBMIT_DATE = #{returnSubmitDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="returnHandingDate != null and returnHandingDate != ''">
+      AND RETURN_HANDING_DATE = #{returnHandingDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="returnEndDate != null and returnEndDate != ''">
+      AND RETURN_END_DATE = #{returnEndDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="returnReason != null and returnReason != ''">
+      AND RETURN_REASON = #{returnReason,jdbcType=VARCHAR}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_order_return
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_order_return
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopOrderReturn">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_order_return
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="returnNo != null">
+        RETURN_NO,
+      </if>
+      <if test="orderId != null">
+        ORDER_ID,
+      </if>
+      <if test="logisticId != null">
+        LOGISTIC_ID,
+      </if>
+      <if test="returnType != null">
+        RETURN_TYPE,
+      </if>
+      <if test="handingWay != null">
+        HANDING_WAY,
+      </if>
+      <if test="returnAmount != null">
+        RETURN_AMOUNT,
+      </if>
+      <if test="returnSubmitDate != null">
+        RETURN_SUBMIT_DATE,
+      </if>
+      <if test="returnHandingDate != null">
+        RETURN_HANDING_DATE,
+      </if>
+      <if test="returnEndDate != null">
+        RETURN_END_DATE,
+      </if>
+      <if test="returnReason != null">
+        RETURN_REASON,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="returnNo != null">
+        #{returnNo,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="logisticId != null">
+        #{logisticId,jdbcType=BIGINT},
+      </if>
+      <if test="returnType != null">
+        #{returnType,jdbcType=INTEGER},
+      </if>
+      <if test="handingWay != null">
+        #{handingWay,jdbcType=INTEGER},
+      </if>
+      <if test="returnAmount != null">
+        #{returnAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="returnSubmitDate != null">
+        #{returnSubmitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnHandingDate != null">
+        #{returnHandingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnEndDate != null">
+        #{returnEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnReason != null">
+        #{returnReason,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_order_return
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_order_return where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopOrderReturn">
+    update t_shop_order_return
+    <set>
+      <if test="returnNo != null">
+        RETURN_NO = #{returnNo,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        ORDER_ID = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="logisticId != null">
+        LOGISTIC_ID = #{logisticId,jdbcType=BIGINT},
+      </if>
+      <if test="returnType != null">
+        RETURN_TYPE = #{returnType,jdbcType=INTEGER},
+      </if>
+      <if test="handingWay != null">
+        HANDING_WAY = #{handingWay,jdbcType=INTEGER},
+      </if>
+      <if test="returnAmount != null">
+        RETURN_AMOUNT = #{returnAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="returnSubmitDate != null">
+        RETURN_SUBMIT_DATE = #{returnSubmitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnHandingDate != null">
+        RETURN_HANDING_DATE = #{returnHandingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnEndDate != null">
+        RETURN_END_DATE = #{returnEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnReason != null">
+        RETURN_REASON = #{returnReason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_order_return
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_order_return
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, RETURN_NO, ORDER_ID, LOGISTIC_ID, RETURN_TYPE, HANDING_WAY, RETURN_AMOUNT, 
+    RETURN_SUBMIT_DATE, RETURN_HANDING_DATE, RETURN_END_DATE, RETURN_REASON
+    from t_shop_order_return
+  </select>
+</mapper>

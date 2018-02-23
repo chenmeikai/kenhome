@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopAttributeOptionDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopAttributeOption">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="OPTION_NAME" jdbcType="VARCHAR" property="optionName" />
+    <result column="OPTION_STATU" jdbcType="INTEGER" property="optionStatu" />
+    <result column="OPTION_SORT" jdbcType="INTEGER" property="optionSort" />
+    <result column="ATTRIBUTE_ID" jdbcType="BIGINT" property="attributeId" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_DATE, CREATER, OPTION_NAME, OPTION_STATU, OPTION_SORT, ATTRIBUTE_ID
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
+    #{optionName,jdbcType=VARCHAR}, #{optionStatu,jdbcType=INTEGER}, #{optionSort,jdbcType=INTEGER}, 
+    #{attributeId,jdbcType=BIGINT}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="creater != null and creater != ''">
+      AND CREATER = #{creater,jdbcType=VARCHAR}
+    </if>
+    <if test="optionName != null and optionName != ''">
+      AND OPTION_NAME = #{optionName,jdbcType=VARCHAR}
+    </if>
+    <if test="optionStatu != null and optionStatu != ''">
+      AND OPTION_STATU = #{optionStatu,jdbcType=INTEGER}
+    </if>
+    <if test="optionSort != null and optionSort != ''">
+      AND OPTION_SORT = #{optionSort,jdbcType=INTEGER}
+    </if>
+    <if test="attributeId != null and attributeId != ''">
+      AND ATTRIBUTE_ID = #{attributeId,jdbcType=BIGINT}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_attribute_option
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_attribute_option
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopAttributeOption">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_attribute_option
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="creater != null">
+        CREATER,
+      </if>
+      <if test="optionName != null">
+        OPTION_NAME,
+      </if>
+      <if test="optionStatu != null">
+        OPTION_STATU,
+      </if>
+      <if test="optionSort != null">
+        OPTION_SORT,
+      </if>
+      <if test="attributeId != null">
+        ATTRIBUTE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="optionName != null">
+        #{optionName,jdbcType=VARCHAR},
+      </if>
+      <if test="optionStatu != null">
+        #{optionStatu,jdbcType=INTEGER},
+      </if>
+      <if test="optionSort != null">
+        #{optionSort,jdbcType=INTEGER},
+      </if>
+      <if test="attributeId != null">
+        #{attributeId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_attribute_option
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_attribute_option where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopAttributeOption">
+    update t_shop_attribute_option
+    <set>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="optionName != null">
+        OPTION_NAME = #{optionName,jdbcType=VARCHAR},
+      </if>
+      <if test="optionStatu != null">
+        OPTION_STATU = #{optionStatu,jdbcType=INTEGER},
+      </if>
+      <if test="optionSort != null">
+        OPTION_SORT = #{optionSort,jdbcType=INTEGER},
+      </if>
+      <if test="attributeId != null">
+        ATTRIBUTE_ID = #{attributeId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_attribute_option
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_attribute_option
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_DATE, CREATER, OPTION_NAME, OPTION_STATU, OPTION_SORT, ATTRIBUTE_ID
+    from t_shop_attribute_option
+  </select>
+  
+  <!-- 根据属性值名获得唯一的属性值记录 -->
+  <select id="getByUniqueName" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_attribute_option
+    where OPTION_NAME = #{optionName,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据属性Id获得记录 -->
+    <select id="getByAttributeId" resultMap="BaseResultMap">
+      select 
+    <include refid="Base_Column_List" />
+      from t_shop_attribute_option
+      where ATTRIBUTE_ID = #{attributeId,jdbcType=BIGINT}
+    </select>
+  
+</mapper>

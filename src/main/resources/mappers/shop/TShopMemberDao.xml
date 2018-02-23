@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopMemberDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopMember">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATE_IP" jdbcType="VARCHAR" property="createIp" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATE_IP" jdbcType="VARCHAR" property="updateIp" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="NICKNAME" jdbcType="VARCHAR" property="nickname" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
+    <result column="OPEN_TYPE" jdbcType="INTEGER" property="openType" />
+    <result column="OPEN_LOGIN_TIME" jdbcType="TIMESTAMP" property="openLoginTime" />
+    <result column="OPEN_LOGIN_NUMS" jdbcType="BIGINT" property="openLoginNums" />
+    <result column="AVATAR" jdbcType="VARCHAR" property="avatar" />
+    <result column="SEX" jdbcType="INTEGER" property="sex" />
+    <result column="BIRTHDAY" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="IDCARD" jdbcType="VARCHAR" property="idcard" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="STATU" jdbcType="INTEGER" property="statu" />
+    <result column="LOGIN_IP" jdbcType="VARCHAR" property="loginIp" />
+    <result column="LOGIN_TIME" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="TRY_NUMS" jdbcType="INTEGER" property="tryNums" />
+    <result column="IS_LOCKED" jdbcType="INTEGER" property="isLocked" />
+    <result column="LOCKED_DATE" jdbcType="TIMESTAMP" property="lockedDate" />
+    <result column="LOGIN_NUMS" jdbcType="BIGINT" property="loginNums" />
+    <result column="INTEGRATE" jdbcType="BIGINT" property="integrate" />
+    <result column="LEVAL" jdbcType="INTEGER" property="leval" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
+    <result column="COUNTY" jdbcType="VARCHAR" property="county" />
+    <result column="ADRESS" jdbcType="VARCHAR" property="adress" />
+    <result column="active_code" jdbcType="VARCHAR" property="activeCode" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_DATE, CREATE_IP, UPDATE_DATE, UPDATE_IP, USER_NAME, NICKNAME, PASSWORD, 
+    OPEN_ID, OPEN_TYPE, OPEN_LOGIN_TIME, OPEN_LOGIN_NUMS, AVATAR, SEX, BIRTHDAY, EMAIL, 
+    IDCARD, PHONE, STATU, LOGIN_IP, LOGIN_TIME, TRY_NUMS, IS_LOCKED, LOCKED_DATE, LOGIN_NUMS, 
+    INTEGRATE, LEVAL, province, CITY, COUNTY, ADRESS, active_code
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{createIp,jdbcType=VARCHAR}, 
+    #{updateDate,jdbcType=TIMESTAMP}, #{updateIp,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+    #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, 
+    #{openType,jdbcType=INTEGER}, #{openLoginTime,jdbcType=TIMESTAMP}, #{openLoginNums,jdbcType=BIGINT}, 
+    #{avatar,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{birthday,jdbcType=TIMESTAMP}, 
+    #{email,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+    #{statu,jdbcType=INTEGER}, #{loginIp,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP}, 
+    #{tryNums,jdbcType=INTEGER}, #{isLocked,jdbcType=INTEGER}, #{lockedDate,jdbcType=TIMESTAMP}, 
+    #{loginNums,jdbcType=BIGINT}, #{integrate,jdbcType=BIGINT}, #{leval,jdbcType=INTEGER}, 
+    #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, 
+    #{adress,jdbcType=VARCHAR}, #{activeCode,jdbcType=VARCHAR}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="createIp != null and createIp != ''">
+      AND CREATE_IP = #{createIp,jdbcType=VARCHAR}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateIp != null and updateIp != ''">
+      AND UPDATE_IP = #{updateIp,jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null and userName != ''">
+      AND USER_NAME = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="nickname != null and nickname != ''">
+      AND NICKNAME = #{nickname,jdbcType=VARCHAR}
+    </if>
+    <if test="password != null and password != ''">
+      AND PASSWORD = #{password,jdbcType=VARCHAR}
+    </if>
+    <if test="openId != null and openId != ''">
+      AND OPEN_ID = #{openId,jdbcType=VARCHAR}
+    </if>
+    <if test="openType != null and openType != ''">
+      AND OPEN_TYPE = #{openType,jdbcType=INTEGER}
+    </if>
+    <if test="openLoginTime != null and openLoginTime != ''">
+      AND OPEN_LOGIN_TIME = #{openLoginTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="openLoginNums != null and openLoginNums != ''">
+      AND OPEN_LOGIN_NUMS = #{openLoginNums,jdbcType=BIGINT}
+    </if>
+    <if test="avatar != null and avatar != ''">
+      AND AVATAR = #{avatar,jdbcType=VARCHAR}
+    </if>
+    <if test="sex != null and sex != ''">
+      AND SEX = #{sex,jdbcType=INTEGER}
+    </if>
+    <if test="birthday != null and birthday != ''">
+      AND BIRTHDAY = #{birthday,jdbcType=TIMESTAMP}
+    </if>
+    <if test="email != null and email != ''">
+      AND EMAIL = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="idcard != null and idcard != ''">
+      AND IDCARD = #{idcard,jdbcType=VARCHAR}
+    </if>
+    <if test="phone != null and phone != ''">
+      AND PHONE = #{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="statu != null and statu != ''">
+      AND STATU = #{statu,jdbcType=INTEGER}
+    </if>
+    <if test="loginIp != null and loginIp != ''">
+      AND LOGIN_IP = #{loginIp,jdbcType=VARCHAR}
+    </if>
+    <if test="loginTime != null and loginTime != ''">
+      AND LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="tryNums != null and tryNums != ''">
+      AND TRY_NUMS = #{tryNums,jdbcType=INTEGER}
+    </if>
+    <if test="isLocked != null and isLocked != ''">
+      AND IS_LOCKED = #{isLocked,jdbcType=INTEGER}
+    </if>
+    <if test="lockedDate != null and lockedDate != ''">
+      AND LOCKED_DATE = #{lockedDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="loginNums != null and loginNums != ''">
+      AND LOGIN_NUMS = #{loginNums,jdbcType=BIGINT}
+    </if>
+    <if test="integrate != null and integrate != ''">
+      AND INTEGRATE = #{integrate,jdbcType=BIGINT}
+    </if>
+    <if test="leval != null and leval != ''">
+      AND LEVAL = #{leval,jdbcType=INTEGER}
+    </if>
+    <if test="province != null and province != ''">
+      AND province = #{province,jdbcType=VARCHAR}
+    </if>
+    <if test="city != null and city != ''">
+      AND CITY = #{city,jdbcType=VARCHAR}
+    </if>
+    <if test="county != null and county != ''">
+      AND COUNTY = #{county,jdbcType=VARCHAR}
+    </if>
+    <if test="adress != null and adress != ''">
+      AND ADRESS = #{adress,jdbcType=VARCHAR}
+    </if>
+    <if test="activeCode != null and activeCode != ''">
+      AND active_code = #{activeCode,jdbcType=VARCHAR}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_member
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_member
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopMember">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_member
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="createIp != null">
+        CREATE_IP,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="updateIp != null">
+        UPDATE_IP,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="nickname != null">
+        NICKNAME,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="openId != null">
+        OPEN_ID,
+      </if>
+      <if test="openType != null">
+        OPEN_TYPE,
+      </if>
+      <if test="openLoginTime != null">
+        OPEN_LOGIN_TIME,
+      </if>
+      <if test="openLoginNums != null">
+        OPEN_LOGIN_NUMS,
+      </if>
+      <if test="avatar != null">
+        AVATAR,
+      </if>
+      <if test="sex != null">
+        SEX,
+      </if>
+      <if test="birthday != null">
+        BIRTHDAY,
+      </if>
+      <if test="email != null">
+        EMAIL,
+      </if>
+      <if test="idcard != null">
+        IDCARD,
+      </if>
+      <if test="phone != null">
+        PHONE,
+      </if>
+      <if test="statu != null">
+        STATU,
+      </if>
+      <if test="loginIp != null">
+        LOGIN_IP,
+      </if>
+      <if test="loginTime != null">
+        LOGIN_TIME,
+      </if>
+      <if test="tryNums != null">
+        TRY_NUMS,
+      </if>
+      <if test="isLocked != null">
+        IS_LOCKED,
+      </if>
+      <if test="lockedDate != null">
+        LOCKED_DATE,
+      </if>
+      <if test="loginNums != null">
+        LOGIN_NUMS,
+      </if>
+      <if test="integrate != null">
+        INTEGRATE,
+      </if>
+      <if test="leval != null">
+        LEVAL,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        CITY,
+      </if>
+      <if test="county != null">
+        COUNTY,
+      </if>
+      <if test="adress != null">
+        ADRESS,
+      </if>
+      <if test="activeCode != null">
+        active_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createIp != null">
+        #{createIp,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateIp != null">
+        #{updateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="openType != null">
+        #{openType,jdbcType=INTEGER},
+      </if>
+      <if test="openLoginTime != null">
+        #{openLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openLoginNums != null">
+        #{openLoginNums,jdbcType=BIGINT},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="statu != null">
+        #{statu,jdbcType=INTEGER},
+      </if>
+      <if test="loginIp != null">
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tryNums != null">
+        #{tryNums,jdbcType=INTEGER},
+      </if>
+      <if test="isLocked != null">
+        #{isLocked,jdbcType=INTEGER},
+      </if>
+      <if test="lockedDate != null">
+        #{lockedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginNums != null">
+        #{loginNums,jdbcType=BIGINT},
+      </if>
+      <if test="integrate != null">
+        #{integrate,jdbcType=BIGINT},
+      </if>
+      <if test="leval != null">
+        #{leval,jdbcType=INTEGER},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="adress != null">
+        #{adress,jdbcType=VARCHAR},
+      </if>
+      <if test="activeCode != null">
+        #{activeCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_member
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_member where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopMember">
+    update t_shop_member
+    <set>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createIp != null">
+        CREATE_IP = #{createIp,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateIp != null">
+        UPDATE_IP = #{updateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        NICKNAME = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        OPEN_ID = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="openType != null">
+        OPEN_TYPE = #{openType,jdbcType=INTEGER},
+      </if>
+      <if test="openLoginTime != null">
+        OPEN_LOGIN_TIME = #{openLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openLoginNums != null">
+        OPEN_LOGIN_NUMS = #{openLoginNums,jdbcType=BIGINT},
+      </if>
+      <if test="avatar != null">
+        AVATAR = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null">
+        BIRTHDAY = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null">
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        IDCARD = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="statu != null">
+        STATU = #{statu,jdbcType=INTEGER},
+      </if>
+      <if test="loginIp != null">
+        LOGIN_IP = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null">
+        LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tryNums != null">
+        TRY_NUMS = #{tryNums,jdbcType=INTEGER},
+      </if>
+      <if test="isLocked != null">
+        IS_LOCKED = #{isLocked,jdbcType=INTEGER},
+      </if>
+      <if test="lockedDate != null">
+        LOCKED_DATE = #{lockedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginNums != null">
+        LOGIN_NUMS = #{loginNums,jdbcType=BIGINT},
+      </if>
+      <if test="integrate != null">
+        INTEGRATE = #{integrate,jdbcType=BIGINT},
+      </if>
+      <if test="leval != null">
+        LEVAL = #{leval,jdbcType=INTEGER},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        CITY = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        COUNTY = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="adress != null">
+        ADRESS = #{adress,jdbcType=VARCHAR},
+      </if>
+      <if test="activeCode != null">
+        active_code = #{activeCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_member
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_member
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_DATE, CREATE_IP, UPDATE_DATE, UPDATE_IP, USER_NAME, NICKNAME, PASSWORD, 
+    OPEN_ID, OPEN_TYPE, OPEN_LOGIN_TIME, OPEN_LOGIN_NUMS, AVATAR, SEX, BIRTHDAY, EMAIL, 
+    IDCARD, PHONE, STATU, LOGIN_IP, LOGIN_TIME, TRY_NUMS, IS_LOCKED, LOCKED_DATE, LOGIN_NUMS, 
+    INTEGRATE, LEVAL, province, CITY, COUNTY, ADRESS, active_code
+    from t_shop_member
+  </select>
+  
+  <!-- 根据用户名获得数据 -->
+  <select id="getByUniqueName" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_member
+    where user_name = #{userName,jdbcType=VARCHAR}
+  </select>
+</mapper>

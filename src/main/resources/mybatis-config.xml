@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- MyBatis 设置 -->
+	<settings>
+	
+	    <!-- 全局映射器启用缓存 *主要将此属性设置完成即可-->
+        <setting name="cacheEnabled" value="true"/>
+        
+	   
+		<!-- 禁用全局延迟加载，所有关联对象都会即时加载 -->
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="aggressiveLazyLoading" value="false" />
+		<!-- 启用下划线与驼峰式命名规则的映射 -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	
+	<typeAliases>  
+    <package name="com.meikai.shop.entity"/>  
+    </typeAliases> 
+	
+	<plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 设置数据库类型 Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库-->        
+            <property name="helperDialect" value="mysql"/>
+        </plugin>
+    </plugins>
+    
+	
+</configuration>

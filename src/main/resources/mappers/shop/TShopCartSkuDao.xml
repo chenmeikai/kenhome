@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopCartSkuDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopCartSku">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="CART_ID" jdbcType="BIGINT" property="cartId" />
+    <result column="SKU_ID" jdbcType="BIGINT" property="skuId" />
+    <result column="NUMS" jdbcType="INTEGER" property="nums" />
+  </resultMap>
+  
+  <resultMap id="BaseWithSkuResultMap" type="com.meikai.shop.entity.TShopCartSku">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="CART_ID" jdbcType="BIGINT" property="cartId" />
+    <result column="MEMBER_ID" jdbcType="BIGINT" property="userId" />
+    <result column="SKU_ID" jdbcType="BIGINT" property="skuId" />
+    <result column="NUMS" jdbcType="INTEGER" property="nums" />
+    <association column="SKU_ID" property="sku" select="com.meikai.shop.dao.TShopSkuDao.getPlusById"></association>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_DATE, UPDATE_DATE, CART_ID, SKU_ID, NUMS
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+    #{cartId,jdbcType=BIGINT}, #{skuId,jdbcType=BIGINT}, #{nums,jdbcType=INTEGER}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="cartId != null and cartId != ''">
+      AND CART_ID = #{cartId,jdbcType=BIGINT}
+    </if>
+    <if test="skuId != null and skuId != ''">
+      AND SKU_ID = #{skuId,jdbcType=BIGINT}
+    </if>
+    <if test="nums != null and nums != ''">
+      AND NUMS = #{nums,jdbcType=INTEGER}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_cart_sku
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_cart_sku
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopCartSku">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_cart_sku
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="cartId != null">
+        CART_ID,
+      </if>
+      <if test="skuId != null">
+        SKU_ID,
+      </if>
+      <if test="nums != null">
+        NUMS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cartId != null">
+        #{cartId,jdbcType=BIGINT},
+      </if>
+      <if test="skuId != null">
+        #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="nums != null">
+        #{nums,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_cart_sku
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_cart_sku where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopCartSku">
+    update t_shop_cart_sku
+    <set>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cartId != null">
+        CART_ID = #{cartId,jdbcType=BIGINT},
+      </if>
+      <if test="skuId != null">
+        SKU_ID = #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="nums != null">
+        NUMS = #{nums,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_cart_sku
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_cart_sku
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_DATE, UPDATE_DATE, CART_ID, SKU_ID, NUMS
+    from t_shop_cart_sku
+  </select>
+  
+  <!-- 根据用户Id获得购物车全部商品，及商品信息 -->
+  <select id="getWithSkuByUserId" resultMap="BaseWithSkuResultMap">
+    select * from t_shop_cart_sku cs
+    where cs.cart_id = (select c.id from t_shop_cart c where c.member_id =#{userId,jdbcType=BIGINT})
+  </select>
+  
+  <!-- 根据cartSku Id获得购物车商品,包含商品信息 -->
+  <select id="getWithSkuById" resultMap="BaseWithSkuResultMap">
+    select cs.*,c.member_id from t_shop_cart_sku cs
+    left join t_shop_cart c on cs.cart_id =c.id
+    where cs.ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+</mapper>

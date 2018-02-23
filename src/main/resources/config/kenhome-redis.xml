@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING/DTD BEAN/EN"
+ "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="false">
+	<description>Spring Defines-- UMCP CACHE</description>
+
+	<bean id="jedisPoolConfig"
+		class="redis.clients.jedis.JedisPoolConfig">
+		<!--  -->
+		<property name="maxTotal" value="20" />
+		<property name="maxIdle" value="1000" />
+		<property name="maxWaitMillis" value="5000" />
+		<property name="testOnBorrow" value="false" />
+	</bean>
+
+	
+	<bean id="jedis.shardInfo"
+		class="redis.clients.jedis.JedisShardInfo">
+		<constructor-arg index="0" value="127.0.0.1" />
+		<constructor-arg index="1" value="6379" />
+	</bean>
+	
+
+	<!-- jedis shard pool配置 -->
+	<bean id="shardedJedisPool"
+		class="redis.clients.jedis.ShardedJedisPool">
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1">
+			<list>
+				<ref bean="jedis.shardInfo" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!-- 缓存代理，使用缓存内容请使用本代理进行操作	请使用接口进行注入-->
+	<bean id="cacheProxy" class="com.meikai.redisCache.ShardedRedisProxy">
+		<property name="shardedJedisPool">
+			<ref bean="shardedJedisPool" />
+		</property>
+	</bean>
+	
+	<!--  
+	 <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">  
+        <property name="maxIdle" value="20" />  
+        <property name="maxActive" value="1000" />  
+        <property name="maxWait" value="5000" />  
+        <property name="testOnBorrow" value="false" />  
+    </bean>  
+    -->  
+      
+      <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">  
+        <property name="usePool" value="true"></property>  
+        <property name="hostName" value="127.0.0.1" />  
+        <property name="port" value="6379" />  
+        <property name="password" value="" />  
+        <constructor-arg index="0" ref="jedisPoolConfig" />  
+    </bean>  
+    
+    
+    <!-- -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">  
+        <property name="connectionFactory"   ref="redisConnectionFactory" />  
+    </bean>         
+ 	
+</beans>

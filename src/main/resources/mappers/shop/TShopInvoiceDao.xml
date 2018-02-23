@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopInvoiceDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopInvoice">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+    <result column="IS_VAT" jdbcType="INTEGER" property="isVat" />
+    <result column="INVOICE_TITLE" jdbcType="VARCHAR" property="invoiceTitle" />
+    <result column="INVOICE_CONTENT" jdbcType="VARCHAR" property="invoiceContent" />
+    <result column="INVOICE_AMOUNT" jdbcType="DECIMAL" property="invoiceAmount" />
+    <result column="INVOICE_TAX_NO" jdbcType="VARCHAR" property="invoiceTaxNo" />
+    <result column="INVOICE_TAX" jdbcType="DECIMAL" property="invoiceTax" />
+    <result column="VAT_COMPANY_NAME" jdbcType="VARCHAR" property="vatCompanyName" />
+    <result column="VAT_COMPANY_ADDRESS" jdbcType="VARCHAR" property="vatCompanyAddress" />
+    <result column="VAT_TELEPHONE" jdbcType="VARCHAR" property="vatTelephone" />
+    <result column="VAT_BANK_NAME" jdbcType="VARCHAR" property="vatBankName" />
+    <result column="VAT_BANK_ACCOUNT" jdbcType="VARCHAR" property="vatBankAccount" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_TIME, UPDATE_TIME, ORDER_NO, IS_VAT, INVOICE_TITLE, INVOICE_CONTENT, INVOICE_AMOUNT, 
+    INVOICE_TAX_NO, INVOICE_TAX, VAT_COMPANY_NAME, VAT_COMPANY_ADDRESS, VAT_TELEPHONE, 
+    VAT_BANK_NAME, VAT_BANK_ACCOUNT
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+    #{orderNo,jdbcType=VARCHAR}, #{isVat,jdbcType=INTEGER}, #{invoiceTitle,jdbcType=VARCHAR}, 
+    #{invoiceContent,jdbcType=VARCHAR}, #{invoiceAmount,jdbcType=DECIMAL}, #{invoiceTaxNo,jdbcType=VARCHAR}, 
+    #{invoiceTax,jdbcType=DECIMAL}, #{vatCompanyName,jdbcType=VARCHAR}, #{vatCompanyAddress,jdbcType=VARCHAR}, 
+    #{vatTelephone,jdbcType=VARCHAR}, #{vatBankName,jdbcType=VARCHAR}, #{vatBankAccount,jdbcType=VARCHAR}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createTime != null and createTime != ''">
+      AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null and updateTime != ''">
+      AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+      AND ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+    </if>
+    <if test="isVat != null and isVat != ''">
+      AND IS_VAT = #{isVat,jdbcType=INTEGER}
+    </if>
+    <if test="invoiceTitle != null and invoiceTitle != ''">
+      AND INVOICE_TITLE = #{invoiceTitle,jdbcType=VARCHAR}
+    </if>
+    <if test="invoiceContent != null and invoiceContent != ''">
+      AND INVOICE_CONTENT = #{invoiceContent,jdbcType=VARCHAR}
+    </if>
+    <if test="invoiceAmount != null and invoiceAmount != ''">
+      AND INVOICE_AMOUNT = #{invoiceAmount,jdbcType=DECIMAL}
+    </if>
+    <if test="invoiceTaxNo != null and invoiceTaxNo != ''">
+      AND INVOICE_TAX_NO = #{invoiceTaxNo,jdbcType=VARCHAR}
+    </if>
+    <if test="invoiceTax != null and invoiceTax != ''">
+      AND INVOICE_TAX = #{invoiceTax,jdbcType=DECIMAL}
+    </if>
+    <if test="vatCompanyName != null and vatCompanyName != ''">
+      AND VAT_COMPANY_NAME = #{vatCompanyName,jdbcType=VARCHAR}
+    </if>
+    <if test="vatCompanyAddress != null and vatCompanyAddress != ''">
+      AND VAT_COMPANY_ADDRESS = #{vatCompanyAddress,jdbcType=VARCHAR}
+    </if>
+    <if test="vatTelephone != null and vatTelephone != ''">
+      AND VAT_TELEPHONE = #{vatTelephone,jdbcType=VARCHAR}
+    </if>
+    <if test="vatBankName != null and vatBankName != ''">
+      AND VAT_BANK_NAME = #{vatBankName,jdbcType=VARCHAR}
+    </if>
+    <if test="vatBankAccount != null and vatBankAccount != ''">
+      AND VAT_BANK_ACCOUNT = #{vatBankAccount,jdbcType=VARCHAR}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_invoice
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_invoice
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopInvoice">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_invoice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="orderNo != null">
+        ORDER_NO,
+      </if>
+      <if test="isVat != null">
+        IS_VAT,
+      </if>
+      <if test="invoiceTitle != null">
+        INVOICE_TITLE,
+      </if>
+      <if test="invoiceContent != null">
+        INVOICE_CONTENT,
+      </if>
+      <if test="invoiceAmount != null">
+        INVOICE_AMOUNT,
+      </if>
+      <if test="invoiceTaxNo != null">
+        INVOICE_TAX_NO,
+      </if>
+      <if test="invoiceTax != null">
+        INVOICE_TAX,
+      </if>
+      <if test="vatCompanyName != null">
+        VAT_COMPANY_NAME,
+      </if>
+      <if test="vatCompanyAddress != null">
+        VAT_COMPANY_ADDRESS,
+      </if>
+      <if test="vatTelephone != null">
+        VAT_TELEPHONE,
+      </if>
+      <if test="vatBankName != null">
+        VAT_BANK_NAME,
+      </if>
+      <if test="vatBankAccount != null">
+        VAT_BANK_ACCOUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isVat != null">
+        #{isVat,jdbcType=INTEGER},
+      </if>
+      <if test="invoiceTitle != null">
+        #{invoiceTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceContent != null">
+        #{invoiceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAmount != null">
+        #{invoiceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="invoiceTaxNo != null">
+        #{invoiceTaxNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceTax != null">
+        #{invoiceTax,jdbcType=DECIMAL},
+      </if>
+      <if test="vatCompanyName != null">
+        #{vatCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="vatCompanyAddress != null">
+        #{vatCompanyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="vatTelephone != null">
+        #{vatTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="vatBankName != null">
+        #{vatBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="vatBankAccount != null">
+        #{vatBankAccount,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_invoice
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_invoice where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopInvoice">
+    update t_shop_invoice
+    <set>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderNo != null">
+        ORDER_NO = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isVat != null">
+        IS_VAT = #{isVat,jdbcType=INTEGER},
+      </if>
+      <if test="invoiceTitle != null">
+        INVOICE_TITLE = #{invoiceTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceContent != null">
+        INVOICE_CONTENT = #{invoiceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAmount != null">
+        INVOICE_AMOUNT = #{invoiceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="invoiceTaxNo != null">
+        INVOICE_TAX_NO = #{invoiceTaxNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceTax != null">
+        INVOICE_TAX = #{invoiceTax,jdbcType=DECIMAL},
+      </if>
+      <if test="vatCompanyName != null">
+        VAT_COMPANY_NAME = #{vatCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="vatCompanyAddress != null">
+        VAT_COMPANY_ADDRESS = #{vatCompanyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="vatTelephone != null">
+        VAT_TELEPHONE = #{vatTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="vatBankName != null">
+        VAT_BANK_NAME = #{vatBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="vatBankAccount != null">
+        VAT_BANK_ACCOUNT = #{vatBankAccount,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_invoice
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_invoice
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_TIME, UPDATE_TIME, ORDER_NO, IS_VAT, INVOICE_TITLE, INVOICE_CONTENT, 
+    INVOICE_AMOUNT, INVOICE_TAX_NO, INVOICE_TAX, VAT_COMPANY_NAME, VAT_COMPANY_ADDRESS, 
+    VAT_TELEPHONE, VAT_BANK_NAME, VAT_BANK_ACCOUNT
+    from t_shop_invoice
+  </select>
+</mapper>

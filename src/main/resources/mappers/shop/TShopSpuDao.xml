@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopSpuDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopSpu">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="SPU_NAME" jdbcType="VARCHAR" property="spuName" />
+    <result column="SPU_TITLE" jdbcType="VARCHAR" property="spuTitle" />
+    <result column="SPU_NO" jdbcType="VARCHAR" property="spuNo" />
+    <result column="SPU_SORT" jdbcType="INTEGER" property="spuSort" />
+    <result column="SPU_STATU" jdbcType="INTEGER" property="spuStatu" />
+    <result column="SPU_IMAGE" jdbcType="VARCHAR" property="spuImage" />
+    <result column="CATEGORY_ID" jdbcType="BIGINT" property="categoryId" />
+    <result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+    <result column="SPU_CONTENT" jdbcType="LONGVARCHAR" property="spuContent" />
+    <result column="SALE_AMOUNT" jdbcType="BIGINT" property="saleAmount" />
+    <result column="STOCKS" jdbcType="BIGINT" property="stocks" />
+  </resultMap>
+  
+  <resultMap id="BasePlusResultMap" type="com.meikai.shop.entity.TShopSpu">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="SPU_NAME" jdbcType="VARCHAR" property="spuName" />
+    <result column="SPU_TITLE" jdbcType="VARCHAR" property="spuTitle" />
+    <result column="SPU_NO" jdbcType="VARCHAR" property="spuNo" />
+    <result column="SPU_SORT" jdbcType="INTEGER" property="spuSort" />
+    <result column="SPU_STATU" jdbcType="INTEGER" property="spuStatu" />
+    <result column="SPU_IMAGE" jdbcType="VARCHAR" property="spuImage" />
+    <result column="CATEGORY_ID" jdbcType="BIGINT" property="categoryId" />
+    <result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+    <result column="SPU_CONTENT" jdbcType="LONGVARCHAR" property="spuContent" />
+    <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName" />
+    <result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
+    <result column="SALE_AMOUNT" jdbcType="BIGINT" property="saleAmount" />
+    <result column="STOCKS" jdbcType="BIGINT" property="stocks" />
+  </resultMap>
+  
+  <!-- 包含属性值及属性类型 -->
+  <resultMap id="BaseWithAttributeWithOptionsResultMap" type="com.meikai.shop.entity.TShopSpu">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="UPDATER" jdbcType="VARCHAR" property="updater" />
+    <result column="SPU_NAME" jdbcType="VARCHAR" property="spuName" />
+    <result column="SPU_TITLE" jdbcType="VARCHAR" property="spuTitle" />
+    <result column="SPU_NO" jdbcType="VARCHAR" property="spuNo" />
+    <result column="SPU_SORT" jdbcType="INTEGER" property="spuSort" />
+    <result column="SPU_STATU" jdbcType="INTEGER" property="spuStatu" />
+    <result column="SPU_IMAGE" jdbcType="VARCHAR" property="spuImage" />
+    <result column="CATEGORY_ID" jdbcType="BIGINT" property="categoryId" />
+    <result column="BRAND_ID" jdbcType="BIGINT" property="brandId" />
+    <result column="SPU_CONTENT" jdbcType="LONGVARCHAR" property="spuContent" />
+    <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName" />
+    <result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
+    <result column="SALE_AMOUNT" jdbcType="BIGINT" property="saleAmount" />
+    <result column="STOCKS" jdbcType="BIGINT" property="stocks" />
+    <collection  property="attributes" ofType="com.meikai.shop.entity.TShopAttribute" javaType="java.util.ArrayList" >
+        <id column="ATTRIBUTEID" jdbcType="BIGINT" property="id" />  
+	    <result column="ATTRIBUTE_NAME" jdbcType="VARCHAR" property="attributeName" />	    	   
+	    <result column="ATTRIBUTE_SORT" jdbcType="INTEGER" property="attributeSort" />
+	    <result column="ATTRIBUTE_STATU" jdbcType="INTEGER" property="attributeStatu" />
+	    <result column="base_type" jdbcType="INTEGER" property="baseType" />
+	    <result column="price_type" jdbcType="INTEGER" property="priceType" />
+	    <result column="guide_type" jdbcType="INTEGER" property="guideType" />
+	    <collection  property="options" ofType="com.meikai.shop.entity.TShopAttributeOption" javaType="java.util.ArrayList">
+	        <id column="OPTIONID" jdbcType="BIGINT" property="id" />
+		    <result column="OPTION_NAME" jdbcType="VARCHAR" property="optionName" />
+		    <result column="OPTION_STATU" jdbcType="INTEGER" property="optionStatu" />
+		    <result column="OPTION_SORT" jdbcType="INTEGER" property="optionSort" />
+		    <result column="ATTRIBUTE_ID" jdbcType="BIGINT" property="attributeId" />
+	    </collection>
+    </collection>
+  </resultMap>
+  
+    
+  <!-- 根据id获得spu，包含属性以及属性类型，属性包含spu的属性值 -->
+  <select id="getSpuAttrOptionsById"  resultMap="BaseWithAttributeWithOptionsResultMap">
+    select s.*,c.category_name,b.brand_name,a.id AS attributeId,a.attribute_name,
+    a.attribute_sort,a.attribute_statu,ca.base_type,ca.price_type,ca.guide_type,
+    o.id AS optionId,o.option_name,o.option_statu,o.option_sort,o.attribute_id
+    from t_shop_spu s 
+    INNER join t_shop_category c on s.category_id = c.id 
+    left join  t_shop_brand b on s.brand_id = b.id
+    INNER join t_shop_category_attribute ca on ca.category_id = s.category_id  <!-- 分类-属性的分类id = spu的分类id -->
+    INNER join t_shop_attribute a on ca.attribute_id =a.id          <!-- 分类-属性的属性id = 属性id -->
+    INNER join t_shop_attribute_option o on a.id =o.attribute_id    <!-- 属性值的属性id = 属性id -->
+    INNER join t_shop_spu_attribute_option so on s.id = so.spu_id   <!-- spu的id = spu-属性值的spu id -->
+    and o.id =so.attribute_option_id <!-- 属性值的id = spu-属性值的的属性值id -->
+    where s.id = #{id,jdbcType=BIGINT} 
+  </select>
+  
+  
+  <!-- 根据分类Id获得属性集合，及属性所属类型，以及包含属性值集合   
+  <select id="getAttrOptionsByCategoryId" resultMap="AttributeWithOptionsResultMap">
+    select a.*,ca.base_type,ca.price_type,ca.guide_type
+    from t_shop_attribute a left join t_shop_category_attribute ca on a.id =ca.attribute_id
+    where ca.category_id = #{categoryId,jdbcType=BIGINT}  
+  </select>
+   -->
+  <!-- 获得分类的spu的属性值 
+    <select id="getSpuOptions" resultMap="SpuOptionsResultMap">
+      select o.id,o.option_name,o.option_statu,o.option_sort,o.attribute_id
+      from t_shop_attribute_option o,t_shop_spu_attribute_option so,t_shop_category_attribute ca,t_shop_spu s
+      where o.id=so.attribute_option_id and so.spu_id =1 and o.attribute_id = #{id,jdbcType=BIGINT}  
+    </select>
+  -->
+  
+  
+  
+  
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_DATE, CREATER, UPDATE_DATE, UPDATER, SPU_NAME, SPU_TITLE, SPU_NO, 
+    SPU_SORT, SPU_STATU, SPU_IMAGE, CATEGORY_ID, BRAND_ID,BRAND_ID,SALE_AMOUNT,STOCKS
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
+    #{updateDate,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR}, #{spuName,jdbcType=VARCHAR}, 
+    #{spuTitle,jdbcType=VARCHAR}, #{spuNo,jdbcType=VARCHAR}, #{spuSort,jdbcType=INTEGER}, 
+    #{spuStatu,jdbcType=INTEGER}, #{spuImage,jdbcType=VARCHAR}, #{categoryId,jdbcType=BIGINT}, 
+    #{brandId,jdbcType=BIGINT},#{spuContent,jdbcType=LONGVARCHAR},#{saleAmount,jdbcType=BIGINT},#{stocks,jdbcType=BIGINT}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="startCreateDate != null and startCreateDate != ''">
+      AND CREATE_DATE <![CDATA[>=]]> #{startCreateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endCreateDate != null and endCreateDate != ''">
+      AND CREATE_DATE <![CDATA[<=]]> #{endCreateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="creater != null and creater != ''">
+      AND CREATER = #{creater,jdbcType=VARCHAR}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updater != null and updater != ''">
+      AND UPDATER = #{updater,jdbcType=VARCHAR}
+    </if>
+    <if test="spuName != null and spuName != ''">
+      AND SPU_NAME = #{spuName,jdbcType=VARCHAR}
+    </if>
+    <if test="spuTitle != null and spuTitle != ''">
+      AND SPU_TITLE = #{spuTitle,jdbcType=VARCHAR}
+    </if>
+    <if test="spuNo != null and spuNo != ''">
+      AND SPU_NO = #{spuNo,jdbcType=VARCHAR}
+    </if>
+    <if test="spuSort != null and spuSort != ''">
+      AND SPU_SORT = #{spuSort,jdbcType=INTEGER}
+    </if>
+    <if test="spuStatu != null and spuStatu != ''">
+      AND SPU_STATU = #{spuStatu,jdbcType=INTEGER}
+    </if>
+    <if test="spuImage != null and spuImage != ''">
+      AND SPU_IMAGE = #{spuImage,jdbcType=VARCHAR}
+    </if>
+    <if test="categoryId != null and categoryId != ''">
+      AND CATEGORY_ID = #{categoryId,jdbcType=BIGINT}
+    </if>
+    <if test="brandId != null and brandId != ''">
+      AND BRAND_ID = #{brandId,jdbcType=BIGINT}
+    </if>
+    <if test="spuContent != null and spuContent != ''">
+      AND SPU_CONTENT = #{spuContent,jdbcType=LONGVARCHAR}
+    </if>
+    <if test="saleAmount != null and saleAmount != ''">
+      AND SALE_AMOUNT = #{saleAmount,jdbcType=BIGINT}
+    </if>
+    <if test="stocks != null and stocks != ''">
+      AND STOCKS = #{stocks,jdbcType=BIGINT}
+    </if>
+  </sql>
+  
+  <sql id="Where_Column_Value_plus">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="startCreateDate != null and startCreateDate != ''">
+      AND s.CREATE_DATE <![CDATA[>=]]> #{startCreateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endCreateDate != null and endCreateDate != ''">
+      AND s.CREATE_DATE <![CDATA[<=]]> #{endCreateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="creater != null and creater != ''">
+      AND CREATER = #{creater,jdbcType=VARCHAR}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updater != null and updater != ''">
+      AND UPDATER = #{updater,jdbcType=VARCHAR}
+    </if>
+    <if test="spuName != null and spuName != ''">
+      AND SPU_NAME = #{spuName,jdbcType=VARCHAR}
+    </if>
+    <if test="spuTitle != null and spuTitle != ''">
+      AND SPU_TITLE = #{spuTitle,jdbcType=VARCHAR}
+    </if>
+    <if test="spuNo != null and spuNo != ''">
+      AND SPU_NO = #{spuNo,jdbcType=VARCHAR}
+    </if>
+    <if test="spuSort != null and spuSort != ''">
+      AND SPU_SORT = #{spuSort,jdbcType=INTEGER}
+    </if>
+    <if test="spuStatu != null and spuStatu != ''">
+      AND SPU_STATU = #{spuStatu,jdbcType=INTEGER}
+    </if>
+    <if test="spuImage != null and spuImage != ''">
+      AND SPU_IMAGE = #{spuImage,jdbcType=VARCHAR}
+    </if>
+    <if test="categoryId != null and categoryId != ''">
+      AND CATEGORY_ID = #{categoryId,jdbcType=BIGINT}
+    </if>
+    <if test="brandId != null and brandId != ''">
+      AND BRAND_ID = #{brandId,jdbcType=BIGINT}
+    </if>
+    <if test="spuContent != null and spuContent != ''">
+      AND SPU_CONTENT = #{spuContent,jdbcType=LONGVARCHAR}
+    </if>
+    <if test="startStocks != null and startStocks != ''">
+      AND STOCKS <![CDATA[>=]]> #{startStocks,jdbcType=BIGINT}
+    </if>
+    <if test="endStocks != null and endStocks != ''">
+      AND STOCKS <![CDATA[<=]]> #{endStocks,jdbcType=BIGINT}
+    </if>
+    <if test="startSaleAmount != null and startSaleAmount != ''">
+      AND SALE_AMOUNT <![CDATA[>=]]> #{startSaleAmount,jdbcType=BIGINT}
+    </if>
+    <if test="endSaleAmount != null and endSaleAmount != ''">
+      AND SALE_AMOUNT <![CDATA[<=]]> #{endSaleAmount,jdbcType=BIGINT}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_spu
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_spu
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopSpu">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_spu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="creater != null">
+        CREATER,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="updater != null">
+        UPDATER,
+      </if>
+      <if test="spuName != null">
+        SPU_NAME,
+      </if>
+      <if test="spuTitle != null">
+        SPU_TITLE,
+      </if>
+      <if test="spuNo != null">
+        SPU_NO,
+      </if>
+      <if test="spuSort != null">
+        SPU_SORT,
+      </if>
+      <if test="spuStatu != null">
+        SPU_STATU,
+      </if>
+      <if test="spuImage != null">
+        SPU_IMAGE,
+      </if>
+      <if test="categoryId != null">
+        CATEGORY_ID,
+      </if>
+      <if test="brandId != null">
+        BRAND_ID,
+      </if>
+       <if test="spuContent != null">
+        SPU_CONTENT,
+      </if>
+      <if test="saleAmount != null ">
+        AND SALE_AMOUNT,
+      </if>
+      <if test="stocks != null">
+        AND STOCKS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="spuName != null">
+        #{spuName,jdbcType=VARCHAR},
+      </if>
+      <if test="spuTitle != null">
+        #{spuTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="spuNo != null">
+        #{spuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="spuSort != null">
+        #{spuSort,jdbcType=INTEGER},
+      </if>
+      <if test="spuStatu != null">
+        #{spuStatu,jdbcType=INTEGER},
+      </if>
+      <if test="spuImage != null">
+        #{spuImage,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="brandId != null">
+        #{brandId,jdbcType=BIGINT},
+      </if>
+      <if test="spuContent != null">
+        #{spuContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="saleAmount != null ">
+         #{saleAmount,jdbcType=BIGINT}
+      </if>
+      <if test="stocks != null">
+         #{stocks,jdbcType=BIGINT}
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_spu
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_spu where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopSpu">
+    update t_shop_spu
+    <set>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        UPDATER = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="spuName != null">
+        SPU_NAME = #{spuName,jdbcType=VARCHAR},
+      </if>
+      <if test="spuTitle != null">
+        SPU_TITLE = #{spuTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="spuNo != null">
+        SPU_NO = #{spuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="spuSort != null">
+        SPU_SORT = #{spuSort,jdbcType=INTEGER},
+      </if>
+      <if test="spuStatu != null">
+        SPU_STATU = #{spuStatu,jdbcType=INTEGER},
+      </if>
+      <if test="spuImage != null">
+        SPU_IMAGE = #{spuImage,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null">
+        CATEGORY_ID = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="brandId != null">
+        BRAND_ID = #{brandId,jdbcType=BIGINT},
+      </if>
+      <if test="spuContent != null">
+        SPU_CONTENT = #{spuContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="saleAmount != null ">
+        SALE_AMOUNT = #{saleAmount,jdbcType=BIGINT},
+      </if>
+      <if test="stocks != null">
+        STOCKS = #{stocks,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_spu
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_spu
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectPlusByparams" resultMap="BasePlusResultMap">
+    select s.*,c.category_name,b.brand_name
+    from t_shop_spu s left join t_shop_category c on s.category_id = c.id 
+    left join  t_shop_brand b on s.brand_id = b.id
+    <where>
+      <include refid="Where_Column_Value_plus" />
+    </where>
+    <if test="skuSort != null and skuSort != ''">
+      order by ${skuSort}
+    </if>
+    <if test="direction != null and direction != '' ">
+      ${direction}
+    </if>
+  </select>
+  
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_DATE, CREATER, UPDATE_DATE, UPDATER, SPU_NAME, SPU_TITLE, 
+    SPU_NO, SPU_SORT, SPU_STATU, SPU_IMAGE, CATEGORY_ID, BRAND_ID,SALE_AMOUNT,STOCKS
+    from t_shop_spu
+  </select>
+  
+  <!-- 根据品牌Id获得所有商品 -->
+  <select id="getByBrandId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_spu
+    where BRAND_ID = #{brandId,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 根据SPU号查询 -->
+  <select id="getByUniqueCode"  resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+    from t_shop_spu
+    where SPU_NO = #{spuNo,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

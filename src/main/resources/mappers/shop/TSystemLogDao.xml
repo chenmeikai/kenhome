@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TSystemLogDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TSystemLog">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="operate_ip" jdbcType="VARCHAR" property="operateIp" />
+    <result column="operation" jdbcType="VARCHAR" property="operation" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, create_date, operator, operate_ip, operation, content
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, 
+    #{operateIp,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="startCreateDate != null and startCreateDate != ''">
+      AND CREATE_DATE <![CDATA[>=]]> #{startCreateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endCreateDate != null and endCreateDate != ''">
+      AND CREATE_DATE <![CDATA[<=]]> #{endCreateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="operator != null and operator != ''">
+      AND operator like CONCAT('%',#{operator,jdbcType=VARCHAR},'%')     
+    </if>
+    <if test="operateIp != null and operateIp != ''">
+      AND operate_ip like CONCAT('%',#{operateIp,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="operation != null and operation != ''">
+      AND operation like CONCAT('%',#{operation,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="content != null and content != ''">
+      AND content = #{content,jdbcType=VARCHAR}
+    </if>
+    <if test="parameter != null and parameter != ''">
+      AND parameter = #{parameter,jdbcType=LONGVARCHAR}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_system_log
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_system_log
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TSystemLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_system_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="operateIp != null">
+        operate_ip,
+      </if>
+      <if test="operation != null">
+        operation,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="parameter != null">
+        parameter,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operateIp != null">
+        #{operateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null">
+        #{operation,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter != null">
+        #{parameter,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_system_log
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_system_log where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TSystemLog">
+    update t_system_log
+    <set>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operateIp != null">
+        operate_ip = #{operateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null">
+        operation = #{operation,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter != null">
+        parameter = #{parameter,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_system_log
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_system_log
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, create_date, operator, operate_ip, operation, content, parameter
+    from t_system_log
+  </select>
+</mapper>

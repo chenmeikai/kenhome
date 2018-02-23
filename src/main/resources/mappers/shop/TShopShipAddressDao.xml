@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopShipAddressDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopShipAddress">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="MEMBER_ID" jdbcType="BIGINT" property="memberId" />
+    <result column="SHIP_NAME" jdbcType="VARCHAR" property="shipName" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="ZIP_CODE" jdbcType="INTEGER" property="zipCode" />
+    <result column="PROVINCE_ID" jdbcType="INTEGER" property="provinceId" />   
+    <result column="CITY_ID" jdbcType="INTEGER" property="cityId" />
+    <result column="COUNTY_ID" jdbcType="INTEGER" property="countyId" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="IS_SELECT" jdbcType="INTEGER" property="isSelect" />
+  </resultMap>
+  
+  <resultMap id="BasePlusResultMap" type="com.meikai.shop.entity.TShopShipAddress">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="MEMBER_ID" jdbcType="BIGINT" property="memberId" />
+    <result column="SHIP_NAME" jdbcType="VARCHAR" property="shipName" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="ZIP_CODE" jdbcType="INTEGER" property="zipCode" />
+    <result column="PROVINCE_ID" jdbcType="INTEGER" property="provinceId" />   
+    <result column="PROVINCE_Name" jdbcType="VARCHAR" property="province" />
+    <result column="CITY_ID" jdbcType="INTEGER" property="cityId" />
+    <result column="city_name" jdbcType="VARCHAR" property="city" />
+    <result column="county_name" jdbcType="INTEGER" property="county" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="IS_SELECT" jdbcType="INTEGER" property="isSelect" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_DATE, UPDATE_DATE, MEMBER_ID, SHIP_NAME, PHONE, ZIP_CODE, PROVINCE_ID, 
+    CITY_ID, COUNTY_ID, ADDRESS, IS_SELECT
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+    #{memberId,jdbcType=BIGINT}, #{shipName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+    #{zipCode,jdbcType=INTEGER}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
+    #{countyId,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{isSelect,jdbcType=INTEGER}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="memberId != null and memberId != ''">
+      AND MEMBER_ID = #{memberId,jdbcType=BIGINT}
+    </if>
+    <if test="shipName != null and shipName != ''">
+      AND SHIP_NAME = #{shipName,jdbcType=VARCHAR}
+    </if>
+    <if test="phone != null and phone != ''">
+      AND PHONE = #{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="zipCode != null and zipCode != ''">
+      AND ZIP_CODE = #{zipCode,jdbcType=INTEGER}
+    </if>
+    <if test="provinceId != null and provinceId != ''">
+      AND PROVINCE_ID = #{provinceId,jdbcType=INTEGER}
+    </if>
+    <if test="cityId != null and cityId != ''">
+      AND CITY_ID = #{cityId,jdbcType=INTEGER}
+    </if>
+    <if test="countyId != null and countyId != ''">
+      AND COUNTY_ID = #{countyId,jdbcType=INTEGER}
+    </if>
+    <if test="address != null and address != ''">
+      AND ADDRESS = #{address,jdbcType=VARCHAR}
+    </if>
+    <if test="isSelect != null and isSelect != ''">
+      AND IS_SELECT = #{isSelect,jdbcType=INTEGER}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_ship_address
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_ship_address
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopShipAddress">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_ship_address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="memberId != null">
+        MEMBER_ID,
+      </if>
+      <if test="shipName != null">
+        SHIP_NAME,
+      </if>
+      <if test="phone != null">
+        PHONE,
+      </if>
+      <if test="zipCode != null">
+        ZIP_CODE,
+      </if>
+      <if test="provinceId != null">
+        PROVINCE_ID,
+      </if>
+      <if test="cityId != null">
+        CITY_ID,
+      </if>
+      <if test="countyId != null">
+        COUNTY_ID,
+      </if>
+      <if test="address != null">
+        ADDRESS,
+      </if>
+      <if test="isSelect != null">
+        IS_SELECT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="shipName != null">
+        #{shipName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null">
+        #{zipCode,jdbcType=INTEGER},
+      </if>
+      <if test="provinceId != null">
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="countyId != null">
+        #{countyId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="isSelect != null">
+        #{isSelect,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_ship_address
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_ship_address where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopShipAddress">
+    update t_shop_ship_address
+    <set>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberId != null">
+        MEMBER_ID = #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="shipName != null">
+        SHIP_NAME = #{shipName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null">
+        ZIP_CODE = #{zipCode,jdbcType=INTEGER},
+      </if>
+      <if test="provinceId != null">
+        PROVINCE_ID = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        CITY_ID = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="countyId != null">
+        COUNTY_ID = #{countyId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="isSelect != null">
+        IS_SELECT = #{isSelect,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_ship_address
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_ship_address
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_DATE, UPDATE_DATE, MEMBER_ID, SHIP_NAME, PHONE, ZIP_CODE, PROVINCE_ID, 
+    CITY_ID, COUNTY_ID, ADDRESS, IS_SELECT
+    from t_shop_ship_address
+  </select>
+  
+  <!-- 获得包含地区名的收货地址集合 ,按默认设置排序-->
+  <select id="selectWithNameByUserId" resultMap="BasePlusResultMap">
+    select s.*,p.name as province_name,city.name as city_name,county.name as county_name
+     from t_shop_ship_address s 
+    left join t_system_area p on s.province_id =p.id
+    left join t_system_area city on s.city_id =city.id
+    left join t_system_area county on s.county_id =county.id
+    where s.member_id =#{userId,jdbcType=BIGINT}
+    order by s.is_select DESC
+  </select>
+  
+  <!-- 根据Id获得包括名字的收货地址 -->
+  <select id="getWithNameById" resultMap="BasePlusResultMap">
+    select s.*,p.name as province_name,city.name as city_name,county.name as county_name
+     from t_shop_ship_address s 
+    left join t_system_area p on s.province_id =p.id
+    left join t_system_area city on s.city_id =city.id
+    left join t_system_area county on s.county_id =county.id
+    where s.id =#{id,jdbcType=BIGINT}
+  </select>
+  
+</mapper>

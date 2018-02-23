@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopSpuAttributeOptionDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopSpuAttributeOption">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="spu_id" jdbcType="BIGINT" property="spuId" />
+    <result column="attribute_option_id" jdbcType="BIGINT" property="attributeOptionId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, spu_id, attribute_option_id, sort
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{spuId,jdbcType=BIGINT}, #{attributeOptionId,jdbcType=BIGINT}, 
+    #{sort,jdbcType=INTEGER}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="spuId != null and spuId != ''">
+      AND spu_id = #{spuId,jdbcType=BIGINT}
+    </if>
+    <if test="attributeOptionId != null and attributeOptionId != ''">
+      AND attribute_option_id = #{attributeOptionId,jdbcType=BIGINT}
+    </if>
+    <if test="sort != null and sort != ''">
+      AND sort = #{sort,jdbcType=INTEGER}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_spu_attribute_option
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_spu_attribute_option
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopSpuAttributeOption">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_spu_attribute_option
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="spuId != null">
+        spu_id,
+      </if>
+      <if test="attributeOptionId != null">
+        attribute_option_id,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="spuId != null">
+        #{spuId,jdbcType=BIGINT},
+      </if>
+      <if test="attributeOptionId != null">
+        #{attributeOptionId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_spu_attribute_option
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_spu_attribute_option where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <!-- 根据SpuId删除关联属性值 -->
+  <delete id="deleteBySpuId">
+    delete from t_shop_spu_attribute_option
+    where spu_id = #{spuId,jdbcType=BIGINT}
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopSpuAttributeOption">
+    update t_shop_spu_attribute_option
+    <set>
+      <if test="spuId != null">
+        spu_id = #{spuId,jdbcType=BIGINT},
+      </if>
+      <if test="attributeOptionId != null">
+        attribute_option_id = #{attributeOptionId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_spu_attribute_option
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_spu_attribute_option
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, spu_id, attribute_option_id, sort
+    from t_shop_spu_attribute_option
+  </select>
+</mapper>

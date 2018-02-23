@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopCategoryAttributeDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopCategoryAttribute">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="attribute_id" jdbcType="BIGINT" property="attributeId" />
+    <result column="base_type" jdbcType="INTEGER" property="baseType" />
+    <result column="price_type" jdbcType="INTEGER" property="priceType" />
+    <result column="guide_type" jdbcType="INTEGER" property="guideType" />
+    <result column="base_sort" jdbcType="INTEGER" property="baseSort" />
+    <result column="price_sort" jdbcType="INTEGER" property="priceSort" />
+    <result column="guide_Sort" jdbcType="INTEGER" property="guideSort" />
+  </resultMap>
+  
+  
+  <resultMap id="BaseWithAttrNameResultMap" type="com.meikai.shop.entity.TShopCategoryAttribute">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="attribute_id" jdbcType="BIGINT" property="attributeId" />
+    <result column="base_type" jdbcType="INTEGER" property="baseType" />
+    <result column="price_type" jdbcType="INTEGER" property="priceType" />
+    <result column="guide_type" jdbcType="INTEGER" property="guideType" />
+    <result column="base_sort" jdbcType="INTEGER" property="baseSort" />
+    <result column="price_sort" jdbcType="INTEGER" property="priceSort" />
+    <result column="guide_Sort" jdbcType="INTEGER" property="guideSort" />
+    <result column="attribute_name" jdbcType="VARCHAR" property="attributeName"/>
+  </resultMap>
+  
+  
+  
+  
+  <sql id="Base_Column_List">
+    id, create_date, update_date, category_id, attribute_id, base_type, price_type, guide_type, 
+    base_sort, price_sort, guide_Sort
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+    #{categoryId,jdbcType=BIGINT}, #{attributeId,jdbcType=BIGINT}, #{baseType,jdbcType=INTEGER}, 
+    #{priceType,jdbcType=INTEGER}, #{guideType,jdbcType=INTEGER}, #{baseSort,jdbcType=INTEGER}, 
+    #{priceSort,jdbcType=INTEGER}, #{guideSort,jdbcType=INTEGER}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND create_date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND update_date = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="categoryId != null and categoryId != ''">
+      AND category_id = #{categoryId,jdbcType=BIGINT}
+    </if>
+    <if test="attributeId != null and attributeId != ''">
+      AND attribute_id = #{attributeId,jdbcType=BIGINT}
+    </if>
+    <if test="baseType != null and baseType != ''">
+      AND base_type = #{baseType,jdbcType=INTEGER}
+    </if>
+    <if test="priceType != null and priceType != ''">
+      AND price_type = #{priceType,jdbcType=INTEGER}
+    </if>
+    <if test="guideType != null and guideType != ''">
+      AND guide_type = #{guideType,jdbcType=INTEGER}
+    </if>
+    <if test="baseSort != null and baseSort != ''">
+      AND base_sort = #{baseSort,jdbcType=INTEGER}
+    </if>
+    <if test="priceSort != null and priceSort != ''">
+      AND price_sort = #{priceSort,jdbcType=INTEGER}
+    </if>
+    <if test="guideSort != null and guideSort != ''">
+      AND guide_Sort = #{guideSort,jdbcType=INTEGER}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_category_attribute
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_category_attribute
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopCategoryAttribute">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_category_attribute
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="attributeId != null">
+        attribute_id,
+      </if>
+      <if test="baseType != null">
+        base_type,
+      </if>
+      <if test="priceType != null">
+        price_type,
+      </if>
+      <if test="guideType != null">
+        guide_type,
+      </if>
+      <if test="baseSort != null">
+        base_sort,
+      </if>
+      <if test="priceSort != null">
+        price_sort,
+      </if>
+      <if test="guideSort != null">
+        guide_Sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="attributeId != null">
+        #{attributeId,jdbcType=BIGINT},
+      </if>
+      <if test="baseType != null">
+        #{baseType,jdbcType=INTEGER},
+      </if>
+      <if test="priceType != null">
+        #{priceType,jdbcType=INTEGER},
+      </if>
+      <if test="guideType != null">
+        #{guideType,jdbcType=INTEGER},
+      </if>
+      <if test="baseSort != null">
+        #{baseSort,jdbcType=INTEGER},
+      </if>
+      <if test="priceSort != null">
+        #{priceSort,jdbcType=INTEGER},
+      </if>
+      <if test="guideSort != null">
+        #{guideSort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_category_attribute
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_category_attribute where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopCategoryAttribute">
+    update t_shop_category_attribute
+    <set>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="attributeId != null">
+        attribute_id = #{attributeId,jdbcType=BIGINT},
+      </if>
+      <if test="baseType != null">
+        base_type = #{baseType,jdbcType=INTEGER},
+      </if>
+      <if test="priceType != null">
+        price_type = #{priceType,jdbcType=INTEGER},
+      </if>
+      <if test="guideType != null">
+        guide_type = #{guideType,jdbcType=INTEGER},
+      </if>
+      <if test="baseSort != null">
+        base_sort = #{baseSort,jdbcType=INTEGER},
+      </if>
+      <if test="priceSort != null">
+        price_sort = #{priceSort,jdbcType=INTEGER},
+      </if>
+      <if test="guideSort != null">
+        guide_Sort = #{guideSort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_category_attribute
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_category_attribute
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, create_date, update_date, category_id, attribute_id, base_type, price_type, 
+    guide_type, base_sort, price_sort, guide_Sort
+    from t_shop_category_attribute
+  </select>
+  
+  <!-- 根据分类Id获得属性关联 -->
+  <select id="getByCategoryId" parameterType="java.lang.Long" resultMap="BaseWithAttrNameResultMap">
+    select 
+    ca.*,a.attribute_name
+    from t_shop_category_attribute ca left join t_shop_attribute a on ca.attribute_id = a.id
+    where category_id = #{categoryId,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 根据属性Id获得分类关联 -->
+  <select id="getByAttributeId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_category_attribute
+    where attribute_id = #{attributeId,jdbcType=BIGINT}
+  </select>
+  
+</mapper>

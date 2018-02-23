@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopOrderDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopOrder">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="PAY_TIME" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="SEND_TIME" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="SETTLE_TIME" jdbcType="TIMESTAMP" property="settleTime" />
+    <result column="SETTLE_TYPE" jdbcType="INTEGER" property="settleType" />
+    <result column="MEMBER_ID" jdbcType="BIGINT" property="memberId" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+    <result column="ORDER_STATU" jdbcType="INTEGER" property="orderStatu" />
+    <result column="SKU_COUNT" jdbcType="INTEGER" property="skuCount" />
+    <result column="LOGISTIC_FEE" jdbcType="DECIMAL" property="logisticFee" />
+    <result column="GOOD_AMOUNT_TOTAL" jdbcType="DECIMAL" property="goodAmountTotal" />
+    <result column="ORDER_AMOUNT_TOTAL" jdbcType="DECIMAL" property="orderAmountTotal" />
+    <result column="IS_INVOICE" jdbcType="INTEGER" property="isInvoice" />
+    <result column="INVOICE_ID" jdbcType="BIGINT" property="invoiceId" />
+    <result column="SHIP_PROVINCE" jdbcType="VARCHAR" property="shipProvince" />
+    <result column="SHIP_CITY" jdbcType="VARCHAR" property="shipCity" />
+    <result column="SHIP_COUNTY" jdbcType="VARCHAR" property="shipCounty" />
+    <result column="SHIP_ADDRESS" jdbcType="VARCHAR" property="shipAddress" />
+    <result column="ORDER_LOGISTIC_ID" jdbcType="BIGINT" property="orderLogisticId" />
+    <result column="PAY_TYPE" jdbcType="INTEGER" property="payType" />
+    <result column="OUT_TRADE_NO" jdbcType="BIGINT" property="outTradeNo" />
+    <collection column="ID" property="orderItems" ofType="com.meikai.shop.entity.TShopOrderItem" select="com.meikai.shop.dao.TShopOrderItemDao.getByOrderId">
+    </collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, CREATE_DATE, UPDATE_DATE, PAY_TIME, SEND_TIME, SETTLE_TIME, SETTLE_TYPE, MEMBER_ID, 
+    REMARK, ORDER_NO, ORDER_STATU, SKU_COUNT, LOGISTIC_FEE, GOOD_AMOUNT_TOTAL, ORDER_AMOUNT_TOTAL, 
+    IS_INVOICE, INVOICE_ID, SHIP_PROVINCE, SHIP_CITY, SHIP_COUNTY, SHIP_ADDRESS, ORDER_LOGISTIC_ID, 
+    PAY_TYPE, OUT_TRADE_NO
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+    #{payTime,jdbcType=TIMESTAMP}, #{sendTime,jdbcType=TIMESTAMP}, #{settleTime,jdbcType=TIMESTAMP}, 
+    #{settleType,jdbcType=INTEGER}, #{memberId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, 
+    #{orderNo,jdbcType=VARCHAR}, #{orderStatu,jdbcType=INTEGER}, #{skuCount,jdbcType=INTEGER}, 
+    #{logisticFee,jdbcType=DECIMAL}, #{goodAmountTotal,jdbcType=DECIMAL}, #{orderAmountTotal,jdbcType=DECIMAL}, 
+    #{isInvoice,jdbcType=INTEGER}, #{invoiceId,jdbcType=BIGINT}, #{shipProvince,jdbcType=VARCHAR}, 
+    #{shipCity,jdbcType=VARCHAR}, #{shipCounty,jdbcType=VARCHAR}, #{shipAddress,jdbcType=VARCHAR}, 
+    #{orderLogisticId,jdbcType=BIGINT}, #{payType,jdbcType=INTEGER}, #{outTradeNo,jdbcType=BIGINT}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null and updateDate != ''">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="payTime != null and payTime != ''">
+      AND PAY_TIME = #{payTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="sendTime != null and sendTime != ''">
+      AND SEND_TIME = #{sendTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="settleTime != null and settleTime != ''">
+      AND SETTLE_TIME = #{settleTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="settleType != null and settleType != ''">
+      AND SETTLE_TYPE = #{settleType,jdbcType=INTEGER}
+    </if>
+    <if test="memberId != null and memberId != ''">
+      AND MEMBER_ID = #{memberId,jdbcType=BIGINT}
+    </if>
+    <if test="remark != null and remark != ''">
+      AND REMARK = #{remark,jdbcType=VARCHAR}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+      AND ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+    </if>
+    <if test="orderStatu != null and orderStatu != ''">
+      AND ORDER_STATU = #{orderStatu,jdbcType=INTEGER}
+    </if>
+    <if test="skuCount != null and skuCount != ''">
+      AND SKU_COUNT = #{skuCount,jdbcType=INTEGER}
+    </if>
+    <if test="logisticFee != null and logisticFee != ''">
+      AND LOGISTIC_FEE = #{logisticFee,jdbcType=DECIMAL}
+    </if>
+    <if test="goodAmountTotal != null and goodAmountTotal != ''">
+      AND GOOD_AMOUNT_TOTAL = #{goodAmountTotal,jdbcType=DECIMAL}
+    </if>
+    <if test="orderAmountTotal != null and orderAmountTotal != ''">
+      AND ORDER_AMOUNT_TOTAL = #{orderAmountTotal,jdbcType=DECIMAL}
+    </if>
+    <if test="isInvoice != null and isInvoice != ''">
+      AND IS_INVOICE = #{isInvoice,jdbcType=INTEGER}
+    </if>
+    <if test="invoiceId != null and invoiceId != ''">
+      AND INVOICE_ID = #{invoiceId,jdbcType=BIGINT}
+    </if>
+    <if test="shipProvince != null and shipProvince != ''">
+      AND SHIP_PROVINCE = #{shipProvince,jdbcType=VARCHAR}
+    </if>
+    <if test="shipCity != null and shipCity != ''">
+      AND SHIP_CITY = #{shipCity,jdbcType=VARCHAR}
+    </if>
+    <if test="shipCounty != null and shipCounty != ''">
+      AND SHIP_COUNTY = #{shipCounty,jdbcType=VARCHAR}
+    </if>
+    <if test="shipAddress != null and shipAddress != ''">
+      AND SHIP_ADDRESS = #{shipAddress,jdbcType=VARCHAR}
+    </if>
+    <if test="orderLogisticId != null and orderLogisticId != ''">
+      AND ORDER_LOGISTIC_ID = #{orderLogisticId,jdbcType=BIGINT}
+    </if>
+    <if test="payType != null and payType != ''">
+      AND PAY_TYPE = #{payType,jdbcType=INTEGER}
+    </if>
+    <if test="outTradeNo != null and outTradeNo != ''">
+      AND OUT_TRADE_NO = #{outTradeNo,jdbcType=BIGINT}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_order
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_order
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopOrder">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="payTime != null">
+        PAY_TIME,
+      </if>
+      <if test="sendTime != null">
+        SEND_TIME,
+      </if>
+      <if test="settleTime != null">
+        SETTLE_TIME,
+      </if>
+      <if test="settleType != null">
+        SETTLE_TYPE,
+      </if>
+      <if test="memberId != null">
+        MEMBER_ID,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="orderNo != null">
+        ORDER_NO,
+      </if>
+      <if test="orderStatu != null">
+        ORDER_STATU,
+      </if>
+      <if test="skuCount != null">
+        SKU_COUNT,
+      </if>
+      <if test="logisticFee != null">
+        LOGISTIC_FEE,
+      </if>
+      <if test="goodAmountTotal != null">
+        GOOD_AMOUNT_TOTAL,
+      </if>
+      <if test="orderAmountTotal != null">
+        ORDER_AMOUNT_TOTAL,
+      </if>
+      <if test="isInvoice != null">
+        IS_INVOICE,
+      </if>
+      <if test="invoiceId != null">
+        INVOICE_ID,
+      </if>
+      <if test="shipProvince != null">
+        SHIP_PROVINCE,
+      </if>
+      <if test="shipCity != null">
+        SHIP_CITY,
+      </if>
+      <if test="shipCounty != null">
+        SHIP_COUNTY,
+      </if>
+      <if test="shipAddress != null">
+        SHIP_ADDRESS,
+      </if>
+      <if test="orderLogisticId != null">
+        ORDER_LOGISTIC_ID,
+      </if>
+      <if test="payType != null">
+        PAY_TYPE,
+      </if>
+      <if test="outTradeNo != null">
+        OUT_TRADE_NO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTime != null">
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleTime != null">
+        #{settleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleType != null">
+        #{settleType,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatu != null">
+        #{orderStatu,jdbcType=INTEGER},
+      </if>
+      <if test="skuCount != null">
+        #{skuCount,jdbcType=INTEGER},
+      </if>
+      <if test="logisticFee != null">
+        #{logisticFee,jdbcType=DECIMAL},
+      </if>
+      <if test="goodAmountTotal != null">
+        #{goodAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="orderAmountTotal != null">
+        #{orderAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="isInvoice != null">
+        #{isInvoice,jdbcType=INTEGER},
+      </if>
+      <if test="invoiceId != null">
+        #{invoiceId,jdbcType=BIGINT},
+      </if>
+      <if test="shipProvince != null">
+        #{shipProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="shipCity != null">
+        #{shipCity,jdbcType=VARCHAR},
+      </if>
+      <if test="shipCounty != null">
+        #{shipCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="shipAddress != null">
+        #{shipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="orderLogisticId != null">
+        #{orderLogisticId,jdbcType=BIGINT},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="outTradeNo != null">
+        #{outTradeNo,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_order
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_order where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopOrder">
+    update t_shop_order
+    <set>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null">
+        PAY_TIME = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTime != null">
+        SEND_TIME = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleTime != null">
+        SETTLE_TIME = #{settleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleType != null">
+        SETTLE_TYPE = #{settleType,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        MEMBER_ID = #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null">
+        ORDER_NO = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatu != null">
+        ORDER_STATU = #{orderStatu,jdbcType=INTEGER},
+      </if>
+      <if test="skuCount != null">
+        SKU_COUNT = #{skuCount,jdbcType=INTEGER},
+      </if>
+      <if test="logisticFee != null">
+        LOGISTIC_FEE = #{logisticFee,jdbcType=DECIMAL},
+      </if>
+      <if test="goodAmountTotal != null">
+        GOOD_AMOUNT_TOTAL = #{goodAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="orderAmountTotal != null">
+        ORDER_AMOUNT_TOTAL = #{orderAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="isInvoice != null">
+        IS_INVOICE = #{isInvoice,jdbcType=INTEGER},
+      </if>
+      <if test="invoiceId != null">
+        INVOICE_ID = #{invoiceId,jdbcType=BIGINT},
+      </if>
+      <if test="shipProvince != null">
+        SHIP_PROVINCE = #{shipProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="shipCity != null">
+        SHIP_CITY = #{shipCity,jdbcType=VARCHAR},
+      </if>
+      <if test="shipCounty != null">
+        SHIP_COUNTY = #{shipCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="shipAddress != null">
+        SHIP_ADDRESS = #{shipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="orderLogisticId != null">
+        ORDER_LOGISTIC_ID = #{orderLogisticId,jdbcType=BIGINT},
+      </if>
+      <if test="payType != null">
+        PAY_TYPE = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="outTradeNo != null">
+        OUT_TRADE_NO = #{outTradeNo,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_order
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_order
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <!-- 根据唯一的订单编号获得订单 -->
+  <select id="getByUniqueCode" resultMap="BaseResultMap">
+    select * from t_shop_order
+    where ORDER_NO =#{orderNo,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据订单状态和用户ID获得订单集合 -->
+  <select id="getByStatuAndUserId" resultMap="BaseResultMap">
+    select * from t_shop_order
+    where 
+    MEMBER_ID =#{userId,jdbcType=BIGINT}
+    <if test="orderStatu != null and orderStatu != ''">
+     and  ORDER_STATU =#{orderStatu,jdbcType=INTEGER}
+    </if> 
+    ORDER BY CREATE_DATE DESC  
+     
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, CREATE_DATE, UPDATE_DATE, PAY_TIME, SEND_TIME, SETTLE_TIME, SETTLE_TYPE, 
+    MEMBER_ID, REMARK, ORDER_NO, ORDER_STATU, SKU_COUNT, LOGISTIC_FEE, GOOD_AMOUNT_TOTAL, 
+    ORDER_AMOUNT_TOTAL, IS_INVOICE, INVOICE_ID, SHIP_PROVINCE, SHIP_CITY, SHIP_COUNTY, 
+    SHIP_ADDRESS, ORDER_LOGISTIC_ID, PAY_TYPE, OUT_TRADE_NO
+    from t_shop_order
+  </select>
+</mapper>

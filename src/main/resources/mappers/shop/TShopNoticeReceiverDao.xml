@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopNoticeReceiverDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopNoticeReceiver">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="notice_id" jdbcType="BIGINT" property="noticeId" />
+    <result column="member_id" jdbcType="BIGINT" property="memberId" />
+    <result column="is_readed" jdbcType="INTEGER" property="isReaded" />
+    <result column="readed_date" jdbcType="TIMESTAMP" property="readedDate" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, create_date, notice_id, member_id, is_readed, readed_date
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{noticeId,jdbcType=BIGINT}, 
+    #{memberId,jdbcType=BIGINT}, #{isReaded,jdbcType=INTEGER}, #{readedDate,jdbcType=TIMESTAMP}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null and createDate != ''">
+      AND create_date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="noticeId != null and noticeId != ''">
+      AND notice_id = #{noticeId,jdbcType=BIGINT}
+    </if>
+    <if test="memberId != null and memberId != ''">
+      AND member_id = #{memberId,jdbcType=BIGINT}
+    </if>
+    <if test="isReaded != null and isReaded != ''">
+      AND is_readed = #{isReaded,jdbcType=INTEGER}
+    </if>
+    <if test="readedDate != null and readedDate != ''">
+      AND readed_date = #{readedDate,jdbcType=TIMESTAMP}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_notice_receiver
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_notice_receiver
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopNoticeReceiver">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_notice_receiver
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="noticeId != null">
+        notice_id,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="isReaded != null">
+        is_readed,
+      </if>
+      <if test="readedDate != null">
+        readed_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noticeId != null">
+        #{noticeId,jdbcType=BIGINT},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="isReaded != null">
+        #{isReaded,jdbcType=INTEGER},
+      </if>
+      <if test="readedDate != null">
+        #{readedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_notice_receiver
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_notice_receiver where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopNoticeReceiver">
+    update t_shop_notice_receiver
+    <set>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noticeId != null">
+        notice_id = #{noticeId,jdbcType=BIGINT},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="isReaded != null">
+        is_readed = #{isReaded,jdbcType=INTEGER},
+      </if>
+      <if test="readedDate != null">
+        readed_date = #{readedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_notice_receiver
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_notice_receiver
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, create_date, notice_id, member_id, is_readed, readed_date
+    from t_shop_notice_receiver
+  </select>
+</mapper>

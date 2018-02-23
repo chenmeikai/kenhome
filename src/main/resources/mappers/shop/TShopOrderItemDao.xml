@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TShopOrderItemDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TShopOrderItem">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="item_no" jdbcType="VARCHAR" property="itemNo" />
+    <result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+    <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+    <result column="SKU_ID" jdbcType="BIGINT" property="skuId" />
+    <result column="SKU_NO" jdbcType="VARCHAR" property="skuNo" />
+    <result column="SKU_NAME" jdbcType="VARCHAR" property="skuName" />
+    <result column="SKU_PICTURE" jdbcType="VARCHAR" property="skuPicture" />  
+    <result column="SKU_ORIGINAL_PRICE" jdbcType="DECIMAL" property="skuOriginalPrice" />
+    <result column="SKU_SALE_PRICE" jdbcType="DECIMAL" property="skuSalePrice" />
+    <result column="SKU_TYPE" jdbcType="VARCHAR" property="skuType" />
+    <result column="SKU_MARQUE" jdbcType="VARCHAR" property="skuMarque" />
+    <result column="SKU_ATTRIBUTE" jdbcType="VARCHAR" property="skuAttribute" />
+    <result column="SKU_SPEC" jdbcType="VARCHAR" property="skuSpec" />
+    <result column="DISCOUNT_RATE" jdbcType="DOUBLE" property="discountRate" />
+    <result column="discount_amount" jdbcType="DECIMAL" property="discountAmount" />
+    <result column="SKU_num" jdbcType="INTEGER" property="skuNum" />
+    <result column="subtotal_fee" jdbcType="DECIMAL" property="subtotalFee" />
+    <result column="is_product_exists" jdbcType="INTEGER" property="isProductExists" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="is_review" jdbcType="INTEGER" property="isReview" />
+    <result column="is_last_review" jdbcType="INTEGER" property="isLastReview" />
+    <result column="review_live_time" jdbcType="TIMESTAMP" property="reviewLiveTime" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, item_no,ORDER_ID, ORDER_NO,SKU_ID, SKU_NO, SKU_NAME,SKU_PICTURE, SKU_ORIGINAL_PRICE, SKU_SALE_PRICE, SKU_TYPE, 
+    SKU_MARQUE, SKU_ATTRIBUTE, SKU_SPEC, DISCOUNT_RATE, discount_amount, SKU_num, subtotal_fee, 
+    is_product_exists, remark, is_review, is_last_review, review_live_time
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{itemNo,jdbcType=VARCHAR},#{orderId,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR},#{skuId,jdbcType=BIGINT},#{skuNo,jdbcType=VARCHAR}, 
+    #{skuName,jdbcType=VARCHAR},#{skuPicture,jdbcType=VARCHAR}, #{skuOriginalPrice,jdbcType=DECIMAL}, #{skuSalePrice,jdbcType=DECIMAL}, 
+    #{skuType,jdbcType=VARCHAR}, #{skuMarque,jdbcType=VARCHAR}, #{skuAttribute,jdbcType=VARCHAR}, 
+    #{skuSpec,jdbcType=VARCHAR}, #{discountRate,jdbcType=DOUBLE}, #{discountAmount,jdbcType=DECIMAL}, 
+    #{skuNum,jdbcType=INTEGER}, #{subtotalFee,jdbcType=DECIMAL}, #{isProductExists,jdbcType=INTEGER}, 
+    #{remark,jdbcType=VARCHAR}, #{isReview,jdbcType=INTEGER}, #{isLastReview,jdbcType=INTEGER}, 
+    #{reviewLiveTime,jdbcType=TIMESTAMP}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null and id != ''">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="itemNo != null and itemNo != ''">
+      AND item_no = #{itemNo,jdbcType=VARCHAR}
+    </if>
+    <if test="orderId != null and orderId != ''">
+      AND ORDER_ID = #{orderId,jdbcType=BIGINT}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+      AND ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+    </if>
+    <if test="skuId != null and skuId != ''">
+      AND SKU_ID = #{skuId,jdbcType=BIGINT}
+    </if>
+    <if test="skuNo != null and skuNo != ''">
+      AND SKU_NO = #{skuNo,jdbcType=VARCHAR}
+    </if>
+    <if test="skuPicture != null and skuPicture != ''">
+      AND SKU_PICTURE = #{skuPicture,jdbcType=VARCHAR}
+    </if>
+    <if test="skuName != null and skuName != ''">
+      AND SKU_NAME = #{skuName,jdbcType=VARCHAR}
+    </if>
+    <if test="skuOriginalPrice != null and skuOriginalPrice != ''">
+      AND SKU_ORIGINAL_PRICE = #{skuOriginalPrice,jdbcType=DECIMAL}
+    </if>
+    <if test="skuSalePrice != null and skuSalePrice != ''">
+      AND SKU_SALE_PRICE = #{skuSalePrice,jdbcType=DECIMAL}
+    </if>
+    <if test="skuType != null and skuType != ''">
+      AND SKU_TYPE = #{skuType,jdbcType=VARCHAR}
+    </if>
+    <if test="skuMarque != null and skuMarque != ''">
+      AND SKU_MARQUE = #{skuMarque,jdbcType=VARCHAR}
+    </if>
+    <if test="skuAttribute != null and skuAttribute != ''">
+      AND SKU_ATTRIBUTE = #{skuAttribute,jdbcType=VARCHAR}
+    </if>
+    <if test="skuSpec != null and skuSpec != ''">
+      AND SKU_SPEC = #{skuSpec,jdbcType=VARCHAR}
+    </if>
+    <if test="discountRate != null and discountRate != ''">
+      AND DISCOUNT_RATE = #{discountRate,jdbcType=DOUBLE}
+    </if>
+    <if test="discountAmount != null and discountAmount != ''">
+      AND discount_amount = #{discountAmount,jdbcType=DECIMAL}
+    </if>
+    <if test="skuNum != null and skuNum != ''">
+      AND SKU_num = #{skuNum,jdbcType=INTEGER}
+    </if>
+    <if test="subtotalFee != null and subtotalFee != ''">
+      AND subtotal_fee = #{subtotalFee,jdbcType=DECIMAL}
+    </if>
+    <if test="isProductExists != null and isProductExists != ''">
+      AND is_product_exists = #{isProductExists,jdbcType=INTEGER}
+    </if>
+    <if test="remark != null and remark != ''">
+      AND remark = #{remark,jdbcType=VARCHAR}
+    </if>
+    <if test="isReview != null and isReview != ''">
+      AND is_review = #{isReview,jdbcType=INTEGER}
+    </if>
+    <if test="isLastReview != null and isLastReview != ''">
+      AND is_last_review = #{isLastReview,jdbcType=INTEGER}
+    </if>
+    <if test="reviewLiveTime != null and reviewLiveTime != ''">
+      AND review_live_time = #{reviewLiveTime,jdbcType=TIMESTAMP}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_shop_order_item
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_shop_order_item
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TShopOrderItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_shop_order_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="itemNo != null">
+        item_no,
+      </if>
+      <if test="orderId != null">
+        ORDER_ID,
+      </if>
+      <if test="orderNo != null">
+        ORDER_NO,
+      </if>
+      <if test="skuId != null">
+        SKU_ID,
+      </if>
+      <if test="skuNo != null">
+        SKU_NO,
+      </if>
+      <if test="skuName != null">
+        SKU_NAME,
+      </if>
+      <if test="skuPicture != null">
+        SKU_PICTURE,
+      </if>
+      <if test="skuOriginalPrice != null">
+        SKU_ORIGINAL_PRICE,
+      </if>
+      <if test="skuSalePrice != null">
+        SKU_SALE_PRICE,
+      </if>
+      <if test="skuType != null">
+        SKU_TYPE,
+      </if>
+      <if test="skuMarque != null">
+        SKU_MARQUE,
+      </if>
+      <if test="skuAttribute != null">
+        SKU_ATTRIBUTE,
+      </if>
+      <if test="skuSpec != null">
+        SKU_SPEC,
+      </if>
+      <if test="discountRate != null">
+        DISCOUNT_RATE,
+      </if>
+      <if test="discountAmount != null">
+        discount_amount,
+      </if>
+      <if test="skuNum != null">
+        SKU_num,
+      </if>
+      <if test="subtotalFee != null">
+        subtotal_fee,
+      </if>
+      <if test="isProductExists != null">
+        is_product_exists,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="isReview != null">
+        is_review,
+      </if>
+      <if test="isLastReview != null">
+        is_last_review,
+      </if>
+      <if test="reviewLiveTime != null">
+        review_live_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="itemNo != null">
+        #{itemNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null">
+        #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="skuNo != null">
+        #{skuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null">
+        #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="skuPicture != null">
+        #{skuPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="skuOriginalPrice != null">
+        #{skuOriginalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="skuSalePrice != null">
+        #{skuSalePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="skuType != null">
+        #{skuType,jdbcType=VARCHAR},
+      </if>
+      <if test="skuMarque != null">
+        #{skuMarque,jdbcType=VARCHAR},
+      </if>
+      <if test="skuAttribute != null">
+        #{skuAttribute,jdbcType=VARCHAR},
+      </if>
+      <if test="skuSpec != null">
+        #{skuSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="discountRate != null">
+        #{discountRate,jdbcType=DOUBLE},
+      </if>
+      <if test="discountAmount != null">
+        #{discountAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="skuNum != null">
+        #{skuNum,jdbcType=INTEGER},
+      </if>
+      <if test="subtotalFee != null">
+        #{subtotalFee,jdbcType=DECIMAL},
+      </if>
+      <if test="isProductExists != null">
+        #{isProductExists,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isReview != null">
+        #{isReview,jdbcType=INTEGER},
+      </if>
+      <if test="isLastReview != null">
+        #{isLastReview,jdbcType=INTEGER},
+      </if>
+      <if test="reviewLiveTime != null">
+        #{reviewLiveTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shop_order_item
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <!-- 根据订单号，删除相关项目 -->
+  <delete id="deleteByOrderId" parameterType="java.lang.Long">
+    delete from t_shop_order_item
+    where ORDER_ID = #{orderId,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteSome">
+    delete from t_shop_order_item where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TShopOrderItem">
+    update t_shop_order_item
+    <set>
+      <if test="itemNo != null">
+        item_no = #{itemNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        ORDER_ID = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNo != null">
+        ORDER_NO = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null">
+        SKU_ID = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="skuNo != null">
+        SKU_NO = #{skuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null">
+        SKU_NAME = #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="skuPicture != null">
+        SKU_PICTURE = #{skuPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="skuOriginalPrice != null">
+        SKU_ORIGINAL_PRICE = #{skuOriginalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="skuSalePrice != null">
+        SKU_SALE_PRICE = #{skuSalePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="skuType != null">
+        SKU_TYPE = #{skuType,jdbcType=VARCHAR},
+      </if>
+      <if test="skuMarque != null">
+        SKU_MARQUE = #{skuMarque,jdbcType=VARCHAR},
+      </if>
+      <if test="skuAttribute != null">
+        SKU_ATTRIBUTE = #{skuAttribute,jdbcType=VARCHAR},
+      </if>
+      <if test="skuSpec != null">
+        SKU_SPEC = #{skuSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="discountRate != null">
+        DISCOUNT_RATE = #{discountRate,jdbcType=DOUBLE},
+      </if>
+      <if test="discountAmount != null">
+        discount_amount = #{discountAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="skuNum != null">
+        SKU_num = #{skuNum,jdbcType=INTEGER},
+      </if>
+      <if test="subtotalFee != null">
+        subtotal_fee = #{subtotalFee,jdbcType=DECIMAL},
+      </if>
+      <if test="isProductExists != null">
+        is_product_exists = #{isProductExists,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isReview != null">
+        is_review = #{isReview,jdbcType=INTEGER},
+      </if>
+      <if test="isLastReview != null">
+        is_last_review = #{isLastReview,jdbcType=INTEGER},
+      </if>
+      <if test="reviewLiveTime != null">
+        review_live_time = #{reviewLiveTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_order_item
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+   <select id="getByOrderId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shop_order_item
+    where ORDER_ID = #{orderId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_shop_order_item
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, item_no,ORDER_ID, ORDER_NO,SKU_ID, SKU_NO, SKU_NAME, SKU_PICTURE, SKU_ORIGINAL_PRICE, SKU_SALE_PRICE, 
+    SKU_TYPE, SKU_MARQUE, SKU_ATTRIBUTE, SKU_SPEC, DISCOUNT_RATE, discount_amount, SKU_num, 
+    subtotal_fee, is_product_exists, remark, is_review, is_last_review, review_live_time
+    from t_shop_order_item
+  </select>
+</mapper>

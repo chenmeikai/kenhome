@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikai.shop.dao.TSystemRoleAclDao">
+  
+  <resultMap id="BaseResultMap" type="com.meikai.shop.entity.TSystemRoleAcl">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="acl_id" jdbcType="BIGINT" property="aclId" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, create_date, creater, role_id, acl_id
+  </sql>
+  
+  <sql id="Base_Column_Value_List">
+    #{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
+    #{roleId,jdbcType=BIGINT}, #{aclId,jdbcType=BIGINT}
+  </sql>
+  
+  <sql id="Where_Column_Value">
+    <if test="id != null">
+      AND ID = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="createDate != null">
+      AND create_date = #{createDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="creater != null">
+      AND creater = #{creater,jdbcType=VARCHAR}
+    </if>
+    <if test="roleId != null">
+      AND role_id = #{roleId,jdbcType=BIGINT}
+    </if>
+    <if test="aclId != null">
+      AND acl_id = #{aclId,jdbcType=BIGINT}
+    </if>
+  </sql>
+  
+  <select id="countAll" resultType="java.lang.Long">
+    select count(*) from t_system_role_acl
+  </select>
+  
+  <select id="countByParams" resultType="java.lang.Long">
+    select count(*) from t_system_role_acl
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.meikai.shop.entity.TSystemRoleAcl">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_system_role_acl
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="aclId != null">
+        acl_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="aclId != null">
+        #{aclId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_system_role_acl
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteByRoleID" parameterType="java.lang.Long">
+    delete from t_system_role_acl
+    where role_id = #{roleId,jdbcType=BIGINT}
+  </delete>
+  
+  
+  <delete id="deleteSome">
+    delete from t_system_role_acl where ID in
+    <foreach close=")" collection="list" index="index" item="targetId" open="(" separator=",">
+      #{targetId}
+    </foreach>
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meikai.shop.entity.TSystemRoleAcl">
+    update t_system_role_acl
+    <set>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="aclId != null">
+        acl_id = #{aclId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_system_role_acl
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select * from t_system_role_acl
+    <where>
+      <include refid="Where_Column_Value" />
+    </where>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, create_date, creater, role_id, acl_id
+    from t_system_role_acl
+  </select>
+  
+  <!-- 根据角色ID获得数据 -->
+  <select id="select"></select>
+</mapper>
